@@ -1,0 +1,12 @@
+## User settings
+xcuserdata/
+
+## Xcode 8 and earlier
+*.xcscmblueprint
+*.xccheckout
+
+# CocoaPods
+Pods/
+
+# MacOS
+.DS_Store
