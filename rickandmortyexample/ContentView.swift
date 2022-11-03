@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  rickandmortyexample
-//
-//  Created by Andrés Martínez on 3/11/22.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -14,6 +7,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
+                .foregroundColor(.adding)
         }
         .padding()
     }
