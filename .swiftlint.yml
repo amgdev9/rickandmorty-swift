@@ -1,6 +1,6 @@
 # See custom rules in https://github.com/realm/SwiftLint#configuration
 identifier_name:
-    min_length: 2
+    min_length: 1
 
 excluded:
   - Pods
