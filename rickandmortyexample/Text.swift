@@ -10,6 +10,7 @@ enum Variant {
     case largeTitle
     case caption13
     case caption11
+    case caption10
     case tagline15
     case tagline13
     case tagline11
@@ -55,6 +56,8 @@ struct Text: View {
                               letterSpacing: -0.08),
         .caption11: TextStyle(fontSize: 11, fontWeight: .regular, color: .basicBlack, lineHeight: 13,
                               letterSpacing: 0.07),
+        .caption10: TextStyle(fontSize: 10, fontWeight: .regular, color: .basicBlack, lineHeight: 11.93,
+                              letterSpacing: 0.16),
         .tagline15: TextStyle(fontSize: 15, fontWeight: .semibold, color: .basicBlue, lineHeight: 20,
                               letterSpacing: -0.24),
         .tagline13: TextStyle(fontSize: 13, fontWeight: .semibold, color: .primaryIndigo,
@@ -92,7 +95,7 @@ struct Text: View {
     }
 }
 
-struct Previews: PreviewProvider {
+struct TextPreviews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(alignment: .leading) {
