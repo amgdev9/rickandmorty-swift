@@ -18,7 +18,6 @@ struct Tabs: View {
     }
 }
 
-
 struct Tabs_Previews: PreviewProvider {
     static var previews: some View {
         Tabs(currentTab: .constant(.character))

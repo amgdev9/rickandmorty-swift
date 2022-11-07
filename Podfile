@@ -4,6 +4,7 @@ target 'rickandmortyexample' do
   use_frameworks!
 
   pod 'SwiftLint'
+  pod 'Apollo'
 
   target 'rickandmortyexampleTests' do
     inherit! :search_paths

@@ -1,0 +1,44 @@
+{
+  "schemaName" : "Rickandmortyexample",
+  "schemaDownloadConfiguration": {
+      "downloadMethod": {
+          "introspection": {
+              "endpointURL": "https://rickandmortyapi.com/graphql",
+              "httpMethod": {
+                  "POST": {}
+              },
+              "includeDeprecatedInputValues": false,
+              "outputFormat": "SDL"
+          }
+      },
+      "outputPath": "./rickandmortyexample/generated/schema.graphqls"
+  },
+  "options" : {
+    "cocoapodsCompatibleImportStatements" : true
+  },
+  "input" : {
+    "operationSearchPaths" : [
+      "rickandmortyexample/**/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "rickandmortyexample/**/*.graphqls"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./Rickandmortyexample/generated",
+      "moduleType" : {
+        "other" : {
+        }
+      }
+    },
+    "operations" : {
+      "relative" : {
+      }
+    }
+  }
+}

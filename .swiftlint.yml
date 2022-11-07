@@ -3,4 +3,6 @@ identifier_name:
     min_length: 1
 
 excluded:
+  - Rickandmortyexample/generated
+  - Rickandmortyexample/CharactersQuery.graphql.swift
   - Pods
