@@ -2,21 +2,25 @@ PODS:
   - Apollo (1.0.3):
     - Apollo/Core (= 1.0.3)
   - Apollo/Core (1.0.3)
+  - NeedleFoundation (0.17.2)
   - SwiftLint (0.49.1)
 
 DEPENDENCIES:
   - Apollo
+  - NeedleFoundation
   - SwiftLint
 
 SPEC REPOS:
   trunk:
     - Apollo
+    - NeedleFoundation
     - SwiftLint
 
 SPEC CHECKSUMS:
   Apollo: 936d426f7f081bcc4f66cfe03c983e9c4624cf86
+  NeedleFoundation: 36cfaea9ae9eb527a796f5c1df19296c722666b8
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: a78c6df714b03229e633159cbaa9ec290430b44f
+PODFILE CHECKSUM: 74e248a31baf08bedfcc63ce8711a01dd51fef91
 
 COCOAPODS: 1.11.3

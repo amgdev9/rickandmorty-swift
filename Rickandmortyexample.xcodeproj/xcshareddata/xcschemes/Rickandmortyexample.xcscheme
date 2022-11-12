@@ -50,6 +50,13 @@
             ReferencedContainer = "container:Rickandmortyexample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "SERVER_URL"
+            value = "https://rickandmortyapi.com/graphql"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

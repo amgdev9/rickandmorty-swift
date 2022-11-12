@@ -2,7 +2,11 @@
 identifier_name:
     min_length: 1
 
+type_name:
+    min_length: 1
+
 excluded:
   - Rickandmortyexample/generated
+  - Rickandmortyexample/Core/DI/NeedleGenerated.swift
   - Rickandmortyexample/CharactersQuery.graphql.swift
   - Pods
