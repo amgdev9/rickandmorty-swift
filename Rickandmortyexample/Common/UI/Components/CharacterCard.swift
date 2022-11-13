@@ -35,9 +35,10 @@ extension CharacterCard {
         AsyncImage(url: URL(string: url)) { data in
             data.image?
                 .resizable()
-                .scaledToFit()
-                .frame(height: 140)
-        }.frame(height: 140)
+                .aspectRatio(contentMode: .fill)
+                .frame(maxWidth: .infinity, maxHeight: 140)
+                .clipped()
+        }.frame(maxWidth: .infinity, maxHeight: 140)
     }
 
     func content<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
@@ -78,6 +79,6 @@ struct CharacterCardPreviews: PreviewProvider {
     static var previews: some View {
         CharacterCard(item: item) { id in
             print("Pressed", id)
-        }
+        }.frame(width: 163)
     }
 }
