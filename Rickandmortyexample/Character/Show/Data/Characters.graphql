@@ -1,5 +1,5 @@
 query Characters {
-  characters(page:1) {
+  characters(page: 1) {
 	results {
 	  id
 	  name

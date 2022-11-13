@@ -8,5 +8,5 @@ type_name:
 excluded:
   - Rickandmortyexample/generated
   - Rickandmortyexample/Core/DI/NeedleGenerated.swift
-  - Rickandmortyexample/CharactersQuery.graphql.swift
+  - "**/*.graphql.swift"
   - Pods

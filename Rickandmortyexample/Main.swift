@@ -2,13 +2,16 @@ import SwiftUI
 
 @main
 struct Main: App {
+    let mainContainer: MainContainer
+
     init() {
         registerProviderFactories()
+        mainContainer = MainContainer()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabsNavigator(mainContainer: mainContainer)
         }
     }
 }

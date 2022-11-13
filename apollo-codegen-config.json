@@ -11,17 +11,17 @@
               "outputFormat": "SDL"
           }
       },
-      "outputPath": "./rickandmortyexample/generated/schema.graphqls"
+      "outputPath": "./Rickandmortyexample/Common/Remote/Schema.graphqls"
   },
   "options" : {
     "cocoapodsCompatibleImportStatements" : true
   },
   "input" : {
     "operationSearchPaths" : [
-      "rickandmortyexample/**/*.graphql"
+      "Rickandmortyexample/**/*.graphql"
     ],
     "schemaSearchPaths" : [
-      "rickandmortyexample/**/*.graphqls"
+      "Rickandmortyexample/**/*.graphqls"
     ]
   },
   "output" : {
@@ -30,7 +30,7 @@
       }
     },
     "schemaTypes" : {
-      "path" : "./Rickandmortyexample/generated",
+      "path" : "./Rickandmortyexample/Common/Remote/Generated",
       "moduleType" : {
         "other" : {
         }
