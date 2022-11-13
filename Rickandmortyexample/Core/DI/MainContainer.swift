@@ -21,4 +21,8 @@ class MainContainer: BootstrapComponent {
     var filterCharactersViewModel: FilterCharactersViewModel {
         return FilterCharactersViewModel()
     }
+
+    var characterDetailsViewModel: CharacterDetailsViewModel {
+        return CharacterDetailsViewModel()
+    }
 }
