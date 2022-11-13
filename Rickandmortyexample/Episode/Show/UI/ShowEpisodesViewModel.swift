@@ -1,0 +1,3 @@
+class ShowEpisodesViewModel: ObservableObject {
+
+}

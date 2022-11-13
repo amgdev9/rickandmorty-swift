@@ -9,4 +9,16 @@ class MainContainer: BootstrapComponent {
     var showCharactersViewModel: ShowCharactersViewModel {
         return ShowCharactersViewModel()
     }
+
+    var showLocationsViewModel: ShowLocationsViewModel {
+        return ShowLocationsViewModel()
+    }
+
+    var showEpisodesViewModel: ShowEpisodesViewModel {
+        return ShowEpisodesViewModel()
+    }
+
+    var filterCharactersViewModel: FilterCharactersViewModel {
+        return FilterCharactersViewModel()
+    }
 }
