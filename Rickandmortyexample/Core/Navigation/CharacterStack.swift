@@ -37,8 +37,12 @@ extension CharacterStack {
             super.init(path: path)
         }
 
-        func gotoCharacterFilters(params: FilterCharactersParams) {
+        func gotoCharacterFilters() {
             filterSheetPresented.wrappedValue = true
+        }
+
+        func gotoCharacterDetail(params: CharacterDetailsParams) {
+            path.wrappedValue.append(params)
         }
     }
 

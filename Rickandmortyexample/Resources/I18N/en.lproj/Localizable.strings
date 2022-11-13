@@ -1,3 +1,15 @@
+// Actions
+"actions/filter" = "Filter";
+
+// Routes
+"routes/character" = "Character";
+"routes/location" = "Location";
+"routes/episodes" = "Episode";
+
+// Enums
 "enums/TabItemID/character" = "Character";
 "enums/TabItemID/location" = "Location";
 "enums/TabItemID/episodes" = "Episodes";
+"enums/CharacterStatus/alive" = "Alive";
+"enums/CharacterStatus/dead" = "Dead";
+"enums/CharacterStatus/unknown" = "Unknown";
