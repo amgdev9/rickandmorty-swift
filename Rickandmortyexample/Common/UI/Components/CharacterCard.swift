@@ -32,13 +32,16 @@ extension CharacterCard {
     }
 
     func image(url: String) -> some View {
-        AsyncImage(url: URL(string: url)) { data in
-            data.image?
+        AsyncImage(url: URL(string: url), content: { image in
+            image
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: .infinity, maxHeight: 140)
+                .frame(maxWidth: .infinity, minHeight: 140, maxHeight: 140)
                 .clipped()
-        }.frame(maxWidth: .infinity, maxHeight: 140)
+        }, placeholder: {
+            Color.white
+                .frame(maxWidth: .infinity, minHeight: 140, maxHeight: 140)
+        }).frame(maxWidth: .infinity, minHeight: 140, maxHeight: 140)
     }
 
     func content<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {

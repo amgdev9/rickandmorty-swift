@@ -12,6 +12,8 @@
 		B42E7A507D710969E45F4874 /* Pods_Rickandmortyexample_RickandmortyexampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A38597ADE49F50F1F41BB924 /* Pods_Rickandmortyexample_RickandmortyexampleUITests.framework */; };
 		E54AA6132915A8750069B3B4 /* Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AA6122915A8750069B3B4 /* Border.swift */; };
 		E54AA6182915A9050069B3B4 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AA6172915A9050069B3B4 /* Tabs.swift */; };
+		E56D16DC2922C96300B55DAF /* ListState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D16DB2922C96300B55DAF /* ListState.swift */; };
+		E56D16DE2922CA0D00B55DAF /* ErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D16DD2922CA0D00B55DAF /* ErrorState.swift */; };
 		E585398A29210859008C9FC5 /* CharactersQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585398929210859008C9FC5 /* CharactersQuery.graphql.swift */; };
 		E585399329210949008C9FC5 /* Characters.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585398E29210949008C9FC5 /* Characters.graphql.swift */; };
 		E585399429210949008C9FC5 /* Character.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585398F29210949008C9FC5 /* Character.graphql.swift */; };
@@ -91,6 +93,8 @@
 		DB5CD3838E5CC5A348AB0E78 /* Pods-RickandmortyexampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RickandmortyexampleTests.debug.xcconfig"; path = "Target Support Files/Pods-RickandmortyexampleTests/Pods-RickandmortyexampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E54AA6122915A8750069B3B4 /* Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Border.swift; sourceTree = "<group>"; };
 		E54AA6172915A9050069B3B4 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
+		E56D16DB2922C96300B55DAF /* ListState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListState.swift; sourceTree = "<group>"; };
+		E56D16DD2922CA0D00B55DAF /* ErrorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorState.swift; sourceTree = "<group>"; };
 		E585398929210859008C9FC5 /* CharactersQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharactersQuery.graphql.swift; sourceTree = "<group>"; };
 		E585398E29210949008C9FC5 /* Characters.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Characters.graphql.swift; sourceTree = "<group>"; };
 		E585398F29210949008C9FC5 /* Character.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.graphql.swift; sourceTree = "<group>"; };
@@ -209,6 +213,7 @@
 				E59B48C32914106000AB3085 /* Colors.swift */,
 				E58539B0292123D8008C9FC5 /* NavigationParams.swift */,
 				E594DD14292150C0002F7038 /* LocalizedEnums.swift */,
+				E56D16DB2922C96300B55DAF /* ListState.swift */,
 				E54AA6162915A88E0069B3B4 /* Utils */,
 				E54AA6152915A8830069B3B4 /* Components */,
 			);
@@ -225,6 +230,7 @@
 				E594DD0C292143D7002F7038 /* FilterButton.swift */,
 				E594DD0E29214988002F7038 /* CharacterCard.swift */,
 				E594DD1629215736002F7038 /* CharacterList.swift */,
+				E56D16DD2922CA0D00B55DAF /* ErrorState.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -824,6 +830,7 @@
 				E58539A7292114D9008C9FC5 /* ShowEpisodesViewModel.swift in Sources */,
 				E59EF7C42921015700628FED /* ShowCharactersViewModel.swift in Sources */,
 				E58539B1292123D8008C9FC5 /* NavigationParams.swift in Sources */,
+				E56D16DC2922C96300B55DAF /* ListState.swift in Sources */,
 				E585399529210949008C9FC5 /* Query.graphql.swift in Sources */,
 				E585399329210949008C9FC5 /* Characters.graphql.swift in Sources */,
 				E585399F29211449008C9FC5 /* ShowLocationsViewModel.swift in Sources */,
@@ -846,6 +853,7 @@
 				E58539B829212DB0008C9FC5 /* CharacterDetailsScreen.swift in Sources */,
 				E59EF7C22920FF9900628FED /* TabsNavigator.swift in Sources */,
 				E58539BA29212DD6008C9FC5 /* CharacterDetailsViewModel.swift in Sources */,
+				E56D16DE2922CA0D00B55DAF /* ErrorState.swift in Sources */,
 				E594DD15292150C0002F7038 /* LocalizedEnums.swift in Sources */,
 				E585399629210949008C9FC5 /* SchemaConfiguration.swift in Sources */,
 			);

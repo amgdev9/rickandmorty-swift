@@ -9,17 +9,17 @@ struct CharacterStack: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            ShowCharactersScreen(router: ShowCharactersScreenRouterImpl(path: $path,
+            ShowCharactersScreen(router: SwiftUIShowCharactersScreenRouter(path: $path,
                                                                         filterSheetPresented: $filterSheetPresented)) {
                 mainContainer.showCharactersViewModel
             }
             .navigationDestination(for: FilterCharactersParams.self) { _ in
-                FilterCharactersScreen(router: FilterCharactersScreenRouterImpl(path: $path)) {
+                FilterCharactersScreen(router: SwiftUIFilterCharactersScreenRouter(path: $path)) {
                     mainContainer.filterCharactersViewModel
                 }
             }
             .sheet(isPresented: $filterSheetPresented) {
-                CharacterDetailsScreen(router: CharacterDetailsScreenRouterImpl(path: $path)) {
+                CharacterDetailsScreen(router: SwiftUICharacterDetailsScreenRouter(path: $path)) {
                     mainContainer.characterDetailsViewModel
                 }.presentationDetents([.medium, .large])
             }
@@ -29,7 +29,7 @@ struct CharacterStack: View {
 
 // MARK: - Routers
 extension CharacterStack {
-    class ShowCharactersScreenRouterImpl: Router & ShowCharactersScreenRouter {
+    class SwiftUIShowCharactersScreenRouter: Router & ShowCharactersScreenRouter {
         let filterSheetPresented: Binding<Bool>
 
         init(path: Binding<NavigationPath>, filterSheetPresented: Binding<Bool>) {
@@ -46,13 +46,13 @@ extension CharacterStack {
         }
     }
 
-    class FilterCharactersScreenRouterImpl: Router & FilterCharactersScreenRouter {
+    class SwiftUIFilterCharactersScreenRouter: Router & FilterCharactersScreenRouter {
         func goBack() {
             path.wrappedValue.removeLast()
         }
     }
 
-    class CharacterDetailsScreenRouterImpl: Router & CharacterDetailsScreenRouter {
+    class SwiftUICharacterDetailsScreenRouter: Router & CharacterDetailsScreenRouter {
         func gotoLocation(id: String) {
             // TODO
         }

@@ -1,5 +1,6 @@
 // Actions
 "actions/filter" = "Filter";
+"action/try-again" = "Try again";
 
 // Routes
 "routes/character" = "Character";
