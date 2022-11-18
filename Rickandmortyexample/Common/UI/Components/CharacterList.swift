@@ -1,8 +1,8 @@
 import SwiftUI
 
 // MARK: - View
-struct CharacterList: View {
-    let state: ListState<CharacterCardItem>
+struct CharacterList<Item: CharacterCardItem>: View {
+    let state: ListState<Item>
     let onRefetch: @Sendable () async -> Void
     let onLoadNextPage: () async -> Void
     let onPress: (_ id: String) -> Void
@@ -29,8 +29,10 @@ struct CharacterList: View {
                             }
                         }
                         if loadingNextPage { ProgressView() }
-                        bottomMarker()
-                            .onAppear(perform: handleLoadNextPage)
+                        else {
+                            bottomMarker()
+                                .onAppear(perform: handleLoadNextPage)
+                        }
                     }.refreshable(action: onRefetch)
                 }
             }
@@ -48,7 +50,8 @@ extension CharacterList {
 
 // MARK: - Logic
 extension CharacterList {
-    func handleRefetch() {
+    @Sendable func handleRefetch() {
+        if (loadingRefetch) { return }
         loadingRefetch = true
         Task { @MainActor in
             await onRefetch()
@@ -57,6 +60,7 @@ extension CharacterList {
     }
 
     func handleLoadNextPage() {
+        if (loadingNextPage) { return }
         loadingNextPage = true
         Task { @MainActor in
             await onLoadNextPage()
@@ -79,12 +83,12 @@ struct CharacterListPreviews: PreviewProvider {
     }
 
     static var previews: some View {
-        CharacterList(state: .loading, onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
+        CharacterList<CharacterCardPreviews.Item>(state: .loading, onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
             .previewDisplayName("Loading state")
         CharacterList(state: .data(characters),
                       onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
             .previewDisplayName("With data")
-        CharacterList(state: .error("An error has happened!"), onRefetch: delay, onLoadNextPage: delay,
+        CharacterList<CharacterCardPreviews.Item>(state: .error("An error has happened!"), onRefetch: delay, onLoadNextPage: delay,
                       onPress: {_ in })
             .previewDisplayName("Error state")
     }

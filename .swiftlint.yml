@@ -10,3 +10,4 @@ excluded:
   - Rickandmortyexample/Core/DI/NeedleGenerated.swift
   - "**/*.graphql.swift"
   - Pods
+  - MockingbirdSupport/Swift/Misc.swift

@@ -14,3 +14,7 @@
 "enums/CharacterStatus/alive" = "Alive";
 "enums/CharacterStatus/dead" = "Dead";
 "enums/CharacterStatus/unknown" = "Unknown";
+
+// Errors
+"error/unknown" = "An unknown error has happened. Try again later";
+"error/database" = "An unexpected error happened with the database. Try again later";

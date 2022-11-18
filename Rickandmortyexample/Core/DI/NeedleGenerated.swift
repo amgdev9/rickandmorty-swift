@@ -1,6 +1,7 @@
 
 
 import Apollo
+import CoreData
 import NeedleFoundation
 
 // swiftlint:disable unused_declaration

@@ -1,8 +1,0 @@
-query Characters {
-  characters(page: 1) {
-	results {
-	  id
-	  name
-	}
-  }
-}

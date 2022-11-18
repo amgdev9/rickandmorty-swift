@@ -41,8 +41,8 @@ extension CharacterStack {
             filterSheetPresented.wrappedValue = true
         }
 
-        func gotoCharacterDetail(params: CharacterDetailsParams) {
-            path.wrappedValue.append(params)
+        func gotoCharacterDetail(id: String) {
+            path.wrappedValue.append(CharacterDetailsParams(id: id))
         }
     }
 

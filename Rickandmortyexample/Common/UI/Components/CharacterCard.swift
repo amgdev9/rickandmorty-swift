@@ -1,8 +1,8 @@
 import SwiftUI
 
 // MARK: - View
-struct CharacterCard: View {
-    let item: CharacterCardItem
+struct CharacterCard<Item: CharacterCardItem>: View {
+    let item: Item
     let action: (_ id: String) -> Void
 
     var body: some View {

@@ -10,3 +10,10 @@ Pods/
 
 # MacOS
 .DS_Store
+
+# Caches
+**/*.xcodeproj/MockingbirdCache/
+MockingbirdMocks/
+
+# Generated
+*.generated.swift
