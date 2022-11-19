@@ -17,7 +17,7 @@ class CharactersRepositoryImpl: CharactersRepository {
 
             let task = Task {
                 let numPages = remoteDataSource.numPages
-                let localCharacters = localDataSource.getCharacters()
+                let localCharacters = await localDataSource.getCharacters()
 
                 if let error = localCharacters.failure() {
                     observer.onNext(.failure(error))
@@ -35,7 +35,7 @@ class CharactersRepositoryImpl: CharactersRepository {
                     return
                 }
 
-                let result = localDataSource.insertCharacters(characters: remoteCharacters.unwrap()!)
+                let result = await localDataSource.setCharacters(characters: remoteCharacters.unwrap()!)
                 if let error = result.failure() {
                     observer.onNext(.failure(error))
                     return
@@ -50,26 +50,28 @@ class CharactersRepositoryImpl: CharactersRepository {
     }
 
     func loadNextPage() async -> Result<Void, Error> {
-        let numCharacters = localDataSource.getCharactersCount()
-        if let error = numCharacters.failure() {
+        let numCharactersResult = await localDataSource.getCharactersCount()
+        if let error = numCharactersResult.failure() {
             return .failure(error)
         }
+        let numCharacters = numCharactersResult.unwrap()!
 
-        if(numCharacters.unwrap()! == 0) { return .success(()) }
+        if numCharacters == 0 { return .success(()) }
         guard let numPages = remoteDataSource.numPages else { return .success(()) }
 
-        let isLastPageLoaded = (numCharacters.unwrap()! % remoteDataSource.pageSize) > 0
-        if(isLastPageLoaded) { return .success(()) }
+        let isLastPageLoaded = (numCharacters % remoteDataSource.pageSize) > 0
+        if isLastPageLoaded { return .success(()) }
 
-        let nextPage = numCharacters.unwrap()! / remoteDataSource.pageSize + 1
-        if(nextPage > numPages) { return .success(()) }
+        let nextPage = numCharacters / remoteDataSource.pageSize + 1
+        if nextPage > numPages { return .success(()) }
 
         let characters = await remoteDataSource.getCharacters(page: nextPage)
         if let error = characters.failure() {
             return .failure(error)
         }
 
-        let result = localDataSource.insertCharacters(characters: characters.unwrap()!)
+        let result = await localDataSource.insertCharacters(characters: characters.unwrap()!,
+                                                            numExpectedCharacters: numCharacters)
         if let error = result.failure() {
             return .failure(error)
         }
@@ -84,6 +86,6 @@ class CharactersRepositoryImpl: CharactersRepository {
             return .failure(error)
         }
 
-        return localDataSource.setCharacters(characters: characters.unwrap()!)
+        return await localDataSource.setCharacters(characters: characters.unwrap()!)
     }
 }

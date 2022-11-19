@@ -47,11 +47,12 @@ extension CharacterCard {
     func content<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 0, content: content)
             .padding(12)
-            .padding(.bottom, 20)
     }
 
     func name(_ name: String) -> some View {
         Text(name, variant: .body17, weight: .semibold)
+            .multilineTextAlignment(.leading)
+            .frame(height: 44, alignment: .top)
     }
 
     func status(_ status: Character.Status) -> some View {

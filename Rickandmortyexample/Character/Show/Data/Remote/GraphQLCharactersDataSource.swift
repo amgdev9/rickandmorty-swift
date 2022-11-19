@@ -1,9 +1,10 @@
 import Apollo
 
 class GraphQLCharactersDataSource: CharactersRemoteDataSource {
+
     let pageSizeMutex = DispatchSemaphore(value: 1)
-    var numPages: Int? = .none
-    var pageSize = 20
+    var numPages: UInt? = .none
+    var pageSize: UInt = 20
 
     let apolloClient: ApolloClient
 
@@ -11,13 +12,13 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getCharacters(page: Int) async -> Result<[CharacterSummary], Error> {
+    func getCharacters(page: UInt) async -> Result<[CharacterSummary], Error> {
         var cancellable: Cancellable? = .none
         return await withTaskCancellationHandler { [cancellable] in
             cancellable?.cancel()
         } operation: {
             return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(query: CharactersQuery(page: page)) { result in
+                cancellable = apolloClient.fetch(query: CharactersQuery(page: Int(page))) { result in
                     if let error = result.failure() {
                         continuation.resume(returning: .failure(Error(message: error.localizedDescription)))
                         return
@@ -34,7 +35,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
                         return
                     }
 
-                    self.setNumPages(numPages: pages)
+                    self.setNumPages(numPages: UInt(pages))
 
                     let domainCharacters = characters
                         .compactMap { $0 }
@@ -45,7 +46,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         }
     }
 
-    private func setNumPages(numPages: Int) {
+    private func setNumPages(numPages: UInt) {
         pageSizeMutex.wait()
         self.numPages = numPages
         pageSizeMutex.signal()

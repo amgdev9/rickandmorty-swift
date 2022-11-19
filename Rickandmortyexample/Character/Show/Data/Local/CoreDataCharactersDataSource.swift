@@ -12,7 +12,8 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
             let notificationCenter = NotificationCenter.default
             let coreDataObserver = CoreDataObserver(observer: observer, context: context)
             notificationCenter.addObserver(coreDataObserver, selector: #selector(coreDataObserver.objectDidChange),
-                                           name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
+                                           name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                           object: context)
 
             return Disposables.create {
                 notificationCenter.removeObserver(coreDataObserver)
@@ -20,81 +21,96 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
-    func getCharactersCount() -> Result<Int, Error> {
-        let request = CDCharacterListEntry.fetchRequest()
-        do {
-            let result = try context.count(for: request)
-            return .success(result)
-        } catch {
-            return .failure(Error(message: String(localized: "error/database")))
-        }
-    }
-
-    func getCharacters() -> Result<[CharacterSummary], Error> {
-        return CoreDataCharactersDataSource.handleGetCharacters(context: context)
-    }
-
-    fileprivate static func handleGetCharacters(context: NSManagedObjectContext) -> Result<[CharacterSummary], Error> {
-        let request = CDCharacterListEntry.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        do {
-            let result = try context.fetch(request)
-            let characters = try result.map {
-                if let character = $0.characterInList {
-                    return character.toDomain()
-                } else {
-                    throw Error(message: String(localized: "error/database"))
+    func getCharactersCount() async -> Result<UInt, Error> {
+        return await withCheckedContinuation { continuation in
+            context.perform {
+                let request = CDCharacterListEntry.fetchRequest()
+                do {
+                    let result = try self.context.count(for: request)
+                    return continuation.resume(returning: .success(UInt(result)))
+                } catch {
+                    return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
                 }
             }
-            return .success(characters)
-        } catch {
-            return .failure(Error(message: String(localized: "error/database")))
         }
     }
 
-    func insertCharacters(characters: [CharacterSummary]) -> Result<Void, Error> {
-        let numCharactersResult = getCharactersCount()
+    func getCharacters() async -> Result<[CharacterSummary], Error> {
+        return await CoreDataCharactersDataSource.handleGetCharacters(context: context)
+    }
+
+    fileprivate static func handleGetCharacters(context: NSManagedObjectContext) async -> Result<[CharacterSummary], Error> {
+        return await withCheckedContinuation { continuation in
+            context.perform {
+                let request = CDCharacterListEntry.fetchRequest()
+                request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+                do {
+                    let result = try context.fetch(request)
+                    let characters = try result.map {
+                        if let character = $0.characterInList {
+                            return character.toDomain()
+                        } else {
+                            throw Error(message: String(localized: "error/database"))
+                        }
+                    }
+                    return continuation.resume(returning: .success(characters))
+                } catch {
+                    return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
+                }
+            }
+        }
+    }
+
+    func insertCharacters(characters: [CharacterSummary], numExpectedCharacters: UInt) async -> Result<Void, Error> {
+        let numCharactersResult = await getCharactersCount()
         if let error = numCharactersResult.failure() {
             return .failure(error)
         }
         let numCharacters = numCharactersResult.unwrap()!
+        if(numCharacters != numExpectedCharacters) { return .success(()) }
 
-        _ = characters.enumerated().map { (index, character) in
-            let entry = CDCharacterListEntry(context: context)
-            entry.id = Int32(numCharacters + index)
-            entry.characterInList = CDCharacterSummary.from(character: character, context: context)
-            return entry
-        }
+        return await withCheckedContinuation { continuation in
+            context.perform {
+                characters.enumerated().forEach { (index, character) in
+                    let entry = CDCharacterListEntry(context: self.context)
+                    entry.id = Int32(numCharacters + UInt(index))
+                    entry.characterInList = CDCharacterSummary.from(character: character, context: self.context)
+                }
 
-        do {
-            try context.save()
-            return .success(())
-        } catch {
-            return .failure(Error(message: String(localized: "error/database")))
+                do {
+                    try self.context.save()
+                    return continuation.resume(returning: .success(()))
+                } catch {
+                    return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
+                }
+            }
         }
     }
 
-    func setCharacters(characters: [CharacterSummary]) -> Result<Void, Error> {
-        do {
-            let request = CDCharacterListEntry.fetchRequest()
-            let cachedCharacters = try context.fetch(request)
+    func setCharacters(characters: [CharacterSummary]) async -> Result<Void, Error> {
+        return await withCheckedContinuation { continuation in
+            context.perform {
+                do {
+                    let request = CDCharacterListEntry.fetchRequest()
+                    let cachedCharacters = try self.context.fetch(request)
 
-            cachedCharacters.forEach {
-                context.delete($0)
+                    cachedCharacters.forEach {
+                        self.context.delete($0)
+                    }
+
+                    characters.enumerated().forEach { (index, character) in
+                        let entry = CDCharacterListEntry(context: self.context)
+                        entry.id = Int32(index)
+                        entry.characterInList = CDCharacterSummary.from(character: character, context: self.context)
+                    }
+
+                    try self.context.save()
+                    return continuation.resume(returning: .success(()))
+                } catch {
+                    self.context.rollback()
+                    return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
+                }
             }
-
-            _ = characters.enumerated().map { (index, character) in
-                let entry = CDCharacterListEntry(context: context)
-                entry.id = Int32(index)
-                entry.characterInList = CDCharacterSummary.from(character: character, context: context)
-                return entry
-            }
-
-            try context.save()
-            return .success(())
-        } catch {
-            context.rollback()
-            return .failure(Error(message: String(localized: "error/database")))
         }
     }
 
@@ -110,7 +126,7 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         func shouldSendUpdateFromInserts(inserts: Set<NSManagedObject>) -> Bool {
             for insert in inserts {
                 let uri = insert.objectID.uriRepresentation().absoluteString
-                if(uri.contains("CDCharacterListEntry")) { return true }
+                if uri.contains("CDCharacterListEntry") { return true }
             }
 
             return false
@@ -120,12 +136,14 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
             guard let userInfo = notification.userInfo else { return }
 
             if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>, inserts.count > 0 {
-                if(!shouldSendUpdateFromInserts(inserts: inserts)) { return }
+                if !shouldSendUpdateFromInserts(inserts: inserts) { return }
 
-                let characters = CoreDataCharactersDataSource.handleGetCharacters(context: context)
-                if characters.failure() != nil { return }
+                Task {
+                    let characters = await CoreDataCharactersDataSource.handleGetCharacters(context: context)
+                    if characters.failure() != nil { return }
 
-                observer.onNext(characters.unwrap()!)
+                    observer.onNext(characters.unwrap()!)
+                }
             }
         }
     }

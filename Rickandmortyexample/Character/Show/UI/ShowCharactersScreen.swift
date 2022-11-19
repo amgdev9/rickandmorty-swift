@@ -19,6 +19,7 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
                           onPress: router.gotoCharacterDetail)
                 .padding(.top, 20)
         }.navigationTitle(String(localized: "routes/character"))
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
             }
@@ -65,7 +66,11 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
         var hasFilters: Bool = true
 
         func loadNextPage() async {}
-        func refetch() async {}
+        func refetch() async {
+            do {
+                try await Task.sleep(nanoseconds: 4_000_000_000)
+            } catch {}
+        }
     }
 
     static var previews: some View {

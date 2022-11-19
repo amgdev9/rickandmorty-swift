@@ -69,6 +69,8 @@ class MainContainer: BootstrapComponent {
     }
 
     var coreDataManagedObjectContext: NSManagedObjectContext {
-        return coreDataPersistentContainer.viewContext
+        return shared {
+            coreDataPersistentContainer.newBackgroundContext()
+        }
     }
 }

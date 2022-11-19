@@ -1,5 +1,5 @@
 protocol CharactersRemoteDataSource {
-    var numPages: Int? { get }
-    var pageSize: Int { get }
-    func getCharacters(page: Int) async -> Result<[CharacterSummary], Error>
+    var numPages: UInt? { get }
+    var pageSize: UInt { get }
+    func getCharacters(page: UInt) async -> Result<[CharacterSummary], Error>
 }

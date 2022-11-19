@@ -83,13 +83,14 @@ struct CharacterListPreviews: PreviewProvider {
     }
 
     static var previews: some View {
-        CharacterList<CharacterCardPreviews.Item>(state: .loading, onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
+        CharacterList<CharacterCardPreviews.Item>(state: .loading, onRefetch: delay,
+                                                  onLoadNextPage: delay, onPress: {_ in })
             .previewDisplayName("Loading state")
         CharacterList(state: .data(characters),
                       onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
             .previewDisplayName("With data")
-        CharacterList<CharacterCardPreviews.Item>(state: .error("An error has happened!"), onRefetch: delay, onLoadNextPage: delay,
-                      onPress: {_ in })
+        CharacterList<CharacterCardPreviews.Item>(state: .error("An error has happened!"),
+                                                  onRefetch: delay, onLoadNextPage: delay, onPress: {_ in })
             .previewDisplayName("Error state")
     }
 }
