@@ -20,38 +20,30 @@ struct CharacterList<Item: CharacterCardItem>: View {
             case .error(let message):
                 ErrorState(message: message, loading: loadingRefetch, onPress: handleRefetch)
             case .data(let items):
-                GeometryReader { geometry in
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: 20) {
-                            ForEach(items, id: \.id) { item in
-                                CharacterCard(item: item, action: onPress)
-                                    .frame(maxWidth: geometry.size.width * 0.42)
+                GeometryReader { proxy in
+                    BottomDetectorScrollView {
+                        VStack {
+                            LazyVGrid(columns: columns, spacing: 20) {
+                                ForEach(items, id: \.id) { item in
+                                    CharacterCard(item: item, action: onPress)
+                                        .frame(maxWidth: proxy.size.width * 0.42)
+                                }
                             }
+                            if loadingNextPage { ProgressView().padding(16) }
                         }
-                        if loadingNextPage { ProgressView() }
-                        else {
-                            bottomMarker()
-                                .onAppear(perform: handleLoadNextPage)
-                        }
-                    }.refreshable(action: onRefetch)
+                    } onBottomReached: {
+                        handleLoadNextPage()
+                    }
+                    .refreshable(action: onRefetch)
                 }
             }
         }
     }
 }
 
-// MARK: - Styles
-extension CharacterList {
-    func bottomMarker() -> some View {
-        Color.clear
-            .frame(width: 0, height: 0, alignment: .bottom)
-    }
-}
-
 // MARK: - Logic
 extension CharacterList {
     @Sendable func handleRefetch() {
-        if (loadingRefetch) { return }
         loadingRefetch = true
         Task { @MainActor in
             await onRefetch()
@@ -60,7 +52,7 @@ extension CharacterList {
     }
 
     func handleLoadNextPage() {
-        if (loadingNextPage) { return }
+        if loadingNextPage { return }
         loadingNextPage = true
         Task { @MainActor in
             await onLoadNextPage()

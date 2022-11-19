@@ -21,16 +21,20 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
+    func getCharactersCountSync() -> Result<UInt, Error> {
+        let request = CDCharacterListEntry.fetchRequest()
+        do {
+            let result = try self.context.count(for: request)
+            return .success(UInt(result))
+        } catch {
+            return .failure(Error(message: String(localized: "error/database")))
+        }
+    }
+
     func getCharactersCount() async -> Result<UInt, Error> {
         return await withCheckedContinuation { continuation in
             context.perform {
-                let request = CDCharacterListEntry.fetchRequest()
-                do {
-                    let result = try self.context.count(for: request)
-                    return continuation.resume(returning: .success(UInt(result)))
-                } catch {
-                    return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
-                }
+                continuation.resume(returning: self.getCharactersCountSync())
             }
         }
     }
@@ -39,7 +43,8 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         return await CoreDataCharactersDataSource.handleGetCharacters(context: context)
     }
 
-    fileprivate static func handleGetCharacters(context: NSManagedObjectContext) async -> Result<[CharacterSummary], Error> {
+    fileprivate static func handleGetCharacters(context: NSManagedObjectContext)
+    async -> Result<[CharacterSummary], Error> {
         return await withCheckedContinuation { continuation in
             context.perform {
                 let request = CDCharacterListEntry.fetchRequest()
@@ -62,15 +67,19 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
     }
 
     func insertCharacters(characters: [CharacterSummary], numExpectedCharacters: UInt) async -> Result<Void, Error> {
-        let numCharactersResult = await getCharactersCount()
-        if let error = numCharactersResult.failure() {
-            return .failure(error)
-        }
-        let numCharacters = numCharactersResult.unwrap()!
-        if(numCharacters != numExpectedCharacters) { return .success(()) }
-
         return await withCheckedContinuation { continuation in
             context.perform {
+                let numCharactersResult = self.getCharactersCountSync()
+                if let error = numCharactersResult.failure() {
+                    return continuation.resume(returning: .failure(error))
+                }
+                let numCharacters = numCharactersResult.unwrap()!
+                print("\(numCharacters) \(numExpectedCharacters)")
+                if numCharacters != numExpectedCharacters {
+                    continuation.resume(returning: .success(()))
+                    return
+                }
+
                 characters.enumerated().forEach { (index, character) in
                     let entry = CDCharacterListEntry(context: self.context)
                     entry.id = Int32(numCharacters + UInt(index))

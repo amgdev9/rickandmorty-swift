@@ -19,7 +19,6 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
                 case .failure(let error):
                     self.listState = .error(error.message)
                 case .success(let characters):
-                    print("Got \(characters.count)")
                     self.listState = .data(characters)
                 }
             })
@@ -27,9 +26,6 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
     }
 
     @Sendable func refetch() async {
-        do {
-            try await Task.sleep(nanoseconds: 4_000_000_000)
-        } catch {}
         let result = await charactersRepository.refetch()
         if let error = result.failure() {
             print(error.message)
@@ -37,9 +33,6 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
     }
 
     func loadNextPage() async {
-        do {
-            try await Task.sleep(nanoseconds: 4_000_000_000)
-        } catch {}
         let result = await charactersRepository.loadNextPage()
         if let error = result.failure() {
             print(error.message)

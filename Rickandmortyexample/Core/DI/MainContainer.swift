@@ -34,7 +34,12 @@ class MainContainer: BootstrapComponent {
 
     // MARK: - Repositories
     var charactersRepository: some CharactersRepository {
-        return shared { CharactersRepositoryImpl(remoteDataSource: charactersRemoteDataSource, localDataSource: charactersLocalDataSource) }
+        return shared {
+            CharactersRepositoryImpl(
+                remoteDataSource: charactersRemoteDataSource,
+                localDataSource: charactersLocalDataSource
+            )
+        }
     }
 
     var charactersRemoteDataSource: some CharactersRemoteDataSource {
