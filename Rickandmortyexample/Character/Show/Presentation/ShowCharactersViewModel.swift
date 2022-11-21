@@ -6,6 +6,7 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
 
     @Published var listState: ListState<CharacterSummary> = .loading
     @Published var hasFilters = false
+    @Published var error: Error? = .none
 
     init(charactersRepository: CharactersRepository) {
         self.charactersRepository = charactersRepository
@@ -28,14 +29,14 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
     @Sendable func refetch() async {
         let result = await charactersRepository.refetch()
         if let error = result.failure() {
-            print(error.message)
+            self.error = error
         }
     }
 
     func loadNextPage() async {
         let result = await charactersRepository.loadNextPage()
         if let error = result.failure() {
-            print(error.message)
+            self.error = error
         }
     }
 }
@@ -44,6 +45,7 @@ class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
 protocol ShowCharactersViewModel: ObservableObject {
     var listState: ListState<CharacterSummary> { get }
     var hasFilters: Bool { get }
+    var error: Error? { get set }
 
     func onViewMount()
     @Sendable func refetch() async

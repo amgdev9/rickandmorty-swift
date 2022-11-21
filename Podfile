@@ -9,6 +9,7 @@ target 'Rickandmortyexample' do
   pod 'Apollo'
   pod 'NeedleFoundation'
   pod 'RxSwift'
+  pod 'AlertToast'
 
   target 'RickandmortyexampleTests' do
     inherit! :search_paths

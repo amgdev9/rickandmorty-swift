@@ -59,6 +59,7 @@
 		E59EF7C42921015700628FED /* ShowCharactersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59EF7C32921015700628FED /* ShowCharactersViewModel.swift */; };
 		E5A4E70E29294D3200672FDA /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A4E70D29294D3200672FDA /* ChildSizeReader.swift */; };
 		E5A4E710292950F700672FDA /* BottomDetectorScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A4E70F292950F700672FDA /* BottomDetectorScrollView.swift */; };
+		E5A4E71329295EBC00672FDA /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A4E71229295EBC00672FDA /* ErrorAlert.swift */; };
 		E5A9599F2915A27C00CE6358 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A9599E2915A27C00CE6358 /* TabItem.swift */; };
 		E5AD1D2129253120007B7315 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD1D2029253120007B7315 /* Configuration.swift */; };
 		E5AD1D2329253199007B7315 /* IOSConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD1D2229253199007B7315 /* IOSConfiguration.swift */; };
@@ -156,6 +157,7 @@
 		E59EF7C32921015700628FED /* ShowCharactersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCharactersViewModel.swift; sourceTree = "<group>"; };
 		E5A4E70D29294D3200672FDA /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		E5A4E70F292950F700672FDA /* BottomDetectorScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDetectorScrollView.swift; sourceTree = "<group>"; };
+		E5A4E71229295EBC00672FDA /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		E5A9599E2915A27C00CE6358 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		E5AD1D2029253120007B7315 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E5AD1D2229253199007B7315 /* IOSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSConfiguration.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				E56D16DB2922C96300B55DAF /* ListState.swift */,
 				E54AA6162915A88E0069B3B4 /* Utils */,
 				E54AA6152915A8830069B3B4 /* Components */,
+				E5A4E71129295E0400672FDA /* Modifiers */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -545,6 +548,14 @@
 				E5D5D0A62924257C006771CA /* Remote */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		E5A4E71129295E0400672FDA /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				E5A4E71229295EBC00672FDA /* ErrorAlert.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		E5AE4ADD2927C7D800249894 /* Utils */ = {
@@ -936,6 +947,7 @@
 				E58539B1292123D8008C9FC5 /* NavigationParams.swift in Sources */,
 				E5D5D0A529242552006771CA /* CharactersRepositoryImpl.swift in Sources */,
 				E5D5D0A82924261C006771CA /* CharactersRemoteDataSource.swift in Sources */,
+				E5A4E71329295EBC00672FDA /* ErrorAlert.swift in Sources */,
 				E56D16DC2922C96300B55DAF /* ListState.swift in Sources */,
 				E585399529210949008C9FC5 /* Query.graphql.swift in Sources */,
 				E585399329210949008C9FC5 /* Characters.graphql.swift in Sources */,

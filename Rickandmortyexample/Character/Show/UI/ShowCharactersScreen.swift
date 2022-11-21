@@ -1,4 +1,5 @@
 import SwiftUI
+import AlertToast
 
 struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersViewModel {
     @StateObject private var viewModel: ViewModel
@@ -24,6 +25,7 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
                 FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
             }
             .onAppear(perform: viewModel.onViewMount)
+            .errorAlert($viewModel.error)
     }
 }
 
@@ -54,6 +56,8 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: ShowCharactersViewModel {
+        var error: Error? = .none
+
         func onViewMount() {}
         var listState: ListState<CharacterSummary> = .data(CharacterListPreviews.characters.map {
             CharacterSummary.Builder()

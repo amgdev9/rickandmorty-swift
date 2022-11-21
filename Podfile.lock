@@ -1,4 +1,5 @@
 PODS:
+  - AlertToast (1.3.7)
   - Apollo (1.0.3):
     - Apollo/Core (= 1.0.3)
   - Apollo/Core (1.0.3)
@@ -7,6 +8,7 @@ PODS:
   - SwiftLint (0.49.1)
 
 DEPENDENCIES:
+  - AlertToast
   - Apollo
   - NeedleFoundation
   - RxSwift
@@ -14,17 +16,19 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AlertToast
     - Apollo
     - NeedleFoundation
     - RxSwift
     - SwiftLint
 
 SPEC CHECKSUMS:
+  AlertToast: 8c9d5efb2df6ea728b32b62bce99d876ec3e5393
   Apollo: 936d426f7f081bcc4f66cfe03c983e9c4624cf86
   NeedleFoundation: 36cfaea9ae9eb527a796f5c1df19296c722666b8
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: ceaf0d288f1605b62c73e60c9327a474a505b6e4
+PODFILE CHECKSUM: 44e6c6e2aed0cae7734f192361037f7f4b1cf754
 
 COCOAPODS: 1.11.3
