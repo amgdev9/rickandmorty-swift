@@ -14,14 +14,14 @@ struct CharacterStack: View {
                 mainContainer.showCharactersViewModel
             }
             .navigationDestination(for: FilterCharactersParams.self) { _ in
-                FilterCharactersScreen(router: SwiftUIFilterCharactersScreenRouter(path: $path)) {
-                    mainContainer.filterCharactersViewModel
+                CharacterDetailsScreen(router: SwiftUICharacterDetailsScreenRouter(path: $path)) {
+                    mainContainer.characterDetailsViewModel
                 }
             }
             .sheet(isPresented: $filterSheetPresented) {
-                CharacterDetailsScreen(router: SwiftUICharacterDetailsScreenRouter(path: $path)) {
-                    mainContainer.characterDetailsViewModel
-                }.presentationDetents([.medium, .large])
+                FilterCharactersScreen(router: SwiftUIFilterCharactersScreenRouter(path: $path)) {
+                    mainContainer.filterCharactersViewModel
+                }
             }
         }
     }
@@ -47,6 +47,10 @@ extension CharacterStack {
     }
 
     class SwiftUIFilterCharactersScreenRouter: Router & FilterCharactersScreenRouter {
+        func goSearch() {
+            // TODO
+        }
+
         func goBack() {
             path.wrappedValue.removeLast()
         }

@@ -18,4 +18,6 @@ extension Color {
     static let black20 = Color("Black20")
     static let gray92 = Color("Gray92")
     static let additionalText = Color("AdditionalText")
+    static let gray40 = Color("Gray40")
+    static let subtitleGray = Color("SubtitleGray")
 }

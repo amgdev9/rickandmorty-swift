@@ -8,4 +8,11 @@ struct Character {
         case dead
         case unknown
     }
+
+    enum Gender {
+        case female
+        case male
+        case genderless
+        case unknown
+    }
 }

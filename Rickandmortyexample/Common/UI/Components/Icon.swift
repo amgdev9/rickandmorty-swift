@@ -6,7 +6,10 @@ struct Icon: View {
     static let paths: [Name: String] = [
         .character: "Character",
         .episodes: "Episodes",
-        .location: "Location"
+        .location: "Location",
+        .radioActive: "Radio.Active",
+        .radioInactive: "Radio.Inactive",
+        .chevronRight: "ChevronRight"
     ]
 
     static let extensions: [Variant: String] = [
@@ -50,6 +53,9 @@ extension Icon {
         case character
         case location
         case episodes
+        case chevronRight
+        case radioActive
+        case radioInactive
     }
 
     enum Variant {

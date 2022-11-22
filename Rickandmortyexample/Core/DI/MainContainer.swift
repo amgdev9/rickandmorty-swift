@@ -13,7 +13,7 @@ class MainContainer: BootstrapComponent {
 
     // MARK: - View Models
     var showCharactersViewModel: some ShowCharactersViewModel {
-        return SwiftUIShowCharactersViewModel(charactersRepository: charactersRepository)
+        return ShowCharactersViewModelImpl(charactersRepository: charactersRepository)
     }
 
     var showLocationsViewModel: ShowLocationsViewModel {
@@ -24,8 +24,8 @@ class MainContainer: BootstrapComponent {
         return ShowEpisodesViewModel()
     }
 
-    var filterCharactersViewModel: FilterCharactersViewModel {
-        return FilterCharactersViewModel()
+    var filterCharactersViewModel: some FilterCharactersViewModel {
+        return FilterCharactersViewModelImpl()
     }
 
     var characterDetailsViewModel: CharacterDetailsViewModel {

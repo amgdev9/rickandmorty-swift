@@ -1,11 +1,14 @@
 // Actions
 "actions/filter" = "Filter";
 "action/try-again" = "Try again";
+"action/apply" = "Apply";
+"action/clear" = "Clear";
 
 // Routes
 "routes/character" = "Character";
 "routes/location" = "Location";
 "routes/episodes" = "Episode";
+"routes/filter" = "Filter";
 
 // Enums
 "enums/TabItemID/character" = "Character";
@@ -14,8 +17,20 @@
 "enums/CharacterStatus/alive" = "Alive";
 "enums/CharacterStatus/dead" = "Dead";
 "enums/CharacterStatus/unknown" = "Unknown";
+"enums/CharacterGender/female" = "Female";
+"enums/CharacterGender/male" = "Male";
+"enums/CharacterGender/genderless" = "Genderless";
+"enums/CharacterGender/unknown" = "Unknown";
 
 // Errors
 "error/unknown" = "An unknown error has happened. Try again later";
 "error/database" = "An unexpected error happened with the database. Try again later";
 "error/alert-title" = "An error just happened";
+
+// Sections
+"section/status" = "Status";
+"section/gender" = "Gender";
+"section/name-title" = "Name";
+"section/name-subtitle" = "Give a name";
+"section/species-title" = "Species";
+"section/species-subtitle" = "Select one";

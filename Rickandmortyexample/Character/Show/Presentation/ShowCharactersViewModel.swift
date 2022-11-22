@@ -1,6 +1,6 @@
 import RxSwift
 
-class SwiftUIShowCharactersViewModel: ShowCharactersViewModel {
+class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private let charactersRepository: CharactersRepository
     private let disposeBag = DisposeBag()
 
