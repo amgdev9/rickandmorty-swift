@@ -12,17 +12,10 @@ class CharacterSummary {
     }
 
     class Builder {
-        fileprivate var id: String?
-        fileprivate var imageURL: String?
-        fileprivate var name: String?
-        fileprivate var status: Character.Status?
-
-        init() {
-            id = .none
-            imageURL = .none
-            name = .none
-            status = .none
-        }
+        fileprivate var id: String? = .none
+        fileprivate var imageURL: String? = .none
+        fileprivate var name: String? = .none
+        fileprivate var status: Character.Status? = .none
 
         func set(id: String) -> Self {
             self.id = id

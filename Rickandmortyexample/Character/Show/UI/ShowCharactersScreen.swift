@@ -8,34 +8,21 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
     init(router: ShowCharactersScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
-
-        configureNavBarStyles()
     }
 
     var body: some View {
-        VStack {
+        NavigationContainer(title: String(localized: "routes/character")) {
             CharacterList(state: viewModel.listState,
                           onRefetch: viewModel.refetch,
                           onLoadNextPage: viewModel.loadNextPage,
                           onPress: router.gotoCharacterDetail)
-                .padding(.top, 20)
-        }.navigationTitle(String(localized: "routes/character"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
-            }
-            .onAppear(perform: viewModel.onViewMount)
-            .errorAlert($viewModel.error)
-    }
-}
-
-// MARK: - Styles
-extension ShowCharactersScreen {
-    func configureNavBarStyles() {
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithTransparentBackground()
-        navBarAppearance.backgroundColor = UIColor(Color.gray92)
-        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+            .padding(.top, 20)
+        }
+        .toolbar {
+            FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
+        }
+        .onAppear(perform: viewModel.onViewMount)
+        .errorAlert($viewModel.error)
     }
 }
 
@@ -59,7 +46,7 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
         var error: Error? = .none
 
         func onViewMount() {}
-        var listState: ListState<CharacterSummary> = .data(CharacterListPreviews.characters.map {
+        var listState: NetworkData<[CharacterSummary]> = .data(CharacterListPreviews.characters.map {
             CharacterSummary.Builder()
                 .set(id: $0.id)
                 .set(name: $0.name)

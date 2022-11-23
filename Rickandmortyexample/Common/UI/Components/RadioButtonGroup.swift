@@ -9,15 +9,15 @@ struct RadioButtonGroup<T: LocalizedEnum & Equatable & Hashable>: View {
     var body: some View {
         VStack {
             titleText(title)
-            separator()
+            Separator()
             ForEach(values, id: \.self) { targetValue in
                 RadioButton(value: $value, targetValue: targetValue)
                 if let lastValue = values.last, targetValue != lastValue {
-                    separator()
+                    Separator()
                         .offset(CGSize(width: 56, height: 0))
                 }
             }
-            separator()
+            Separator()
         }
     }
 }
@@ -29,9 +29,6 @@ extension RadioButtonGroup {
             .padding(.bottom, 8.5)
             .padding(.leading, 16)
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    func separator() -> some View {
-        Divider().background(Color.black20)
     }
 }
 

@@ -28,8 +28,8 @@ class MainContainer: BootstrapComponent {
         return FilterCharactersViewModelImpl()
     }
 
-    var characterDetailsViewModel: CharacterDetailsViewModel {
-        return CharacterDetailsViewModel()
+    var characterDetailsViewModel: some CharacterDetailsViewModel {
+        return CharacterDetailsViewModelImpl()
     }
 
     // MARK: - Repositories

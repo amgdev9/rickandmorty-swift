@@ -4,11 +4,8 @@
 "action/apply" = "Apply";
 "action/clear" = "Clear";
 
-// Routes
-"routes/character" = "Character";
-"routes/location" = "Location";
-"routes/episodes" = "Episode";
-"routes/filter" = "Filter";
+// Dateformats
+"dateformat/MMMM dd, yyyy" = "MMMM dd, yyyy";
 
 // Enums
 "enums/TabItemID/character" = "Character";
@@ -26,6 +23,12 @@
 "error/unknown" = "An unknown error has happened. Try again later";
 "error/database" = "An unexpected error happened with the database. Try again later";
 "error/alert-title" = "An error just happened";
+
+// Routes
+"routes/character" = "Character";
+"routes/location" = "Location";
+"routes/episodes" = "Episode";
+"routes/filter" = "Filter";
 
 // Sections
 "section/status" = "Status";

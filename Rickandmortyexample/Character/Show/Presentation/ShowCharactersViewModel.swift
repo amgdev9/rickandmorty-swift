@@ -4,7 +4,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private let charactersRepository: CharactersRepository
     private let disposeBag = DisposeBag()
 
-    @Published var listState: ListState<CharacterSummary> = .loading
+    @Published var listState: NetworkData<[CharacterSummary]> = .loading
     @Published var hasFilters = false
     @Published var error: Error? = .none
 
@@ -43,7 +43,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
 
 // MARK: - Protocol
 protocol ShowCharactersViewModel: ObservableObject {
-    var listState: ListState<CharacterSummary> { get }
+    var listState: NetworkData<[CharacterSummary]> { get }
     var hasFilters: Bool { get }
     var error: Error? { get set }
 

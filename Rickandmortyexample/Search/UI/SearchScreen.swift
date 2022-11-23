@@ -10,35 +10,43 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
     }
 
     var body: some View {
-        VStack {
-            Divider()
-            Color.white
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(String(localized: router.title), variant: .body15, weight: .semibold, color: .basicBlack)
+        NavigationContainer(title: String(localized: router.title), color: .basicWhite) {
+            VStack {
+                Divider()
+                Color.white
             }
         }
-        .searchable(text: $viewModel.searchText)
+        .searchable(text: $viewModel.searchText) {
+            ForEach(viewModel.suggestions, id: \.self) { suggestion in
+                Text(suggestion, variant: .body15).searchCompletion(suggestion)
+            }
+        }
+        .onSubmit(of: .search) {
+            router.goBackWithResult(value: viewModel.searchText)
+        }
     }
 }
 
 // MARK: - Types
 protocol SearchScreenRouter {
-    var title: String.LocalizationValue { get } // TODO
-    func goBackWithResult(value: String)    // TODO
+    var title: String.LocalizationValue { get }
+    var initialValue: String { get }
+    func goBackWithResult(value: String)
 }
 
 // MARK: - Previews
 struct SearchScreenPreviews: PreviewProvider {
     class RouterMock: SearchScreenRouter {
+        var initialValue = ""
         var title: String.LocalizationValue = "section/name-title"
         func goBackWithResult(value: String) {}
     }
 
     class ViewModelMock: SearchViewModel {
         var searchText = ""
+        var suggestions: [String] = ["Rick", "Morty"]
+
+        func search() {}
     }
 
     static var previews: some View {

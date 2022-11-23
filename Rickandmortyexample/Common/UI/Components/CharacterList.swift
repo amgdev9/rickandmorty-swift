@@ -2,39 +2,30 @@ import SwiftUI
 
 // MARK: - View
 struct CharacterList<Item: CharacterCardItem>: View {
-    let state: ListState<Item>
+    let state: NetworkData<[Item]>
     let onRefetch: @Sendable () async -> Void
     let onLoadNextPage: () async -> Void
     let onPress: (_ id: String) -> Void
 
     @State private var loadingNextPage = false
-    @State private var loadingRefetch = false
 
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        VStack {
-            switch state {
-            case .loading:
-                ProgressView()
-            case .error(let message):
-                ErrorState(message: message, loading: loadingRefetch, onPress: handleRefetch)
-            case .data(let items):
-                GeometryReader { proxy in
-                    BottomDetectorScrollView {
-                        VStack {
-                            LazyVGrid(columns: columns, spacing: 20) {
-                                ForEach(items, id: \.id) { item in
-                                    CharacterCard(item: item, action: onPress)
-                                        .frame(maxWidth: proxy.size.width * 0.42)
-                                }
+        NetworkDataContainer(data: state, onRefetch: onRefetch) { items in
+            GeometryReader { proxy in
+                BottomDetectorScrollView {
+                    VStack {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(items, id: \.id) { item in
+                                CharacterCard(item: item, action: onPress)
+                                    .frame(maxWidth: proxy.size.width * 0.42)
                             }
-                            if loadingNextPage { ProgressView().padding(16) }
                         }
-                    } onBottomReached: {
-                        handleLoadNextPage()
+                        if loadingNextPage { ProgressView().padding(16) }
                     }
-                    .refreshable(action: onRefetch)
+                } onBottomReached: {
+                    handleLoadNextPage()
                 }
             }
         }
@@ -43,14 +34,6 @@ struct CharacterList<Item: CharacterCardItem>: View {
 
 // MARK: - Logic
 extension CharacterList {
-    @Sendable func handleRefetch() {
-        loadingRefetch = true
-        Task { @MainActor in
-            await onRefetch()
-            loadingRefetch = false
-        }
-    }
-
     func handleLoadNextPage() {
         if loadingNextPage { return }
         loadingNextPage = true
