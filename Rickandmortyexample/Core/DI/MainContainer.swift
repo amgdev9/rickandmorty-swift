@@ -16,8 +16,8 @@ class MainContainer: BootstrapComponent {
         return ShowCharactersViewModelImpl(charactersRepository: charactersRepository)
     }
 
-    var showLocationsViewModel: ShowLocationsViewModel {
-        return ShowLocationsViewModel()
+    var showLocationsViewModel: some ShowLocationsViewModel {
+        return ShowLocationsViewModelImpl()
     }
 
     var showEpisodesViewModel: ShowEpisodesViewModel {

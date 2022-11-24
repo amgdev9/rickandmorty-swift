@@ -88,6 +88,12 @@
 		E5B958BF291900670023CB3A /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E5B958BD291900670023CB3A /* Makefile */; };
 		E5B958C0291900670023CB3A /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E5B958BD291900670023CB3A /* Makefile */; };
 		E5BAF9FE2924E47B00F1610B /* CharactersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BAF9FD2924E47B00F1610B /* CharactersRepository.swift */; };
+		E5BF19332930018800AE44BE /* CharacterAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19322930018800AE44BE /* CharacterAvatar.swift */; };
+		E5BF19352930020D00AE44BE /* CharacterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19342930020D00AE44BE /* CharacterHeader.swift */; };
+		E5BF1937293003E000AE44BE /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF1936293003E000AE44BE /* CharacterInfo.swift */; };
+		E5BF193A2930061200AE44BE /* LocationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19392930061200AE44BE /* LocationStack.swift */; };
+		E5BF193D2930070200AE44BE /* LocationSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF193C2930070200AE44BE /* LocationSummary.swift */; };
+		E5BF193F293008E100AE44BE /* LocationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF193E293008E100AE44BE /* LocationCard.swift */; };
 		E5C7C2E329190E2300FA74F8 /* Schema.graphqls in Resources */ = {isa = PBXBuildFile; fileRef = E5C7C2DC29190E2300FA74F8 /* Schema.graphqls */; };
 		E5C7C2ED2919225B00FA74F8 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7C2EC2919225B00FA74F8 /* MainContainer.swift */; };
 		E5C7C2EF2919263400FA74F8 /* NeedleGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7C2EE2919263400FA74F8 /* NeedleGenerated.swift */; };
@@ -202,6 +208,12 @@
 		E5B54FAD29154AEC000D4E6C /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		E5B958BD291900670023CB3A /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		E5BAF9FD2924E47B00F1610B /* CharactersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersRepository.swift; sourceTree = "<group>"; };
+		E5BF19322930018800AE44BE /* CharacterAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterAvatar.swift; sourceTree = "<group>"; };
+		E5BF19342930020D00AE44BE /* CharacterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterHeader.swift; sourceTree = "<group>"; };
+		E5BF1936293003E000AE44BE /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
+		E5BF19392930061200AE44BE /* LocationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStack.swift; sourceTree = "<group>"; };
+		E5BF193C2930070200AE44BE /* LocationSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSummary.swift; sourceTree = "<group>"; };
+		E5BF193E293008E100AE44BE /* LocationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCard.swift; sourceTree = "<group>"; };
 		E5C7C2DC29190E2300FA74F8 /* Schema.graphqls */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Schema.graphqls; sourceTree = "<group>"; };
 		E5C7C2EC2919225B00FA74F8 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		E5C7C2EE2919263400FA74F8 /* NeedleGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeedleGenerated.swift; sourceTree = "<group>"; };
@@ -440,6 +452,8 @@
 		E585399A29211423008C9FC5 /* Show */ = {
 			isa = PBXGroup;
 			children = (
+				E5BF193B293006F800AE44BE /* Domain */,
+				E5BF19382930052500AE44BE /* Presentation */,
 				E585399B29211428008C9FC5 /* UI */,
 			);
 			path = Show;
@@ -449,7 +463,7 @@
 			isa = PBXGroup;
 			children = (
 				E58539A4292114B5008C9FC5 /* ShowLocationsScreen.swift */,
-				E585399E29211449008C9FC5 /* ShowLocationsViewModel.swift */,
+				E5BF193E293008E100AE44BE /* LocationCard.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -510,6 +524,9 @@
 			isa = PBXGroup;
 			children = (
 				E58539B729212DB0008C9FC5 /* CharacterDetailsScreen.swift */,
+				E5BF19322930018800AE44BE /* CharacterAvatar.swift */,
+				E5BF19342930020D00AE44BE /* CharacterHeader.swift */,
+				E5BF1936293003E000AE44BE /* CharacterInfo.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -633,6 +650,7 @@
 				E58539B229212C5A008C9FC5 /* Utils */,
 				E59EF7C12920FF9900628FED /* TabsNavigator.swift */,
 				E58539AE29211936008C9FC5 /* CharacterStack.swift */,
+				E5BF19392930061200AE44BE /* LocationStack.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -698,6 +716,22 @@
 			children = (
 			);
 			path = PreviewContent;
+			sourceTree = "<group>";
+		};
+		E5BF19382930052500AE44BE /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E585399E29211449008C9FC5 /* ShowLocationsViewModel.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E5BF193B293006F800AE44BE /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				E5BF193C2930070200AE44BE /* LocationSummary.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		E5C7C2E929191E9B00FA74F8 /* Core */ = {
@@ -1041,6 +1075,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5BF193F293008E100AE44BE /* LocationCard.swift in Sources */,
 				E5A4E70E29294D3200672FDA /* ChildSizeReader.swift in Sources */,
 				E59EF7BF2920FF3300628FED /* ShowCharactersScreen.swift in Sources */,
 				E585399729210949008C9FC5 /* SchemaMetadata.graphql.swift in Sources */,
@@ -1048,6 +1083,7 @@
 				E5381EA5292D4B0F00606A89 /* CharacterDetails.swift in Sources */,
 				E5B54FAE29154AEC000D4E6C /* Icon.swift in Sources */,
 				E5AE4ADF2927C7E500249894 /* ResultExtensions.swift in Sources */,
+				E5BF193A2930061200AE44BE /* LocationStack.swift in Sources */,
 				E5381E94292D323900606A89 /* SectionButton.swift in Sources */,
 				E5B1851929256E7200400366 /* DBSchema.xcdatamodeld in Sources */,
 				E594DD0D292143D7002F7038 /* FilterButton.swift in Sources */,
@@ -1069,6 +1105,7 @@
 				E5D5D0A529242552006771CA /* CharactersRepositoryImpl.swift in Sources */,
 				E5D5D0A82924261C006771CA /* CharactersRemoteDataSource.swift in Sources */,
 				E5381EA0292D411900606A89 /* SearchViewModel.swift in Sources */,
+				E5BF193D2930070200AE44BE /* LocationSummary.swift in Sources */,
 				E5A4E71329295EBC00672FDA /* ErrorAlert.swift in Sources */,
 				E56D16DC2922C96300B55DAF /* NetworkData.swift in Sources */,
 				E5381EA2292D4ABD00606A89 /* EpisodeSummary.swift in Sources */,
@@ -1097,6 +1134,7 @@
 				E5D5D0A0292421C5006771CA /* CharacterSummary.swift in Sources */,
 				E594DD1229214AE2002F7038 /* Character.swift in Sources */,
 				E59B488C2913EE5500AB3085 /* Main.swift in Sources */,
+				E5BF19332930018800AE44BE /* CharacterAvatar.swift in Sources */,
 				E5A1ED01292E365500A8B13F /* NetworkDataContainer.swift in Sources */,
 				E5B096A5292C0A33005B283D /* TextButton.swift in Sources */,
 				E5B096A1292C06DB005B283D /* ActionButton.swift in Sources */,
@@ -1108,8 +1146,10 @@
 				E58539BA29212DD6008C9FC5 /* CharacterDetailsViewModel.swift in Sources */,
 				E56D16DE2922CA0D00B55DAF /* ErrorState.swift in Sources */,
 				E594DD15292150C0002F7038 /* LocalizedEnums.swift in Sources */,
+				E5BF1937293003E000AE44BE /* CharacterInfo.swift in Sources */,
 				E5D5D0AD2924295B006771CA /* Error.swift in Sources */,
 				E585399629210949008C9FC5 /* SchemaConfiguration.swift in Sources */,
+				E5BF19352930020D00AE44BE /* CharacterHeader.swift in Sources */,
 				E5945624292D1C280005E4C9 /* RadioButtonGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

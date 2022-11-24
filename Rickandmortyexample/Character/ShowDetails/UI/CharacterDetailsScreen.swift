@@ -13,9 +13,19 @@ struct CharacterDetailsScreen<ViewModel>: View where ViewModel: CharacterDetails
         NavigationContainer(title: navigationTitle) {
             NetworkDataContainer(data: viewModel.character, onRefetch: viewModel.refetch) { character in
                 ScrollView {
-                    // TODO
-                    Image("CharacterBackground")
-                    Text(character.name, variant: .body15)
+                    CharacterHeader(character: character)
+                    VStack(alignment: .leading, spacing: 0) {
+                        CharacterInfo(character: character, onPressLocation: router.gotoLocation)
+                        Text(String(localized: "section/character-episodes"), variant: .body20, weight: .bold, color: .graybaseGray1)
+                            .padding(.top, 39.5)
+                            .padding(.bottom, 17)
+                            .padding(.leading, 16)
+                        Separator()
+                        EpisodeList(episodes: character.episodes) { id in
+                            router.gotoEpisode(id: id)
+                        }
+                        Separator()
+                    }
                 }
             }
         }
@@ -35,6 +45,8 @@ protocol CharacterDetailsScreenRouter {
     func gotoLocation(id: String)
     func gotoEpisode(id: String)
 }
+
+extension CharacterDetails: CharacterHeaderData & CharacterInfoData {}
 
 // MARK: - Previews
 struct CharacterDetailsScreenPreviews: PreviewProvider {

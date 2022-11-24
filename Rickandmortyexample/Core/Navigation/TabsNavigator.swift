@@ -9,9 +9,7 @@ struct TabsNavigator: View {
         case .character:
             return AnyView(CharacterStack(mainContainer: mainContainer))
         case .location:
-            return AnyView(ShowLocationsScreen {
-                mainContainer.showLocationsViewModel
-            })
+            return AnyView(LocationStack(mainContainer: mainContainer))
         case .episodes:
             return AnyView(ShowEpisodesScreen {
                 mainContainer.showEpisodesViewModel

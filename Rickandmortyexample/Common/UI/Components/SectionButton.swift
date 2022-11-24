@@ -39,7 +39,8 @@ struct SectionButton: View {
 extension SectionButton {
     func container<Content: View>(showBorder: Bool, @ViewBuilder content: @escaping () -> Content) -> some View {
         HStack(spacing: 16, content: content)
-            .padding([.top, .bottom], 8.5)
+            .padding(.top, 8.5)
+            .padding(.bottom, 10.5)
             .padding(.leading, containerPaddingLeading())
             .frame(maxWidth: .infinity, alignment: .leading)
             .border(width: showBorder ? 1 : 0, edges: [.top, .bottom], color: .black20)

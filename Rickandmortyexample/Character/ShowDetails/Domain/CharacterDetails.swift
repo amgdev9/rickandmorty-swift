@@ -34,7 +34,7 @@ class CharacterDetails {
         fileprivate var origin: CharacterLocation? = .none
         fileprivate var location: CharacterLocation? = .none
         fileprivate var episodes: [EpisodeSummary]? = .none
-        
+
         func set(id: String) -> Self {
             self.id = id
             return self

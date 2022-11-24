@@ -4,6 +4,12 @@
 "action/apply" = "Apply";
 "action/clear" = "Clear";
 
+// Cards
+"card/gender" = "Gender";
+"card/origin" = "Origin";
+"card/type" = "Type";
+"card/location" = "Location";
+
 // Dateformats
 "dateformat/MMMM dd, yyyy" = "MMMM dd, yyyy";
 
@@ -24,6 +30,9 @@
 "error/database" = "An unexpected error happened with the database. Try again later";
 "error/alert-title" = "An error just happened";
 
+// Misc
+"misc/unknown" = "Unknown";
+
 // Routes
 "routes/character" = "Character";
 "routes/location" = "Location";
@@ -37,3 +46,5 @@
 "section/name-subtitle" = "Give a name";
 "section/species-title" = "Species";
 "section/species-subtitle" = "Select one";
+"section/character-info" = "Informations";
+"section/character-episodes" = "Episodes";
