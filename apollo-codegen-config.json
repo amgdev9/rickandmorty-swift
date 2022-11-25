@@ -11,7 +11,7 @@
               "outputFormat": "SDL"
           }
       },
-      "outputPath": "./Rickandmortyexample/Common/Remote/Schema.graphqls"
+      "outputPath": "./Rickandmortyexample/Common/Data/Remote/Schema.graphqls"
   },
   "options" : {
     "cocoapodsCompatibleImportStatements" : true
@@ -30,7 +30,7 @@
       }
     },
     "schemaTypes" : {
-      "path" : "./Rickandmortyexample/Common/Remote/Generated",
+      "path" : "./Rickandmortyexample/Common/Data/Remote/Generated",
       "moduleType" : {
         "other" : {
         }

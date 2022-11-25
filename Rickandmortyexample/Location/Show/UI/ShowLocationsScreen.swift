@@ -10,9 +10,17 @@ struct ShowLocationsScreen<ViewModel>: View where ViewModel: ShowLocationsViewMo
     }
 
     var body: some View {
-        VStack {
-            Text("Locations list", variant: .body15)
+        NavigationContainer(title: String(localized: "routes/location")) {
+            LocationList(data: viewModel.listState,
+                          onRefetch: viewModel.refetch,
+                          onLoadNextPage: viewModel.loadNextPage,
+                          onPress: router.gotoLocationDetail)
         }
+        .toolbar {
+            FilterButton(showDot: viewModel.hasFilters, action: router.gotoLocationFilters)
+        }
+        .onAppear(perform: viewModel.onViewMount)
+        .errorAlert($viewModel.error)
     }
 }
 

@@ -20,8 +20,8 @@ class MainContainer: BootstrapComponent {
         return ShowLocationsViewModelImpl()
     }
 
-    var showEpisodesViewModel: ShowEpisodesViewModel {
-        return ShowEpisodesViewModel()
+    var showEpisodesViewModel: some ShowEpisodesViewModel {
+        return ShowEpisodesViewModelImpl()
     }
 
     var filterCharactersViewModel: some FilterCharactersViewModel {

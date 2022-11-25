@@ -12,7 +12,7 @@ struct LocationCard: View {
                 Text(location.type, variant: .caption11, color: .subtitleGray)
                 Text(location.name, variant: .body17, weight: .semibold, color: .basicBlack)
                     .multilineTextAlignment(.leading)
-                    .frame(height: 44, alignment: .top)
+                    .frame(maxWidth: .infinity, minHeight: 44, maxHeight: 44, alignment: .topLeading)
             }
             .padding(12)
             .cornerRadius(8)
@@ -34,5 +34,6 @@ struct LocationCardPreviews: PreviewProvider {
 
     static var previews: some View {
         LocationCard(location: location, onPress: { _ in })
+            .frame(width: 160)
     }
 }

@@ -14,12 +14,7 @@ struct CharacterHeader<Character: CharacterHeaderData>: View {
             }
             VStack(spacing: 0) {
                 CharacterAvatar(url: character.imageURL)
-                Text(character.status.localized(), variant: .caption11, color: .subtitleGray)
-                    .padding(.top, 20)
-                Text(character.name, variant: .h2, color: .basicBlack)
-                Text(character.species, variant: .tagline13, color: .graybaseGray1)
-                    .textCase(.uppercase)
-                    .padding(.bottom, 20)
+                Header(title: character.name, subtitle: character.species, info: character.status.localized())
             }
         }
     }

@@ -12,11 +12,11 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
 
     var body: some View {
         NavigationContainer(title: String(localized: "routes/character")) {
-            CharacterList(state: viewModel.listState,
-                          onRefetch: viewModel.refetch,
-                          onLoadNextPage: viewModel.loadNextPage,
-                          onPress: router.gotoCharacterDetail)
-            .padding(.top, 20)
+            PaginatedList(data: viewModel.listState, onRefetch: viewModel.refetch, onLoadNextPage: viewModel.loadNextPage) { characters in
+                CharacterList(characters: characters,
+                              onPress: router.gotoCharacterDetail)
+                .padding(.top, 20)
+            }
         }
         .toolbar {
             FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
@@ -58,9 +58,7 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
 
         func loadNextPage() async {}
         func refetch() async {
-            do {
-                try await Task.sleep(nanoseconds: 4_000_000_000)
-            } catch {}
+            await ShowCharactersScreenPreviews.delay()
         }
     }
 

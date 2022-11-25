@@ -1,14 +1,11 @@
 import SwiftUI
 
 // MARK: - View
-struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharactersViewModel {
+struct FilterLocationsScreen<ViewModel>: View where ViewModel: FilterLocationsViewModel {
     @StateObject private var viewModel: ViewModel
-    let router: FilterCharactersScreenRouter
+    let router: FilterLocationsScreenRouter
 
-    private let statusList: [Character.Status] = [.alive, .dead, .unknown]
-    private let genderList: [Character.Gender] = [.female, .male, .genderless, .unknown]
-
-    init(router: FilterCharactersScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
+    init(router: FilterLocationsScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
     }
@@ -27,20 +24,17 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
                         router.goSearch()
                     }.padding(.bottom, 19)
                 SectionButton(
-                    title: String(localized: "section/species-title"),
+                    title: String(localized: "section/type"),
                     subtitle: String(localized: "action/select-one"),
-                    active: !viewModel.filter.species.isEmpty) {
+                    active: !viewModel.filter.type.isEmpty) {
                         router.goSearch()
-                    }.padding(.bottom, 19.5)
-                RadioButtonGroup(
-                    title: String(localized: "section/status"),
-                    values: statusList,
-                    value: $viewModel.filter.status)
-                .padding(.bottom, 29.5)
-                RadioButtonGroup(
-                    title: String(localized: "section/gender"),
-                    values: genderList,
-                    value: $viewModel.filter.gender)
+                    }.padding(.bottom, 19)
+                SectionButton(
+                    title: String(localized: "section/dimension"),
+                    subtitle: String(localized: "action/select-one"),
+                    active: !viewModel.filter.dimension.isEmpty) {
+                        router.goSearch()
+                    }.padding(.bottom, 19)
             }
         }
         .presentationDetents([.fraction(1), .large])
@@ -48,20 +42,20 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
 }
 
 // MARK: - Types
-protocol FilterCharactersScreenRouter {
+protocol FilterLocationsScreenRouter {
     func goBack()
     func goSearch() // TODO
 }
 
 // MARK: - Previews
-struct FilterCharactersScreenPreviews: PreviewProvider {
-    class RouterMock: FilterCharactersScreenRouter {
+struct FilterLocationsScreenPreviews: PreviewProvider {
+    class RouterMock: FilterLocationsScreenRouter {
         func goSearch() {}
         func goBack() {}
     }
 
-    class ViewModelMock: FilterCharactersViewModel {
-        var filter = CharacterFilter()
+    class ViewModelMock: FilterLocationsViewModel {
+        var filter = LocationFilter()
 
         func onPressApply(goBack: () -> Void) {}
         func onPressClear() {}
@@ -70,7 +64,7 @@ struct FilterCharactersScreenPreviews: PreviewProvider {
     static var previews: some View {
         NavigationStack {}
         .sheet(isPresented: .init(get: { true }, set: {_ in })) {
-            FilterCharactersScreen(router: RouterMock()) {
+            FilterLocationsScreen(router: RouterMock()) {
                 ViewModelMock()
             }
         }

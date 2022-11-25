@@ -3,6 +3,7 @@
 "action/try-again" = "Try again";
 "action/apply" = "Apply";
 "action/clear" = "Clear";
+"action/select-one" = "Select one";
 
 // Cards
 "card/gender" = "Gender";
@@ -45,6 +46,9 @@
 "section/name-title" = "Name";
 "section/name-subtitle" = "Give a name";
 "section/species-title" = "Species";
-"section/species-subtitle" = "Select one";
 "section/character-info" = "Informations";
 "section/character-episodes" = "Episodes";
+"section/type" = "Type";
+"section/dimension" = "Dimension";
+"section/residents" = "Residents";
+"section/season" = "Season %@";

@@ -3,13 +3,16 @@ import SwiftUI
 // MARK: - View
 struct FilterHeader: View {
     let onPressApply: () -> Void
-    let onPressClear: (() -> Void)?
+    let onPressClear: () -> Void
+    let clearDisabled: Bool
 
     var body: some View {
         container {
-            if let onPressClear = onPressClear {
+            if !clearDisabled {
                 TextButton(title: String(localized: "action/clear"), onPress: onPressClear)
                     .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Spacer().frame(maxWidth: .infinity)
             }
             title(String(localized: "routes/filter"))
             ActionButton(title: String(localized: "action/apply"), onPress: onPressApply)
@@ -35,6 +38,9 @@ extension FilterHeader {
 // MARK: - Previews
 struct FilterHeaderPreviews: PreviewProvider {
     static var previews: some View {
-        FilterHeader(onPressApply: {}, onPressClear: {})
+        FilterHeader(onPressApply: {}, onPressClear: {}, clearDisabled: false)
+            .previewDisplayName("Basic")
+        FilterHeader(onPressApply: {}, onPressClear: {}, clearDisabled: true)
+            .previewDisplayName("Without clear")
     }
 }

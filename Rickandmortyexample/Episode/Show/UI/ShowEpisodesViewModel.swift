@@ -1,3 +1,0 @@
-class ShowEpisodesViewModel: ObservableObject {
-
-}

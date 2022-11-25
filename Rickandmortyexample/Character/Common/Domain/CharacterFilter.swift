@@ -10,4 +10,8 @@ class CharacterFilter {
         self.status = status
         self.gender = gender
     }
+
+    var isEmpty: Bool {
+        return name.isEmpty && species.isEmpty && status == nil && gender == nil
+    }
 }
