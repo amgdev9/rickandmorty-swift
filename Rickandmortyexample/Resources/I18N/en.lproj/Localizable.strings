@@ -52,3 +52,5 @@
 "section/dimension" = "Dimension";
 "section/residents" = "Residents";
 "section/season" = "Season %@";
+"section/episode" = "Episode";
+"section/characters" = "Characters";
