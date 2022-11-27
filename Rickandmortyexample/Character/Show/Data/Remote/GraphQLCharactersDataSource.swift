@@ -1,9 +1,6 @@
 import Apollo
 
 class GraphQLCharactersDataSource: CharactersRemoteDataSource {
-
-    let pageSizeMutex = DispatchSemaphore(value: 1)
-    var numPages: UInt? = .none
     var pageSize: UInt = 20
 
     let apolloClient: ApolloClient
@@ -12,60 +9,72 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getCharacters(page: UInt) async -> Result<[CharacterSummary], Error> {
+    func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<CharactersResponse, Error> {
         var cancellable: Cancellable? = .none
         return await withTaskCancellationHandler { [cancellable] in
             cancellable?.cancel()
         } operation: {
             return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(query: CharactersQuery(page: Int(page))) { result in
-                    if let error = result.failure() {
-                        continuation.resume(returning: .failure(Error(message: error.localizedDescription)))
-                        return
+                cancellable = apolloClient.fetch(
+                    query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter))
+                ) { result in
+                    guard let result = result.unwrap() else {
+                        return continuation.resume(returning: .failure(Error(message: result.failure()!.localizedDescription)))
                     }
 
-                    let characters = result.unwrap()!.data?.characters?.results
-                    guard let characters = characters else {
-                        continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                        return
+                    guard let characters = result.data?.characters?.results else {
+                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
                     }
 
-                    guard let pages = result.unwrap()!.data?.characters?.info?.pages else {
-                        continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                        return
+                    guard let pages = result.data?.characters?.info?.pages else {
+                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
                     }
-
-                    self.setNumPages(numPages: UInt(pages))
 
                     let domainCharacters = characters
                         .compactMap { $0 }
-                        .map { $0.toDomain() }
-                    continuation.resume(returning: .success(domainCharacters))
+                        .map { $0.fragments.characterSummaryFragment.toDomain() }
+                    continuation.resume(returning:
+                            .success(CharactersResponse(numPages: UInt32(pages), characters: domainCharacters))
+                    )
                 }
             }
         }
     }
-
-    private func setNumPages(numPages: UInt) {
-        pageSizeMutex.wait()
-        self.numPages = numPages
-        pageSizeMutex.signal()
-    }
 }
 
-extension CharactersQuery.Data.Characters.Result {
-    private static let toDomainStatus: [String: Character.Status] = [
-        "Alive": .alive,
-        "Dead": .dead,
-        "unknown": .unknown
-    ]
+extension FilterCharacter {
+    static func mapGender(_ gender: Character.Gender?) -> GraphQLNullable<String> {
+        guard let gender = gender else { return .none }
 
-    func toDomain() -> CharacterSummary {
-        return CharacterSummary.Builder()
-            .set(id: id ?? "")
-            .set(name: name ?? "")
-            .set(imageURL: image ?? "")
-            .set(status: CharactersQuery.Data.Characters.Result.toDomainStatus[status ?? "unknown"] ?? .unknown)
-            .build()
+        switch gender {
+        case .male: return "Male"
+        case .female: return "Female"
+        case .genderless: return "Genderless"
+        case .unknown: return "unknown"
+        }
+    }
+
+    static func mapStatus(_ status: Character.Status?) -> GraphQLNullable<String> {
+        guard let status = status else { return .none }
+
+        switch status {
+        case .alive: return "Alive"
+        case .dead: return "Dead"
+        case .unknown: return "unknown"
+        }
+    }
+
+    static func mapString(_ value: String) -> GraphQLNullable<String> {
+        if value.isEmpty { return .none }
+        return .some(value)
+    }
+
+    static func from(filter: CharacterFilter) -> Self {
+        return FilterCharacter(
+            name: mapString(filter.name),
+            status: mapStatus(filter.status),
+            species: mapString(filter.species),
+            gender: mapGender(filter.gender)
+        )
     }
 }

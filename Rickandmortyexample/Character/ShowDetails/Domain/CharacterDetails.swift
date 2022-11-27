@@ -6,8 +6,8 @@ class CharacterDetails {
     let gender: Character.Gender
     let species: String
     let type: String?
-    let origin: CharacterLocation
-    let location: CharacterLocation
+    let origin: CharacterLocation?
+    let location: CharacterLocation?
     let episodes: [EpisodeSummary]
 
     private init(builder: Builder) {
@@ -18,8 +18,8 @@ class CharacterDetails {
         self.gender = builder.gender!
         self.species = builder.species!
         self.type = builder.type
-        self.origin = builder.origin!
-        self.location = builder.location!
+        self.origin = builder.origin
+        self.location = builder.location
         self.episodes = builder.episodes!
     }
 
@@ -70,12 +70,12 @@ class CharacterDetails {
             return self
         }
 
-        func set(origin: CharacterLocation) -> Self {
+        func set(origin: CharacterLocation?) -> Self {
             self.origin = origin
             return self
         }
 
-        func set(location: CharacterLocation) -> Self {
+        func set(location: CharacterLocation?) -> Self {
             self.location = origin
             return self
         }

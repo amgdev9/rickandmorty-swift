@@ -1,0 +1,22 @@
+query CharacterDetail($id: ID!) {
+  character(id: $id) {
+	...CharacterSummaryFragment
+	gender
+	species
+	type
+	origin {
+	  ...CharacterLocationFragment
+	}
+	location {
+	  ...CharacterLocationFragment
+	}
+	episode {
+	  ...EpisodeSummaryFragment
+	}
+  }
+}
+
+fragment CharacterLocationFragment on Location {
+	id
+	name
+}

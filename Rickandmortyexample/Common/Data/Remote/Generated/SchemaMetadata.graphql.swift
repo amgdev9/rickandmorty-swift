@@ -23,8 +23,10 @@ public enum SchemaMetadata: Apollo.SchemaMetadata {
   public static func objectType(forTypename typename: String) -> Object? {
     switch typename {
     case "Query": return Rickandmortyexample.Objects.Query
-    case "Characters": return Rickandmortyexample.Objects.Characters
     case "Character": return Rickandmortyexample.Objects.Character
+    case "Location": return Rickandmortyexample.Objects.Location
+    case "Episode": return Rickandmortyexample.Objects.Episode
+    case "Characters": return Rickandmortyexample.Objects.Characters
     case "Info": return Rickandmortyexample.Objects.Info
     default: return nil
     }

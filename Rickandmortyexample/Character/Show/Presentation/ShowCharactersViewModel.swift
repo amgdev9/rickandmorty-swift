@@ -20,23 +20,39 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
                 case .failure(let error):
                     self.listState = .error(error.message)
                 case .success(let characters):
+                    print("Got \(characters.count)")
                     self.listState = .data(characters)
                 }
             })
             .disposed(by: disposeBag)
+
+        Task {
+            let result = await charactersRepository.fetch()
+            if let error = result.failure() {
+                await MainActor.run {
+                    self.listState = .error(error.message)
+                }
+            }
+        }
     }
 
     @Sendable func refetch() async {
         let result = await charactersRepository.refetch()
         if let error = result.failure() {
-            self.error = error
+            await MainActor.run {
+                if case .data = listState {
+                    self.error = error
+                }
+            }
         }
     }
 
     func loadNextPage() async {
         let result = await charactersRepository.loadNextPage()
         if let error = result.failure() {
-            self.error = error
+            await MainActor.run {
+                self.error = error
+            }
         }
     }
 }

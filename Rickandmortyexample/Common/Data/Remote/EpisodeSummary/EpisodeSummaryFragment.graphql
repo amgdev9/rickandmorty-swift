@@ -1,0 +1,5 @@
+fragment EpisodeSummaryFragment on Episode {
+	id
+	name
+	air_date
+}

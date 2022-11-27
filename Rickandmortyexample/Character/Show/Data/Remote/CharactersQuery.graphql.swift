@@ -9,15 +9,12 @@ public class CharactersQuery: GraphQLQuery {
   public static let document: DocumentType = .notPersisted(
     definition: .init(
       """
-      query Characters($page: Int!) {
-        characters(page: $page) {
+      query Characters($page: Int!, $filter: FilterCharacter!) {
+        characters(page: $page, filter: $filter) {
           __typename
           results {
             __typename
-            id
-            name
-            image
-            status
+            ...CharacterSummaryFragment
           }
           info {
             __typename
@@ -25,16 +22,25 @@ public class CharactersQuery: GraphQLQuery {
           }
         }
       }
-      """
+      """,
+      fragments: [CharacterSummaryFragment.self]
     ))
 
   public var page: Int
+  public var filter: Rickandmortyexample.FilterCharacter
 
-  public init(page: Int) {
+  public init(
+    page: Int,
+    filter: Rickandmortyexample.FilterCharacter
+  ) {
     self.page = page
+    self.filter = filter
   }
 
-  public var __variables: Variables? { ["page": page] }
+  public var __variables: Variables? { [
+    "page": page,
+    "filter": filter
+  ] }
 
   public struct Data: Rickandmortyexample.SelectionSet {
     public let __data: DataDict
@@ -42,7 +48,10 @@ public class CharactersQuery: GraphQLQuery {
 
     public static var __parentType: ParentType { Rickandmortyexample.Objects.Query }
     public static var __selections: [Selection] { [
-      .field("characters", Characters?.self, arguments: ["page": .variable("page")]),
+      .field("characters", Characters?.self, arguments: [
+        "page": .variable("page"),
+        "filter": .variable("filter")
+      ]),
     ] }
 
     /// Get the list of all characters
@@ -73,10 +82,7 @@ public class CharactersQuery: GraphQLQuery {
 
         public static var __parentType: ParentType { Rickandmortyexample.Objects.Character }
         public static var __selections: [Selection] { [
-          .field("id", Rickandmortyexample.ID?.self),
-          .field("name", String?.self),
-          .field("image", String?.self),
-          .field("status", String?.self),
+          .fragment(CharacterSummaryFragment.self),
         ] }
 
         /// The id of the character.
@@ -88,6 +94,13 @@ public class CharactersQuery: GraphQLQuery {
         public var image: String? { __data["image"] }
         /// The status of the character ('Alive', 'Dead' or 'unknown').
         public var status: String? { __data["status"] }
+
+        public struct Fragments: FragmentContainer {
+          public let __data: DataDict
+          public init(data: DataDict) { __data = data }
+
+          public var characterSummaryFragment: CharacterSummaryFragment { _toFragment() }
+        }
       }
 
       /// Characters.Info

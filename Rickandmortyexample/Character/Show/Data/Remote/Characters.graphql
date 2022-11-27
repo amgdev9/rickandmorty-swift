@@ -1,10 +1,7 @@
-query Characters($page: Int!) {
-  characters(page: $page) {
+query Characters($page: Int!, $filter: FilterCharacter!) {
+  characters(page: $page, filter: $filter) {
 	results {
-	  id
-	  name
-	  image
-	  status
+	  ...CharacterSummaryFragment
 	}
 	info {
 	  pages

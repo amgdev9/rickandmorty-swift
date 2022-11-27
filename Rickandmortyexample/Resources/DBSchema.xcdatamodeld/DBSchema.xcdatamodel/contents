@@ -23,8 +23,14 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="gender"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
                 <constraint value="name"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
                 <constraint value="species"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
                 <constraint value="status"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
@@ -36,7 +42,7 @@
         <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="detail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCharacterDetail" inverseName="summary" inverseEntity="CDCharacterDetail"/>
         <relationship name="episodesIn" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="CDEpisodeSummary" inverseName="characters" inverseEntity="CDEpisodeSummary"/>
-        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDPaginatedList" inverseName="characters" inverseEntity="CDPaginatedList"/>
+        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPaginatedList" inverseName="characters" inverseEntity="CDPaginatedList"/>
         <relationship name="residentIn" optional="YES" maxCount="1" deletionRule="Deny" destinationEntity="CDLocationDetail" inverseName="residents" inverseEntity="CDLocationDetail"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -61,7 +67,7 @@
         <attribute name="name" attributeType="String"/>
         <relationship name="characters" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDCharacterSummary" inverseName="episodesIn" inverseEntity="CDCharacterSummary"/>
         <relationship name="charactersDetail" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="CDCharacterDetail" inverseName="episodes" inverseEntity="CDCharacterDetail"/>
-        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDPaginatedList" inverseName="episodes" inverseEntity="CDPaginatedList"/>
+        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPaginatedList" inverseName="episodes" inverseEntity="CDPaginatedList"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -98,7 +104,7 @@
         <relationship name="detail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDLocationDetail" inverseName="summary" inverseEntity="CDLocationDetail"/>
         <relationship name="locationOf" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="CDCharacterDetail" inverseName="location" inverseEntity="CDCharacterDetail"/>
         <relationship name="originOf" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="CDCharacterDetail" inverseName="origin" inverseEntity="CDCharacterDetail"/>
-        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDPaginatedList" inverseName="locations" inverseEntity="CDPaginatedList"/>
+        <relationship name="paginatedList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPaginatedList" inverseName="locations" inverseEntity="CDPaginatedList"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -107,11 +113,11 @@
     </entity>
     <entity name="CDPaginatedList" representedClassName="CDPaginatedList" syncable="YES" codeGenerationType="class">
         <attribute name="numPages" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="characterFilter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCharacterFilter" inverseName="paginatedList" inverseEntity="CDCharacterFilter"/>
+        <relationship name="characterFilter" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCharacterFilter" inverseName="paginatedList" inverseEntity="CDCharacterFilter"/>
         <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDCharacterSummary" inverseName="paginatedList" inverseEntity="CDCharacterSummary"/>
-        <relationship name="episodeFilter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEpisodeFilter" inverseName="paginatedList" inverseEntity="CDEpisodeFilter"/>
+        <relationship name="episodeFilter" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDEpisodeFilter" inverseName="paginatedList" inverseEntity="CDEpisodeFilter"/>
         <relationship name="episodes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDEpisodeSummary" inverseName="paginatedList" inverseEntity="CDEpisodeSummary"/>
-        <relationship name="locationFilter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDLocationFilter" inverseName="paginatedList" inverseEntity="CDLocationFilter"/>
+        <relationship name="locationFilter" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDLocationFilter" inverseName="paginatedList" inverseEntity="CDLocationFilter"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDLocationSummary" inverseName="paginatedList" inverseEntity="CDLocationSummary"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

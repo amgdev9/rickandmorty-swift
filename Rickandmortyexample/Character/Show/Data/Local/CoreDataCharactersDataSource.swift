@@ -21,11 +21,33 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
-    func getCharactersCountSync() -> Result<UInt, Error> {
-        let request = CDCharacterListEntry.fetchRequest()
+    fileprivate static func getFilter(context: NSManagedObjectContext) -> CDCharacterFilter {
+        let filter = CDCharacterFilter(context: context)
+        filter.name = ""
+        filter.species = ""
+        return filter
+    }
+
+    func getNumPages() async -> Result<UInt32?, Error> {
+        let request = CDPaginatedList.fetchRequest()
+        request.predicate = NSPredicate(format: "characterFilter == %@", CoreDataCharactersDataSource.getFilter(context: context)) // TODO Filter
         do {
-            let result = try self.context.count(for: request)
-            return .success(UInt(result))
+            let result = try self.context.fetch(request)
+            if result.count == 0 { return .success(.none) }
+
+            return .success(UInt32(result[0].numPages))
+        } catch {
+            return .failure(Error(message: String(localized: "error/database")))
+        }
+    }
+
+    func getCharactersCountSync() -> Result<UInt, Error> {
+        let request = CDPaginatedList.fetchRequest()
+        request.predicate = NSPredicate(format: "characterFilter == %@", CoreDataCharactersDataSource.getFilter(context: context)) // TODO Filter
+        do {
+            let result = try self.context.fetch(request)
+            if result.count == 0 { return .success(0) }
+            return .success(UInt(result[0].characters?.count ?? 0))
         } catch {
             return .failure(Error(message: String(localized: "error/database")))
         }
@@ -47,18 +69,18 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
     async -> Result<[CharacterSummary], Error> {
         return await withCheckedContinuation { continuation in
             context.perform {
-                let request = CDCharacterListEntry.fetchRequest()
-                request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+                let request = CDPaginatedList.fetchRequest()
+                //request.predicate = NSPredicate(format: "characterFilter == %@", getFilter(context: context)) // TODO Filter
                 do {
                     let result = try context.fetch(request)
-                    let characters = try result.map {
-                        if let character = $0.characterInList {
-                            return character.toDomain()
-                        } else {
-                            throw Error(message: String(localized: "error/database"))
-                        }
+                    if result.count == 0 { return continuation.resume(returning: .success([])) }
+                    let characters = result[0].characters?.array as? [CDCharacterSummary]
+                    guard let characters = characters else {
+                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
                     }
-                    return continuation.resume(returning: .success(characters))
+
+                    let domainCharacters = characters.map { $0.toDomain() }
+                    return continuation.resume(returning: .success(domainCharacters))
                 } catch {
                     return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
                 }
@@ -66,27 +88,38 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
-    func insertCharacters(characters: [CharacterSummary], numExpectedCharacters: UInt) async -> Result<Void, Error> {
+    func insertCharacters(characters: [CharacterSummary], numExpectedCharacters: UInt, numPages: UInt32) async -> Result<Void, Error> {
         return await withCheckedContinuation { continuation in
+
             context.perform {
-                let numCharactersResult = self.getCharactersCountSync()
-                if let error = numCharactersResult.failure() {
-                    return continuation.resume(returning: .failure(error))
+                let numCharacters = self.getCharactersCountSync()
+                guard let numCharacters = numCharacters.unwrap() else {
+                    return continuation.resume(returning: .failure(numCharacters.failure()!))
                 }
-                let numCharacters = numCharactersResult.unwrap()!
-                print("\(numCharacters) \(numExpectedCharacters)")
+
                 if numCharacters != numExpectedCharacters {
                     continuation.resume(returning: .success(()))
                     return
                 }
 
-                characters.enumerated().forEach { (index, character) in
-                    let entry = CDCharacterListEntry(context: self.context)
-                    entry.id = Int32(numCharacters + UInt(index))
-                    entry.characterInList = CDCharacterSummary.from(character: character, context: self.context)
-                }
-
                 do {
+                    let request = CDPaginatedList.fetchRequest()
+                    request.predicate = NSPredicate(format: "characterFilter == %@", CoreDataCharactersDataSource.getFilter(context: self.context)) // TODO Filter
+                    let result = try self.context.fetch(request)
+                    guard let list = result.first else {
+                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/database"))))
+                    }
+
+                    let listCharacters = (list.characters?.mutableCopy() as? NSMutableOrderedSet) ?? NSMutableOrderedSet()
+
+                    characters.forEach { character in
+                        let characterSummary = CDCharacterSummary.from(character: character, context: self.context)
+                        listCharacters.add(characterSummary)
+                    }
+
+                    list.numPages = Int32(numPages)
+                    list.characters = listCharacters.copy() as? NSOrderedSet
+
                     try self.context.save()
                     return continuation.resume(returning: .success(()))
                 } catch {
@@ -96,22 +129,33 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
-    func setCharacters(characters: [CharacterSummary]) async -> Result<Void, Error> {
+    func setCharacters(characters: [CharacterSummary], numPages: UInt32) async -> Result<Void, Error> {
         return await withCheckedContinuation { continuation in
             context.perform {
                 do {
-                    let request = CDCharacterListEntry.fetchRequest()
-                    let cachedCharacters = try self.context.fetch(request)
+                    let request = CDPaginatedList.fetchRequest()
+                    request.predicate = NSPredicate(format: "characterFilter == %@", CoreDataCharactersDataSource.getFilter(context: self.context)) // TODO Filter
+                    let result = try self.context.fetch(request)
+                    if let list = result.first {
+                        let listCharacters = list.characters
+                        self.context.delete(list)
 
-                    cachedCharacters.forEach {
-                        self.context.delete($0)
+                        listCharacters?.forEach { listCharacter in
+                            (listCharacter as? CDCharacterSummary)?.deleteIfSafe(context: self.context)
+                        }
                     }
 
-                    characters.enumerated().forEach { (index, character) in
-                        let entry = CDCharacterListEntry(context: self.context)
-                        entry.id = Int32(index)
-                        entry.characterInList = CDCharacterSummary.from(character: character, context: self.context)
+                    let newCharacterList = CDPaginatedList(context: self.context)
+                    let newCharacters = NSMutableOrderedSet()
+
+                    characters.forEach { character in
+                        let characterSummary = CDCharacterSummary.from(character: character, context: self.context)
+                        newCharacters.add(characterSummary)
                     }
+
+                    newCharacterList.numPages = Int32(numPages)
+                    newCharacterList.characterFilter = CoreDataCharactersDataSource.getFilter(context: self.context)  // TODO Filter
+                    newCharacterList.characters = newCharacters.copy() as? NSOrderedSet
 
                     try self.context.save()
                     return continuation.resume(returning: .success(()))
@@ -132,10 +176,11 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
             self.context = context
         }
 
-        func shouldSendUpdateFromInserts(inserts: Set<NSManagedObject>) -> Bool {
+        func shouldSendUpdateFromInserts(_ inserts: Set<NSManagedObject>) -> Bool {
             for insert in inserts {
+                // TODO
                 let uri = insert.objectID.uriRepresentation().absoluteString
-                if uri.contains("CDCharacterListEntry") { return true }
+                if uri.contains("CDCharacterSummary") { return true }
             }
 
             return false
@@ -145,13 +190,13 @@ class CoreDataCharactersDataSource: CharactersLocalDataSource {
             guard let userInfo = notification.userInfo else { return }
 
             if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>, inserts.count > 0 {
-                if !shouldSendUpdateFromInserts(inserts: inserts) { return }
+                if !shouldSendUpdateFromInserts(inserts) { return }
 
                 Task {
                     let characters = await CoreDataCharactersDataSource.handleGetCharacters(context: context)
-                    if characters.failure() != nil { return }
+                    guard let characters = characters.unwrap() else { return }
 
-                    observer.onNext(characters.unwrap()!)
+                    observer.onNext(characters)
                 }
             }
         }
@@ -191,5 +236,14 @@ extension CDCharacterSummary {
             .set(name: name ?? "")
             .set(status: domainStatus)
             .build()
+    }
+}
+
+extension CDCharacterSummary {
+    func deleteIfSafe(context: NSManagedObjectContext) {
+        if let episodesIn = episodesIn, episodesIn.count > 0 { return }
+        if let paginatedList = paginatedList, paginatedList.count > 0 { return }
+        if residentIn != nil { return }
+        context.delete(self)
     }
 }

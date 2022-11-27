@@ -50,6 +50,10 @@ class MainContainer: BootstrapComponent {
         return CoreDataCharactersDataSource(context: coreDataManagedObjectContext)
     }
 
+    var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {
+        return GraphQLCharacterDetailDataSource(apolloClient: apolloClient)
+    }
+
     // MARK: - Core Data
     var coreDataPersistentContainer: NSPersistentContainer {
         return shared {
@@ -66,8 +70,6 @@ class MainContainer: BootstrapComponent {
                 if let error = error {
                     fatalError("Unable to load persistent store: \(error)")
                 }
-
-                container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
             }
             return container
         }
@@ -75,7 +77,9 @@ class MainContainer: BootstrapComponent {
 
     var coreDataManagedObjectContext: NSManagedObjectContext {
         return shared {
-            coreDataPersistentContainer.newBackgroundContext()
+            let context = coreDataPersistentContainer.newBackgroundContext()
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            return context
         }
     }
 }

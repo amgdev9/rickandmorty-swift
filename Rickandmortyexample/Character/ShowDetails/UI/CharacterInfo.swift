@@ -19,7 +19,7 @@ struct CharacterInfo<Character: CharacterInfoData>: View {
         Separator().offset(x: 16)
         SectionButton(
             title: String(localized: "card/origin"),
-            subtitle: character.origin.name,
+            subtitle: character.origin?.name ?? String(localized: "misc/unknown"),
             showBorder: false
         )
         Separator().offset(x: 16)
@@ -31,18 +31,26 @@ struct CharacterInfo<Character: CharacterInfoData>: View {
         Separator().offset(x: 16)
         SectionButton(
             title: String(localized: "card/location"),
-            subtitle: character.gender.localized(),
-            showBorder: false
-        ) {
-            onPressLocation(character.location.id)
-        }
+            subtitle: character.location?.name ?? String(localized: "misc/unknown"),
+            showBorder: false,
+            onPress: character.location != nil ? handlePressLocation : .none
+        )
         Separator()
     }
 }
 
+// MARK: - Logic
+extension CharacterInfo {
+    func handlePressLocation() {
+        guard let location = character.location else { return }
+        onPressLocation(location.id)
+    }
+}
+
+// MARK: - Types
 protocol CharacterInfoData {
     var gender: Character.Gender { get }
-    var origin: CharacterLocation { get }
+    var origin: CharacterLocation? { get }
     var type: String? { get }
-    var location: CharacterLocation { get }
+    var location: CharacterLocation? { get }
 }
