@@ -1,0 +1,5 @@
+fragment LocationSummaryFragment on Location {
+	id
+	name
+	type
+}

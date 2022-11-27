@@ -51,7 +51,7 @@ class CharactersRepositoryImpl: CharactersRepository {
             return .failure(response.failure()!)
         }
 
-        let result = await localDataSource.setCharacters(characters: response.characters, numPages: response.numPages)
+        let result = await localDataSource.setCharacters(characters: response.items, numPages: response.numPages)
         if let error = result.failure() {
             return .failure(error)
         }
@@ -78,7 +78,7 @@ class CharactersRepositoryImpl: CharactersRepository {
         let response = await remoteDataSource.getCharacters(page: nextPage, filter: CharacterFilter())    // TODO Filter
         guard let response = response.unwrap() else { return .failure(response.failure()!) }
 
-        let result = await localDataSource.insertCharacters(characters: response.characters,
+        let result = await localDataSource.insertCharacters(characters: response.items,
                                                             numExpectedCharacters: numCharacters,
                                                             numPages: response.numPages)
         if let error = result.failure() {
@@ -92,6 +92,6 @@ class CharactersRepositoryImpl: CharactersRepository {
         let response = await remoteDataSource.getCharacters(page: 1, filter: CharacterFilter())   // TODO Filter
         guard let response = response.unwrap() else { return .failure(response.failure()!)}
 
-        return await localDataSource.setCharacters(characters: response.characters, numPages: response.numPages)
+        return await localDataSource.setCharacters(characters: response.items, numPages: response.numPages)
     }
 }

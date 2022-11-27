@@ -9,7 +9,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<CharactersResponse, Error> {
+    func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
         var cancellable: Cancellable? = .none
         return await withTaskCancellationHandler { [cancellable] in
             cancellable?.cancel()
@@ -34,7 +34,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
                         .compactMap { $0 }
                         .map { $0.fragments.characterSummaryFragment.toDomain() }
                     continuation.resume(returning:
-                            .success(CharactersResponse(numPages: UInt32(pages), characters: domainCharacters))
+                            .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
                     )
                 }
             }
