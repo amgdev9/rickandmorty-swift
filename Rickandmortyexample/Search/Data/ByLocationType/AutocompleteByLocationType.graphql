@@ -1,0 +1,7 @@
+query AutocompleteByLocationType($search: String!) {
+	locations(page: 1, filter: { type: $search }) {
+		results {
+			type
+		}
+	}
+}

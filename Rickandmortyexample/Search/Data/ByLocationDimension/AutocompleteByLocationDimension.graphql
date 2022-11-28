@@ -1,0 +1,7 @@
+query AutocompleteByLocationDimension($search: String!) {
+	locations(page: 1, filter: { dimension: $search }) {
+		results {
+			dimension
+		}
+	}
+}

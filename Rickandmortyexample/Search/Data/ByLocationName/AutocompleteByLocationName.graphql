@@ -1,0 +1,7 @@
+query AutocompleteByLocationName($search: String!) {
+	locations(page: 1, filter: { name: $search }) {
+		results {
+			name
+		}
+	}
+}

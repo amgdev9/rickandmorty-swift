@@ -1,0 +1,7 @@
+query AutocompleteByCharacterSpecies($search: String!) {
+	characters(page: 1, filter: { species: $search }) {
+		results {
+			species
+		}
+	}
+}

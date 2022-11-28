@@ -1,0 +1,7 @@
+query AutocompleteByEpisodeSeasonID($search: String!) {
+	episodes(page: 1, filter: { episode: $search }) {
+		results {
+			episode
+		}
+	}
+}

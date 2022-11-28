@@ -139,6 +139,31 @@
 		E5B24E802934C671007EE90D /* GraphQLEpisodesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24E7F2934C671007EE90D /* GraphQLEpisodesDataSource.swift */; };
 		E5B24E822934C703007EE90D /* FilterEpisode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24E812934C703007EE90D /* FilterEpisode.graphql.swift */; };
 		E5B24E842934CB43007EE90D /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24E832934CB43007EE90D /* StringExtensions.swift */; };
+		E5B24E872934CFD8007EE90D /* AutocompleteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24E862934CFD8007EE90D /* AutocompleteRepository.swift */; };
+		E5B24E902934D551007EE90D /* AutocompleteRepositoryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24E8F2934D551007EE90D /* AutocompleteRepositoryExtensions.swift */; };
+		E5B24E9A2934D806007EE90D /* AutocompleteByCharacterSpecies.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24E992934D806007EE90D /* AutocompleteByCharacterSpecies.graphql */; };
+		E5B24E9C2934D838007EE90D /* AutocompleteByCharacterName.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24E9B2934D838007EE90D /* AutocompleteByCharacterName.graphql */; };
+		E5B24E9E2934D84B007EE90D /* AutocompleteByLocationDimension.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24E9D2934D84B007EE90D /* AutocompleteByLocationDimension.graphql */; };
+		E5B24EA02934D85C007EE90D /* AutocompleteByLocationType.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24E9F2934D85C007EE90D /* AutocompleteByLocationType.graphql */; };
+		E5B24EA22934D86B007EE90D /* AutocompleteByLocationName.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24EA12934D86B007EE90D /* AutocompleteByLocationName.graphql */; };
+		E5B24EA42934D87D007EE90D /* AutocompleteByEpisodeSeasonID.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24EA32934D87D007EE90D /* AutocompleteByEpisodeSeasonID.graphql */; };
+		E5B24EA62934D896007EE90D /* AutocompleteByEpisodeName.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E5B24EA52934D896007EE90D /* AutocompleteByEpisodeName.graphql */; };
+		E5B24EA82934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EA72934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift */; };
+		E5B24EAA2934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EA92934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift */; };
+		E5B24EAC2934D941007EE90D /* AutocompleteByLocationNameQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EAB2934D941007EE90D /* AutocompleteByLocationNameQuery.graphql.swift */; };
+		E5B24EAE2934D949007EE90D /* AutocompleteByLocationTypeQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EAD2934D949007EE90D /* AutocompleteByLocationTypeQuery.graphql.swift */; };
+		E5B24EB02934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EAF2934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift */; };
+		E5B24EB22934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EB12934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift */; };
+		E5B24EB42934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EB32934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift */; };
+		E5B24EB62934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EB52934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift */; };
+		E5B24EB82934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EB72934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift */; };
+		E5B24EBA2934DAB9007EE90D /* AutocompleteByLocationDimensionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EB92934DAB9007EE90D /* AutocompleteByLocationDimensionRepository.swift */; };
+		E5B24EBC2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EBB2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift */; };
+		E5B24EBE2934DB09007EE90D /* AutocompleteByLocationNameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EBD2934DB09007EE90D /* AutocompleteByLocationNameRepository.swift */; };
+		E5B24EC02934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EBF2934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift */; };
+		E5B24EC22934DB94007EE90D /* AutocompleteByEpisodeNameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EC12934DB94007EE90D /* AutocompleteByEpisodeNameRepository.swift */; };
+		E5B24EC42934DC42007EE90D /* Episodes.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EC32934DC42007EE90D /* Episodes.graphql.swift */; };
+		E5B24EC62934DF00007EE90D /* AutocompleteBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B24EC52934DF00007EE90D /* AutocompleteBar.swift */; };
 		E5B54FAE29154AEC000D4E6C /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B54FAD29154AEC000D4E6C /* Icon.swift */; };
 		E5B958BF291900670023CB3A /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E5B958BD291900670023CB3A /* Makefile */; };
 		E5B958C0291900670023CB3A /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E5B958BD291900670023CB3A /* Makefile */; };
@@ -317,6 +342,31 @@
 		E5B24E7F2934C671007EE90D /* GraphQLEpisodesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLEpisodesDataSource.swift; sourceTree = "<group>"; };
 		E5B24E812934C703007EE90D /* FilterEpisode.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterEpisode.graphql.swift; sourceTree = "<group>"; };
 		E5B24E832934CB43007EE90D /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		E5B24E862934CFD8007EE90D /* AutocompleteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteRepository.swift; sourceTree = "<group>"; };
+		E5B24E8F2934D551007EE90D /* AutocompleteRepositoryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteRepositoryExtensions.swift; sourceTree = "<group>"; };
+		E5B24E992934D806007EE90D /* AutocompleteByCharacterSpecies.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByCharacterSpecies.graphql; sourceTree = "<group>"; };
+		E5B24E9B2934D838007EE90D /* AutocompleteByCharacterName.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByCharacterName.graphql; sourceTree = "<group>"; };
+		E5B24E9D2934D84B007EE90D /* AutocompleteByLocationDimension.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByLocationDimension.graphql; sourceTree = "<group>"; };
+		E5B24E9F2934D85C007EE90D /* AutocompleteByLocationType.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByLocationType.graphql; sourceTree = "<group>"; };
+		E5B24EA12934D86B007EE90D /* AutocompleteByLocationName.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByLocationName.graphql; sourceTree = "<group>"; };
+		E5B24EA32934D87D007EE90D /* AutocompleteByEpisodeSeasonID.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByEpisodeSeasonID.graphql; sourceTree = "<group>"; };
+		E5B24EA52934D896007EE90D /* AutocompleteByEpisodeName.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AutocompleteByEpisodeName.graphql; sourceTree = "<group>"; };
+		E5B24EA72934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByEpisodeNameQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EA92934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByEpisodeSeasonIDQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EAB2934D941007EE90D /* AutocompleteByLocationNameQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationNameQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EAD2934D949007EE90D /* AutocompleteByLocationTypeQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationTypeQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EAF2934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationDimensionQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EB12934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByCharacterNameQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EB32934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteByCharacterSpeciesQuery.graphql.swift; sourceTree = "<group>"; };
+		E5B24EB52934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByCharacterSpeciesRepository.swift; sourceTree = "<group>"; };
+		E5B24EB72934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByCharacterNameRepository.swift; sourceTree = "<group>"; };
+		E5B24EB92934DAB9007EE90D /* AutocompleteByLocationDimensionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationDimensionRepository.swift; sourceTree = "<group>"; };
+		E5B24EBB2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationTypeRepository.swift; sourceTree = "<group>"; };
+		E5B24EBD2934DB09007EE90D /* AutocompleteByLocationNameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByLocationNameRepository.swift; sourceTree = "<group>"; };
+		E5B24EBF2934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByEpisodeSeasonIDRepository.swift; sourceTree = "<group>"; };
+		E5B24EC12934DB94007EE90D /* AutocompleteByEpisodeNameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteByEpisodeNameRepository.swift; sourceTree = "<group>"; };
+		E5B24EC32934DC42007EE90D /* Episodes.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episodes.graphql.swift; sourceTree = "<group>"; };
+		E5B24EC52934DF00007EE90D /* AutocompleteBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteBar.swift; sourceTree = "<group>"; };
 		E5B54FAD29154AEC000D4E6C /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		E5B958BD291900670023CB3A /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		E5BAF9FD2924E47B00F1610B /* CharactersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersRepository.swift; sourceTree = "<group>"; };
@@ -418,6 +468,7 @@
 		E5381E9A292D40B300606A89 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				E5B24E852934CF46007EE90D /* Data */,
 				E5381E9E292D410500606A89 /* Presentation */,
 				E5381E9B292D40DC00606A89 /* UI */,
 			);
@@ -428,6 +479,7 @@
 			isa = PBXGroup;
 			children = (
 				E5381E9C292D40F200606A89 /* SearchScreen.swift */,
+				E5B24EC52934DF00007EE90D /* AutocompleteBar.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -436,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				E5381E9F292D411900606A89 /* SearchViewModel.swift */,
+				E5B24E862934CFD8007EE90D /* AutocompleteRepository.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -538,6 +591,7 @@
 		E585398D29210949008C9FC5 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				E5B24EC32934DC42007EE90D /* Episodes.graphql.swift */,
 				E597A2742933F8A200225DAE /* Locations.graphql.swift */,
 				E597A24B2933E61400225DAE /* Episode.graphql.swift */,
 				E597A24C2933E61400225DAE /* Location.graphql.swift */,
@@ -1150,6 +1204,91 @@
 			path = Remote;
 			sourceTree = "<group>";
 		};
+		E5B24E852934CF46007EE90D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24E982934D7E6007EE90D /* ByCharacterSpecies */,
+				E5B24E972934D7E0007EE90D /* ByCharacterName */,
+				E5B24E962934D7D6007EE90D /* ByLocationDimension */,
+				E5B24E952934D7CE007EE90D /* ByLocationType */,
+				E5B24E942934D7C6007EE90D /* ByLocationName */,
+				E5B24E932934D7BB007EE90D /* ByEpisodeSeasonID */,
+				E5B24E922934D7AE007EE90D /* ByEpisodeName */,
+				E5B24E8F2934D551007EE90D /* AutocompleteRepositoryExtensions.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		E5B24E922934D7AE007EE90D /* ByEpisodeName */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EA72934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift */,
+				E5B24EA52934D896007EE90D /* AutocompleteByEpisodeName.graphql */,
+				E5B24EC12934DB94007EE90D /* AutocompleteByEpisodeNameRepository.swift */,
+			);
+			path = ByEpisodeName;
+			sourceTree = "<group>";
+		};
+		E5B24E932934D7BB007EE90D /* ByEpisodeSeasonID */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EA92934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift */,
+				E5B24EA32934D87D007EE90D /* AutocompleteByEpisodeSeasonID.graphql */,
+				E5B24EBF2934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift */,
+			);
+			path = ByEpisodeSeasonID;
+			sourceTree = "<group>";
+		};
+		E5B24E942934D7C6007EE90D /* ByLocationName */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EAB2934D941007EE90D /* AutocompleteByLocationNameQuery.graphql.swift */,
+				E5B24EA12934D86B007EE90D /* AutocompleteByLocationName.graphql */,
+				E5B24EBD2934DB09007EE90D /* AutocompleteByLocationNameRepository.swift */,
+			);
+			path = ByLocationName;
+			sourceTree = "<group>";
+		};
+		E5B24E952934D7CE007EE90D /* ByLocationType */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EAD2934D949007EE90D /* AutocompleteByLocationTypeQuery.graphql.swift */,
+				E5B24E9F2934D85C007EE90D /* AutocompleteByLocationType.graphql */,
+				E5B24EBB2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift */,
+			);
+			path = ByLocationType;
+			sourceTree = "<group>";
+		};
+		E5B24E962934D7D6007EE90D /* ByLocationDimension */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EAF2934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift */,
+				E5B24E9D2934D84B007EE90D /* AutocompleteByLocationDimension.graphql */,
+				E5B24EB92934DAB9007EE90D /* AutocompleteByLocationDimensionRepository.swift */,
+			);
+			path = ByLocationDimension;
+			sourceTree = "<group>";
+		};
+		E5B24E972934D7E0007EE90D /* ByCharacterName */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EB12934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift */,
+				E5B24E9B2934D838007EE90D /* AutocompleteByCharacterName.graphql */,
+				E5B24EB72934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift */,
+			);
+			path = ByCharacterName;
+			sourceTree = "<group>";
+		};
+		E5B24E982934D7E6007EE90D /* ByCharacterSpecies */ = {
+			isa = PBXGroup;
+			children = (
+				E5B24EB32934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift */,
+				E5B24E992934D806007EE90D /* AutocompleteByCharacterSpecies.graphql */,
+				E5B24EB52934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift */,
+			);
+			path = ByCharacterSpecies;
+			sourceTree = "<group>";
+		};
 		E5B54FAB291548ED000D4E6C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1337,15 +1476,22 @@
 				E59B48C029140C6C00AB3085 /* .gitignore in Resources */,
 				E58E2C6F29202C35005A261F /* Localizable.strings in Resources */,
 				E588C0E1291901B9000B6C64 /* Characters.graphql in Resources */,
+				E5B24E9C2934D838007EE90D /* AutocompleteByCharacterName.graphql in Resources */,
 				E597A2502933E65000225DAE /* CharacterSummaryFragment.graphql in Resources */,
 				E5B24E722934C48D007EE90D /* EpisodeDetail.graphql in Resources */,
 				E59B48BC2913FBF300AB3085 /* .swiftlint.yml in Resources */,
+				E5B24EA42934D87D007EE90D /* AutocompleteByEpisodeSeasonID.graphql in Resources */,
+				E5B24EA62934D896007EE90D /* AutocompleteByEpisodeName.graphql in Resources */,
 				E59C56322933A0A9005324F4 /* EpisodeSummaryFragment.graphql in Resources */,
 				E59C56372933A171005324F4 /* CharacterDetail.graphql in Resources */,
 				E5B24E682934AF30007EE90D /* LocationDetail.graphql in Resources */,
 				E588C0E32919024A000B6C64 /* apollo-codegen-config.json in Resources */,
+				E5B24EA02934D85C007EE90D /* AutocompleteByLocationType.graphql in Resources */,
+				E5B24EA22934D86B007EE90D /* AutocompleteByLocationName.graphql in Resources */,
 				E597A2612933F49500225DAE /* Locations.graphql in Resources */,
 				E59B48902913EE5700AB3085 /* Assets.xcassets in Resources */,
+				E5B24E9A2934D806007EE90D /* AutocompleteByCharacterSpecies.graphql in Resources */,
+				E5B24E9E2934D84B007EE90D /* AutocompleteByLocationDimension.graphql in Resources */,
 				E5C7C2E329190E2300FA74F8 /* Schema.graphqls in Resources */,
 				E5B24E7C2934C61C007EE90D /* Episodes.graphql in Resources */,
 				E597A2652933F51A00225DAE /* LocationSummaryFragment.graphql in Resources */,
@@ -1530,8 +1676,10 @@
 				E5381E94292D323900606A89 /* SectionButton.swift in Sources */,
 				E5B1851929256E7200400366 /* DBSchema.xcdatamodeld in Sources */,
 				E594DD0D292143D7002F7038 /* FilterButton.swift in Sources */,
+				E5B24E872934CFD8007EE90D /* AutocompleteRepository.swift in Sources */,
 				E5AD1D252925411C007B7315 /* CharactersLocalDataSource.swift in Sources */,
 				E597A2692933F55F00225DAE /* LocationSummaryFragment.graphql.swift in Sources */,
+				E5B24EB22934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift in Sources */,
 				E5B24E6F2934C456007EE90D /* EpisodeDetailRemoteDataSource.swift in Sources */,
 				E597A25D2933EE9E00225DAE /* CharacterLocationFragmentMapper.swift in Sources */,
 				E5AAC4E72931307400FF695C /* LocationDetailsScreen.swift in Sources */,
@@ -1540,6 +1688,7 @@
 				E59B48CA2914263600AB3085 /* FontWithLineHeight.swift in Sources */,
 				E5B096A3292C08B7005B283D /* FilterHeader.swift in Sources */,
 				E5A1ECFF292E325900A8B13F /* NavigationContainer.swift in Sources */,
+				E5B24EBE2934DB09007EE90D /* AutocompleteByLocationNameRepository.swift in Sources */,
 				E58539A32921147E008C9FC5 /* ShowEpisodesScreen.swift in Sources */,
 				E5381E99292D349D00606A89 /* CharacterFilter.swift in Sources */,
 				E5AAC4D52931289700FF695C /* FilterLocationsScreen.swift in Sources */,
@@ -1552,19 +1701,25 @@
 				E5B24E6C2934B0C5007EE90D /* GraphQLLocationDetailDataSource.swift in Sources */,
 				E5DC9F3829310BFB00ED98AF /* PaginatedList.swift in Sources */,
 				E597A2752933F8A200225DAE /* Locations.graphql.swift in Sources */,
+				E5B24E902934D551007EE90D /* AutocompleteRepositoryExtensions.swift in Sources */,
 				E5A4E710292950F700672FDA /* BottomDetectorScrollView.swift in Sources */,
 				E5AAC4EA2931309100FF695C /* LocationDetailsViewModel.swift in Sources */,
+				E5B24EC02934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift in Sources */,
 				E597A2732933F7D100225DAE /* FilterLocation.graphql.swift in Sources */,
 				E5B1851B2925799100400366 /* CoreDataCharactersDataSource.swift in Sources */,
 				E5AAC50529314B7600FF695C /* EpisodeDetailsViewModel.swift in Sources */,
+				E5B24EA82934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift in Sources */,
 				E59EF7C42921015700628FED /* ShowCharactersViewModel.swift in Sources */,
 				E5B24E7E2934C65E007EE90D /* EpisodesQuery.graphql.swift in Sources */,
 				E5B24E792934C5BA007EE90D /* EpisodesRemoteDataSource.swift in Sources */,
 				E58539B1292123D8008C9FC5 /* NavigationParams.swift in Sources */,
 				E5D5D0A529242552006771CA /* CharactersRepositoryImpl.swift in Sources */,
+				E5B24EBC2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift in Sources */,
 				E5AAC4F0293140F400FF695C /* ShowEpisodesViewModel.swift in Sources */,
 				E597A24E2933E61400225DAE /* Location.graphql.swift in Sources */,
 				E5DC9F3A2931100F00ED98AF /* UIScreen.swift in Sources */,
+				E5B24EB42934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift in Sources */,
+				E5B24EAC2934D941007EE90D /* AutocompleteByLocationNameQuery.graphql.swift in Sources */,
 				E5D5D0A82924261C006771CA /* CharactersRemoteDataSource.swift in Sources */,
 				E5381EA0292D411900606A89 /* SearchViewModel.swift in Sources */,
 				E5AAC4F72931495400FF695C /* FilterEpisodesViewModel.swift in Sources */,
@@ -1574,12 +1729,14 @@
 				E59C562829336D1B005324F4 /* FilterCharacter.graphql.swift in Sources */,
 				E5B24E742934C4C8007EE90D /* EpisodeDetailQuery.graphql.swift in Sources */,
 				E5B24E652934AEF8007EE90D /* LocationDetailRemoteDataSource.swift in Sources */,
+				E5B24EB82934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift in Sources */,
 				E56D16DC2922C96300B55DAF /* NetworkData.swift in Sources */,
 				E5381EA2292D4ABD00606A89 /* EpisodeSummary.swift in Sources */,
 				E5B096A7292C111F005B283D /* RadioButton.swift in Sources */,
 				E5AAC4D8293128B400FF695C /* FilterLocationsViewModel.swift in Sources */,
 				E5AAC4FE293149CB00FF695C /* FilterEpisodesScreen.swift in Sources */,
 				E585399529210949008C9FC5 /* Query.graphql.swift in Sources */,
+				E5B24EC42934DC42007EE90D /* Episodes.graphql.swift in Sources */,
 				E585399329210949008C9FC5 /* Characters.graphql.swift in Sources */,
 				E5A1ECF8292E22FD00A8B13F /* Separator.swift in Sources */,
 				E585399F29211449008C9FC5 /* ShowLocationsViewModel.swift in Sources */,
@@ -1633,17 +1790,24 @@
 				E58539BA29212DD6008C9FC5 /* CharacterDetailsViewModel.swift in Sources */,
 				E56D16DE2922CA0D00B55DAF /* ErrorState.swift in Sources */,
 				E5B24E802934C671007EE90D /* GraphQLEpisodesDataSource.swift in Sources */,
+				E5B24EBA2934DAB9007EE90D /* AutocompleteByLocationDimensionRepository.swift in Sources */,
 				E5AAC4ED2931409E00FF695C /* EpisodeSeason.swift in Sources */,
+				E5B24EC22934DB94007EE90D /* AutocompleteByEpisodeNameRepository.swift in Sources */,
 				E594DD15292150C0002F7038 /* LocalizedEnums.swift in Sources */,
 				E5BF1937293003E000AE44BE /* CharacterInfo.swift in Sources */,
 				E5D5D0AD2924295B006771CA /* Error.swift in Sources */,
+				E5B24EAE2934D949007EE90D /* AutocompleteByLocationTypeQuery.graphql.swift in Sources */,
 				E5AAC4F2293142ED00FF695C /* EpisodeStack.swift in Sources */,
 				E585399629210949008C9FC5 /* SchemaConfiguration.swift in Sources */,
+				E5B24EC62934DF00007EE90D /* AutocompleteBar.swift in Sources */,
 				E5BF19352930020D00AE44BE /* CharacterHeader.swift in Sources */,
 				E5AAC4D12931250100FF695C /* Previews.swift in Sources */,
 				E597A2592933E84000225DAE /* CharacterSummaryFragmentMapper.swift in Sources */,
 				E59C562B29339EE5005324F4 /* CharacterDetailRemoteDataSource.swift in Sources */,
+				E5B24EAA2934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift in Sources */,
+				E5B24EB02934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift in Sources */,
 				E5945624292D1C280005E4C9 /* RadioButtonGroup.swift in Sources */,
+				E5B24EB62934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,11 +16,11 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
                 Color.white
             }
         }
-        .searchable(text: $viewModel.searchText) {
-            ForEach(viewModel.suggestions, id: \.self) { suggestion in
-                Text(suggestion, variant: .body15).searchCompletion(suggestion)
-            }
-        }
+        .autocompleteBar(
+            searchText: $viewModel.searchText,
+            autocompletions: viewModel.suggestions,
+            onAutocomplete: viewModel.search
+        )
         .onSubmit(of: .search) {
             router.goBackWithResult(value: viewModel.searchText)
         }
@@ -43,10 +43,10 @@ struct SearchScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: SearchViewModel {
+        func search(text: String) {}
+
         var searchText = ""
         var suggestions: [String] = ["Rick", "Morty"]
-
-        func search() {}
     }
 
     static var previews: some View {

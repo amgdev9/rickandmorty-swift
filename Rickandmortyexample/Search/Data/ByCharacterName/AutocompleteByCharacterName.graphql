@@ -1,0 +1,7 @@
+query AutocompleteByCharacterName($search: String!) {
+	characters(page: 1, filter: { name: $search }) {
+		results {
+			name
+		}
+	}
+}
