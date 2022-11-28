@@ -21,13 +21,13 @@ struct FilterEpisodesScreen<ViewModel>: View where ViewModel: FilterEpisodesView
                     title: String(localized: "section/name-title"),
                     subtitle: String(localized: "section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByName(initialValue: "") // TODO
                     }.padding(.bottom, 19)
                 SectionButton(
                     title: String(localized: "section/episode"),
                     subtitle: String(localized: "action/select-one"),
                     active: !viewModel.filter.episode.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByEpisode(initialValue: "")  // TODO
                     }.padding(.bottom, 19)
             }
         }
@@ -37,14 +37,25 @@ struct FilterEpisodesScreen<ViewModel>: View where ViewModel: FilterEpisodesView
 
 // MARK: - Types
 protocol FilterEpisodesScreenRouter {
+    var params: FilterEpisodesScreenParams { get }
+
     func goBack()
-    func goSearch() // TODO
+    func goSearchByName(initialValue: String)
+    func goSearchByEpisode(initialValue: String)
+}
+
+struct FilterEpisodesScreenParams: Hashable {
+    let name: String?
+    let episode: String?
 }
 
 // MARK: - Previews
 struct FilterEpisodesScreenPreviews: PreviewProvider {
     class RouterMock: FilterEpisodesScreenRouter {
-        func goSearch() {}
+        var params = FilterEpisodesScreenParams(name: .none, episode: .none)
+
+        func goSearchByName(initialValue: String) {}
+        func goSearchByEpisode(initialValue: String) {}
         func goBack() {}
     }
 

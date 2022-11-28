@@ -37,12 +37,20 @@ struct LocationDetailsScreen<ViewModel>: View where ViewModel: LocationDetailsVi
 
 // MARK: - Types
 protocol LocationDetailsScreenRouter {
+    var params: LocationDetailsScreenParams { get }
+
     func gotoCharacter(id: String)
+}
+
+struct LocationDetailsScreenParams: Hashable {
+    let id: String
 }
 
 // MARK: - Previews
 struct LocationDetailsScreenPreviews: PreviewProvider {
     class RouterMock: LocationDetailsScreenRouter {
+        var params = LocationDetailsScreenParams(id: "1")
+
         func gotoCharacter(id: String) {}
     }
 

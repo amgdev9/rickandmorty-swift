@@ -42,8 +42,14 @@ struct CharacterDetailsScreen<ViewModel>: View where ViewModel: CharacterDetails
 
 // MARK: - Types
 protocol CharacterDetailsScreenRouter {
+    var params: CharacterDetailsScreenParams { get }
+
     func gotoLocation(id: String)
     func gotoEpisode(id: String)
+}
+
+struct CharacterDetailsScreenParams: Hashable {
+    let id: String
 }
 
 extension CharacterDetails: CharacterHeaderData & CharacterInfoData {}
@@ -51,6 +57,8 @@ extension CharacterDetails: CharacterHeaderData & CharacterInfoData {}
 // MARK: - Previews
 struct CharacterDetailsScreenPreviews: PreviewProvider {
     class RouterMock: CharacterDetailsScreenRouter {
+        var params = CharacterDetailsScreenParams(id: "1")
+
         func gotoLocation(id: String) {}
         func gotoEpisode(id: String) {}
     }

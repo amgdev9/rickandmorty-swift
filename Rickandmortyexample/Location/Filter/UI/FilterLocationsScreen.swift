@@ -21,19 +21,19 @@ struct FilterLocationsScreen<ViewModel>: View where ViewModel: FilterLocationsVi
                     title: String(localized: "section/name-title"),
                     subtitle: String(localized: "section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByName(initialValue: "") // TODO
                     }.padding(.bottom, 19)
                 SectionButton(
                     title: String(localized: "section/type"),
                     subtitle: String(localized: "action/select-one"),
                     active: !viewModel.filter.type.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByType(initialValue: "") // TODO
                     }.padding(.bottom, 19)
                 SectionButton(
                     title: String(localized: "section/dimension"),
                     subtitle: String(localized: "action/select-one"),
                     active: !viewModel.filter.dimension.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByDimension(initialValue: "")
                     }.padding(.bottom, 19)
             }
         }
@@ -43,14 +43,27 @@ struct FilterLocationsScreen<ViewModel>: View where ViewModel: FilterLocationsVi
 
 // MARK: - Types
 protocol FilterLocationsScreenRouter {
+    var params: FilterLocationsScreenParams { get }
+
     func goBack()
-    func goSearch() // TODO
+    func goSearchByName(initialValue: String)
+    func goSearchByType(initialValue: String)
+    func goSearchByDimension(initialValue: String)
+}
+
+struct FilterLocationsScreenParams {
+    let name: String?
+    let type: String?
+    let dimension: String?
 }
 
 // MARK: - Previews
 struct FilterLocationsScreenPreviews: PreviewProvider {
     class RouterMock: FilterLocationsScreenRouter {
-        func goSearch() {}
+        var params = FilterLocationsScreenParams(name: .none, type: .none, dimension: .none)
+        func goSearchByName(initialValue: String) {}
+        func goSearchByType(initialValue: String) {}
+        func goSearchByDimension(initialValue: String) {}
         func goBack() {}
     }
 

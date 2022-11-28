@@ -9,8 +9,12 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
         self.router = router
     }
 
+    var title: String {
+        String(localized: String.LocalizationValue(router.params.titleLocalizationKey))
+    }
+
     var body: some View {
-        NavigationContainer(title: String(localized: router.title), color: .basicWhite) {
+        NavigationContainer(title: title, color: .basicWhite) {
             VStack {
                 Divider()
                 Color.white
@@ -29,16 +33,20 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
 
 // MARK: - Types
 protocol SearchScreenRouter {
-    var title: String.LocalizationValue { get }
-    var initialValue: String { get }
+    var params: SearchScreenParams { get }
+
     func goBackWithResult(value: String)
+}
+
+struct SearchScreenParams: Hashable {
+    let titleLocalizationKey: String
+    let initialValue: String
 }
 
 // MARK: - Previews
 struct SearchScreenPreviews: PreviewProvider {
     class RouterMock: SearchScreenRouter {
-        var initialValue = ""
-        var title: String.LocalizationValue = "section/name-title"
+        var params = SearchScreenParams(titleLocalizationKey: "section/name-title", initialValue: "")
         func goBackWithResult(value: String) {}
     }
 

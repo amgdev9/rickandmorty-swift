@@ -24,13 +24,13 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
                     title: String(localized: "section/name-title"),
                     subtitle: String(localized: "section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearch()
+                        router.goSearchByName(initialValue: "") // TODO
                     }.padding(.bottom, 19)
                 SectionButton(
                     title: String(localized: "section/species-title"),
                     subtitle: String(localized: "action/select-one"),
                     active: !viewModel.filter.species.isEmpty) {
-                        router.goSearch()
+                        router.goSearchBySpecies(initialValue: "")    // TODO
                     }.padding(.bottom, 19.5)
                 RadioButtonGroup(
                     title: String(localized: "section/status"),
@@ -49,14 +49,26 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
 
 // MARK: - Types
 protocol FilterCharactersScreenRouter {
+    var params: FilterCharactersScreenParams { get }
+
     func goBack()
-    func goSearch() // TODO
+    func goSearchByName(initialValue: String)
+    func goSearchBySpecies(initialValue: String)
+}
+
+struct FilterCharactersScreenParams {
+    let name: String?
+    let species: String?
 }
 
 // MARK: - Previews
 struct FilterCharactersScreenPreviews: PreviewProvider {
     class RouterMock: FilterCharactersScreenRouter {
-        func goSearch() {}
+        func goSearchByName(initialValue: String) {}
+        func goSearchBySpecies(initialValue: String) {}
+
+        var params = FilterCharactersScreenParams(name: .none, species: .none)
+
         func goBack() {}
     }
 

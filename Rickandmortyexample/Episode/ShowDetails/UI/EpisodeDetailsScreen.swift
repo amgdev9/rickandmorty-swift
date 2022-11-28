@@ -37,12 +37,20 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
 
 // MARK: - Types
 protocol EpisodeDetailsScreenRouter {
+    var params: EpisodeDetailsScreenParams { get }
+
     func gotoCharacter(id: String)
+}
+
+struct EpisodeDetailsScreenParams: Hashable {
+    let id: String
 }
 
 // MARK: - Previews
 struct EpisodeDetailsScreenPreviews: PreviewProvider {
     class RouterMock: EpisodeDetailsScreenRouter {
+        var params = EpisodeDetailsScreenParams(id: "1")
+
         func gotoCharacter(id: String) {}
     }
 

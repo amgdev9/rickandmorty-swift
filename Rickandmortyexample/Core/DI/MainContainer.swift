@@ -32,6 +32,26 @@ class MainContainer: BootstrapComponent {
         return CharacterDetailsViewModelImpl()
     }
 
+    var locationDetailsViewModel: some LocationDetailsViewModel {
+        return LocationDetailsViewModelImpl()
+    }
+
+    var episodeDetailsViewModel: some EpisodeDetailsViewModel {
+        return EpisodeDetailsViewModelImpl()
+    }
+
+    var searchViewModel: some SearchViewModel {
+        return SearchViewModelImpl()
+    }
+
+    var filterLocationsViewModel: some FilterLocationsViewModel {
+        return FilterLocationsViewModelImpl()
+    }
+
+    var filterEpisodesViewModel: some FilterEpisodesViewModel {
+        return FilterEpisodesViewModelImpl()
+    }
+
     // MARK: - Repositories
     var charactersRepository: some CharactersRepository {
         return shared {
