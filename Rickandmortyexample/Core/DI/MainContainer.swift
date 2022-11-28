@@ -8,7 +8,9 @@ class MainContainer: BootstrapComponent {
     }
 
     var apolloClient: ApolloClient {
-        return shared { ApolloClient(url: configuration.serverUrl) }
+        return shared {
+            ApolloClient(url: configuration.serverUrl)
+        }
     }
 
     // MARK: - View Models
