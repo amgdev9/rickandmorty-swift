@@ -1,0 +1,9 @@
+query LocationDetail($id: ID!) {
+	location(id: $id) {
+		...LocationSummaryFragment
+		dimension
+		residents {
+			...CharacterSummaryFragment
+		}
+	}
+}

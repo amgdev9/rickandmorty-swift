@@ -29,6 +29,7 @@ public enum SchemaMetadata: Apollo.SchemaMetadata {
     case "Characters": return Rickandmortyexample.Objects.Characters
     case "Info": return Rickandmortyexample.Objects.Info
     case "Locations": return Rickandmortyexample.Objects.Locations
+    case "Episodes": return Rickandmortyexample.Objects.Episodes
     default: return nil
     }
   }

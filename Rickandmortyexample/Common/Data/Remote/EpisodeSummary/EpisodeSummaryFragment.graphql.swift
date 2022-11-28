@@ -10,6 +10,7 @@ public struct EpisodeSummaryFragment: Rickandmortyexample.SelectionSet, Fragment
       __typename
       id
       name
+      episode
       air_date
     }
     """ }
@@ -21,6 +22,7 @@ public struct EpisodeSummaryFragment: Rickandmortyexample.SelectionSet, Fragment
   public static var __selections: [Selection] { [
     .field("id", Rickandmortyexample.ID?.self),
     .field("name", String?.self),
+    .field("episode", String?.self),
     .field("air_date", String?.self),
   ] }
 
@@ -28,6 +30,8 @@ public struct EpisodeSummaryFragment: Rickandmortyexample.SelectionSet, Fragment
   public var id: Rickandmortyexample.ID? { __data["id"] }
   /// The name of the episode.
   public var name: String? { __data["name"] }
+  /// The code of the episode.
+  public var episode: String? { __data["episode"] }
   /// The air date of the episode.
   public var air_date: String? { __data["air_date"] }
 }

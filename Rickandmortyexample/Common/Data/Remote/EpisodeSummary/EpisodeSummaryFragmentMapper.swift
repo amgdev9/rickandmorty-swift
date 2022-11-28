@@ -9,6 +9,7 @@ extension EpisodeSummaryFragment {
     func toDomain() -> EpisodeSummary {
         EpisodeSummary.init(
             id: id ?? "",
+            seasonId: episode ?? "",
             name: name ?? "",
             date: airDateToDomain()
         )

@@ -1,5 +1,6 @@
 fragment EpisodeSummaryFragment on Episode {
 	id
 	name
+	episode
 	air_date
 }

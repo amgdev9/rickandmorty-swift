@@ -1,8 +1,8 @@
-class PaginatedResponse<Items> {
+class PaginatedResponse<Item> {
     let numPages: UInt32
-    let items: [Items]
+    let items: [Item]
 
-    init(numPages: UInt32, items: [Items]) {
+    init(numPages: UInt32, items: [Item]) {
         self.numPages = numPages
         self.items = items
     }

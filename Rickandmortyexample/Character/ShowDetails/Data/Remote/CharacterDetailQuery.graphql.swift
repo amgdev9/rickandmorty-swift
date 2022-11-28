@@ -167,6 +167,8 @@ public class CharacterDetailQuery: GraphQLQuery {
         public var id: Rickandmortyexample.ID? { __data["id"] }
         /// The name of the episode.
         public var name: String? { __data["name"] }
+        /// The code of the episode.
+        public var episode: String? { __data["episode"] }
         /// The air date of the episode.
         public var air_date: String? { __data["air_date"] }
 
