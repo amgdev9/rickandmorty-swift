@@ -6,26 +6,17 @@ class GraphQLCharacterDetailDataSource: CharacterDetailRemoteDataSource {
     }
 
     func getCharacterDetail(id: String) async -> Result<CharacterDetails, Error> {
-        var cancellable: Cancellable? = .none
-        return await withTaskCancellationHandler { [cancellable] in
-            cancellable?.cancel()
-        } operation: {
-            return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(query: CharacterDetailQuery(id: id)) { result in
-                    guard let result = result.unwrap() else {
-                        return continuation.resume(returning: .failure(
-                            Error(message: result.failure()!.localizedDescription))
-                        )
-                    }
+        let result = await apolloClient.fetchAsync(query: CharacterDetailQuery(id: id))
 
-                    guard let character = result.data?.character else {
-                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                    }
-
-                    continuation.resume(returning: .success(character.toDomain()))
-                }
-            }
+        guard let result = result.unwrap() else {
+            return .failure(Error(message: result.failure()!.localizedDescription))
         }
+
+        guard let character = result.data?.character else {
+            return .failure(Error(message: String(localized: "error/unknown")))
+        }
+
+        return .success(character.toDomain())
     }
 }
 

@@ -6,26 +6,18 @@ class GraphQLEpisodeDetailDataSource: EpisodeDetailRemoteDataSource {
     }
 
     func getEpisodeDetail(id: String) async -> Result<EpisodeDetail, Error> {
-        var cancellable: Cancellable? = .none
-        return await withTaskCancellationHandler { [cancellable] in
-            cancellable?.cancel()
-        } operation: {
-            return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(query: EpisodeDetailQuery(id: id)) { result in
-                    guard let result = result.unwrap() else {
-                        return continuation.resume(returning: .failure(
-                            Error(message: result.failure()!.localizedDescription))
-                        )
-                    }
-
-                    guard let episode = result.data?.episode else {
-                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                    }
-
-                    continuation.resume(returning: .success(episode.toDomain()))
-                }
-            }
+        let result = await apolloClient.fetchAsync(query: EpisodeDetailQuery(id: id))
+        guard let result = result.unwrap() else {
+            return .failure(
+                Error(message: result.failure()!.localizedDescription)
+            )
         }
+
+        guard let episode = result.data?.episode else {
+            return .failure(Error(message: String(localized: "error/unknown")))
+        }
+
+        return .success(episode.toDomain())
     }
 }
 

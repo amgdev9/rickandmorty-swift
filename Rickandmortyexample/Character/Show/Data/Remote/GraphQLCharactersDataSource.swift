@@ -10,35 +10,25 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
     }
 
     func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
-        var cancellable: Cancellable? = .none
-        return await withTaskCancellationHandler { [cancellable] in
-            cancellable?.cancel()
-        } operation: {
-            return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(
-                    query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter))
-                ) { result in
-                    guard let result = result.unwrap() else {
-                        return continuation.resume(returning: .failure(Error(message: result.failure()!.localizedDescription)))
-                    }
-
-                    guard let characters = result.data?.characters?.results else {
-                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                    }
-
-                    guard let pages = result.data?.characters?.info?.pages else {
-                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                    }
-
-                    let domainCharacters = characters
-                        .compactMap { $0 }
-                        .map { $0.fragments.characterSummaryFragment.toDomain() }
-                    continuation.resume(returning:
-                            .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
-                    )
-                }
-            }
+        let result = await apolloClient.fetchAsync(query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter)))
+        guard let result = result.unwrap() else {
+            return .failure(Error(message: result.failure()!.localizedDescription))
         }
+
+        guard let characters = result.data?.characters?.results else {
+            return .failure(Error(message: String(localized: "error/unknown")))
+        }
+
+        guard let pages = result.data?.characters?.info?.pages else {
+            return .failure(Error(message: String(localized: "error/unknown")))
+        }
+
+        let domainCharacters = characters
+            .compactMap { $0 }
+            .map { $0.fragments.characterSummaryFragment.toDomain() }
+
+        return .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
+        )
     }
 }
 

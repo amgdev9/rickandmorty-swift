@@ -6,26 +6,16 @@ class GraphQLLocationDetailDataSource: LocationDetailRemoteDataSource {
     }
 
     func getLocationDetail(id: String) async -> Result<LocationDetail, Error> {
-        var cancellable: Cancellable? = .none
-        return await withTaskCancellationHandler { [cancellable] in
-            cancellable?.cancel()
-        } operation: {
-            return await withCheckedContinuation { continuation in
-                cancellable = apolloClient.fetch(query: LocationDetailQuery(id: id)) { result in
-                    guard let result = result.unwrap() else {
-                        return continuation.resume(returning: .failure(
-                            Error(message: result.failure()!.localizedDescription))
-                        )
-                    }
-
-                    guard let location = result.data?.location else {
-                        return continuation.resume(returning: .failure(Error(message: String(localized: "error/unknown"))))
-                    }
-
-                    continuation.resume(returning: .success(location.toDomain()))
-                }
-            }
+        let result = await apolloClient.fetchAsync(query: LocationDetailQuery(id: id))
+        guard let result = result.unwrap() else {
+            return .failure(Error(message: result.failure()!.localizedDescription))
         }
+
+        guard let location = result.data?.location else {
+            return .failure(Error(message: String(localized: "error/unknown")))
+        }
+
+        return .success(location.toDomain())
     }
 }
 
