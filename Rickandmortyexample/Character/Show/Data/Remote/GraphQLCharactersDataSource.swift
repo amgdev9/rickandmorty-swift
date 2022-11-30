@@ -28,7 +28,6 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
             .map { $0.fragments.characterSummaryFragment.toDomain() }
 
         return .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
-        )
     }
 }
 

@@ -5,8 +5,8 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
     let router: SearchScreenRouter
 
     init(router: SearchScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
+        _viewModel = StateObject(wrappedValue: viewModelFactory())
     }
 
     var title: String {
@@ -15,18 +15,16 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
 
     var body: some View {
         NavigationContainer(title: title, color: .basicWhite) {
-            VStack {
-                Divider()
-                Color.white
+            VStack(spacing: 0) {
+                AutocompleteBar(
+                    initialSearchText: router.params.initialValue,
+                    autocompletions: viewModel.suggestions,
+                    onAutocomplete: viewModel.search,
+                    onSubmit: router.goBackWithResult
+                )
+                .padding(.horizontal, 16)
+                Spacer()
             }
-        }
-        .autocompleteBar(
-            searchText: $viewModel.searchText,
-            autocompletions: viewModel.suggestions,
-            onAutocomplete: viewModel.search
-        )
-        .onSubmit(of: .search) {
-            router.goBackWithResult(value: viewModel.searchText)
         }
     }
 }

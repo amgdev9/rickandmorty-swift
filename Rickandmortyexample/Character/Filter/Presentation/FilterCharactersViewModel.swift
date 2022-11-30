@@ -11,7 +11,7 @@ class FilterCharactersViewModelImpl: FilterCharactersViewModel {
     }
 
     func onPressClear() {
-        // TODO
+        filter = CharacterFilter()
     }
 }
 

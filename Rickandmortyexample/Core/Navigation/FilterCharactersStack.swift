@@ -13,15 +13,15 @@ struct FilterCharactersStack: View {
             FilterCharactersScreen(router: SwiftUIFilterCharactersScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)) {
                 mainContainer.filterCharactersViewModel
             }
-            .navigationDestination(for: SearchScreens.self) { screenType in
-                switch screenType {
+            .navigationDestination(for: SearchScreens.self) { screen in
+                switch screen {
                 case .byName(let params):
                     SearchScreen(router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel
+                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByCharacterNameRepository)
                     }
                 case .bySpecies(let params):
                     SearchScreen(router: SwiftUISearchBySpeciesRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel
+                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByCharacterSpeciesRepository)
                     }
                 }
             }
@@ -37,7 +37,7 @@ extension FilterCharactersStack {
     }
 
     class SwiftUIFilterCharactersScreenRouter: Router & FilterCharactersScreenRouter {
-        var params: FilterCharactersScreenParams
+        let params: FilterCharactersScreenParams
         let dismiss: DismissAction
 
         init(path: Binding<NavigationPath>, params: FilterCharactersScreenParams, dismiss: DismissAction) {
@@ -60,7 +60,7 @@ extension FilterCharactersStack {
     }
 
     class SwiftUISearchByNameRouter: Router & SearchScreenRouter {
-        var params: SearchScreenParams
+        let params: SearchScreenParams
         let mainScreenParams: Binding<FilterCharactersScreenParams>
 
         init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterCharactersScreenParams>) {

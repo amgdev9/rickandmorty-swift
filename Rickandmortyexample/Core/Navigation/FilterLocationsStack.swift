@@ -17,15 +17,15 @@ struct FilterLocationsStack: View {
                 switch screenType {
                 case .byName(let params):
                     SearchScreen(router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel
+                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationNameRepository)
                     }
                 case .byType(let params):
                     SearchScreen(router: SwiftUISearchByTypeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel
+                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationTypeRepository)
                     }
                 case .byDimension(let params):
                     SearchScreen(router: SwiftUISearchByDimensionRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel
+                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationDimensionRepository)
                     }
                 }
             }

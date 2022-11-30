@@ -42,8 +42,8 @@ class MainContainer: BootstrapComponent {
         return EpisodeDetailsViewModelImpl()
     }
 
-    var searchViewModel: some SearchViewModel {
-        return SearchViewModelImpl()
+    func searchViewModel(autocompleteRepository: some AutocompleteRepository) -> some SearchViewModel {
+        return SearchViewModelImpl(autocompleteRepository: autocompleteRepository)
     }
 
     var filterLocationsViewModel: some FilterLocationsViewModel {
@@ -74,6 +74,34 @@ class MainContainer: BootstrapComponent {
 
     var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {
         return GraphQLCharacterDetailDataSource(apolloClient: apolloClient)
+    }
+
+    var autocompleteByCharacterNameRepository: some AutocompleteRepository {
+        return AutocompleteByCharacterNameRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByCharacterSpeciesRepository: some AutocompleteRepository {
+        return AutocompleteByCharacterSpeciesRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByLocationNameRepository: some AutocompleteRepository {
+        return AutocompleteByLocationNameRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByLocationTypeRepository: some AutocompleteRepository {
+        return AutocompleteByLocationTypeRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByLocationDimensionRepository: some AutocompleteRepository {
+        return AutocompleteByLocationDimensionRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByEpisodeNameRepository: some AutocompleteRepository {
+        return AutocompleteByEpisodeNameRepository(apolloClient: apolloClient)
+    }
+
+    var autocompleteByEpisodeSeasonIDRepository: some AutocompleteRepository {
+        return AutocompleteByEpisodeSeasonIDRepository(apolloClient: apolloClient)
     }
 
     // MARK: - Core Data

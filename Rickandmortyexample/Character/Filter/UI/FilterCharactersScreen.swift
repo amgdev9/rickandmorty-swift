@@ -24,13 +24,13 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
                     title: String(localized: "section/name-title"),
                     subtitle: String(localized: "section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearchByName(initialValue: "") // TODO
+                        router.goSearchByName(initialValue: viewModel.filter.name)
                     }.padding(.bottom, 19)
                 SectionButton(
                     title: String(localized: "section/species-title"),
                     subtitle: String(localized: "action/select-one"),
                     active: !viewModel.filter.species.isEmpty) {
-                        router.goSearchBySpecies(initialValue: "")    // TODO
+                        router.goSearchBySpecies(initialValue: viewModel.filter.species)
                     }.padding(.bottom, 19.5)
                 RadioButtonGroup(
                     title: String(localized: "section/status"),
@@ -44,6 +44,14 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
             }
         }
         .presentationDetents([.fraction(1), .large])
+        .onChange(of: router.params, perform: { params in
+            if let name = params.name {
+                ($viewModel.filter.name).wrappedValue = name
+            }
+            if let species = params.species {
+                ($viewModel.filter.species).wrappedValue = species
+            }
+        })
     }
 }
 
@@ -56,7 +64,7 @@ protocol FilterCharactersScreenRouter {
     func goSearchBySpecies(initialValue: String)
 }
 
-struct FilterCharactersScreenParams {
+struct FilterCharactersScreenParams: Hashable {
     let name: String?
     let species: String?
 }

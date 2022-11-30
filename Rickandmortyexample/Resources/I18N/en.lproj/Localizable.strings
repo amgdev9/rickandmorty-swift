@@ -31,6 +31,9 @@
 "error/database" = "An unexpected error happened with the database. Try again later";
 "error/alert-title" = "An error just happened";
 
+// Forms
+"form/search" = "Search";
+
 // Misc
 "misc/unknown" = "Unknown";
 
