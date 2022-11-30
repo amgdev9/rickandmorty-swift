@@ -1,13 +1,20 @@
 class FilterCharactersViewModelImpl: FilterCharactersViewModel {
     @Published var filter: CharacterFilter
 
-    init() {
+    let characterFilterRepository: CharacterFilterRepository
+
+    init(characterFilterRepository: CharacterFilterRepository) {
         self.filter = CharacterFilter()
+        self.characterFilterRepository = characterFilterRepository
     }
 
-    func onPressApply(goBack: () -> Void) {
-        // TODO
-        goBack()
+    func onPressApply(goBack: @escaping () -> Void) {
+        Task {
+            await characterFilterRepository.addFilter(filter: filter)
+            await MainActor.run {
+                goBack()
+            }
+        }
     }
 
     func onPressClear() {
@@ -19,6 +26,6 @@ class FilterCharactersViewModelImpl: FilterCharactersViewModel {
 protocol FilterCharactersViewModel: ObservableObject {
     var filter: CharacterFilter { get set }
 
-    func onPressApply(goBack: () -> Void)
+    func onPressApply(goBack: @escaping () -> Void)
     func onPressClear()
 }

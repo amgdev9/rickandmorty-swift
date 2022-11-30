@@ -1,6 +1,6 @@
 import NeedleFoundation
 import Apollo
-import CoreData
+import RealmSwift
 
 class MainContainer: BootstrapComponent {
     var configuration: some Configuration {
@@ -15,7 +15,7 @@ class MainContainer: BootstrapComponent {
 
     // MARK: - View Models
     var showCharactersViewModel: some ShowCharactersViewModel {
-        return ShowCharactersViewModelImpl(charactersRepository: charactersRepository)
+        return ShowCharactersViewModelImpl(charactersRepository: charactersRepository, filterRepository: characterFilterRepository)
     }
 
     var showLocationsViewModel: some ShowLocationsViewModel {
@@ -27,7 +27,7 @@ class MainContainer: BootstrapComponent {
     }
 
     var filterCharactersViewModel: some FilterCharactersViewModel {
-        return FilterCharactersViewModelImpl()
+        return FilterCharactersViewModelImpl(characterFilterRepository: characterFilterRepository)
     }
 
     var characterDetailsViewModel: some CharacterDetailsViewModel {
@@ -64,12 +64,18 @@ class MainContainer: BootstrapComponent {
         }
     }
 
+    var characterFilterRepository: some CharacterFilterRepository {
+        return shared {
+            RealmCharacterFilterRepository(realmFactory: realmFactory, realmQueue: realmQueue)
+        }
+    }
+
     var charactersRemoteDataSource: some CharactersRemoteDataSource {
         return GraphQLCharactersDataSource(apolloClient: apolloClient)
     }
 
     var charactersLocalDataSource: some CharactersLocalDataSource {
-        return CoreDataCharactersDataSource(context: coreDataManagedObjectContext)
+        return RealmCharactersDataSource()
     }
 
     var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {
@@ -104,32 +110,16 @@ class MainContainer: BootstrapComponent {
         return AutocompleteByEpisodeSeasonIDRepository(apolloClient: apolloClient)
     }
 
-    // MARK: - Core Data
-    var coreDataPersistentContainer: NSPersistentContainer {
+    // MARK: - Realm
+    var realmFactory: RealmFactory {
         return shared {
-            guard let managedObjectModel = NSManagedObjectModel.mergedModel(from: [.main]) else {
-                fatalError("Failed to create CoreData NSManagedObjectModel")
-            }
-            let container = NSPersistentContainer(name: "DBSchema", managedObjectModel: managedObjectModel)
-            if let storeDescription = container.persistentStoreDescriptions.first {
-                storeDescription.shouldAddStoreAsynchronously = true
-                storeDescription.url = URL(fileURLWithPath: "/dev/null")
-                storeDescription.shouldAddStoreAsynchronously = false
-            }
-            container.loadPersistentStores { _, error in
-                if let error = error {
-                    fatalError("Unable to load persistent store: \(error)")
-                }
-            }
-            return container
+            RealmFactory(serialQueue: realmQueue, schemaVersion: 1)
         }
     }
 
-    var coreDataManagedObjectContext: NSManagedObjectContext {
+    var realmQueue: DispatchQueue {
         return shared {
-            let context = coreDataPersistentContainer.newBackgroundContext()
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            return context
+            DispatchQueue(label: "realm-queue")
         }
     }
 }

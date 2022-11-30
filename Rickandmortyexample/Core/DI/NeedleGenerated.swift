@@ -3,6 +3,7 @@
 import Apollo
 import CoreData
 import NeedleFoundation
+import RealmSwift
 
 // swiftlint:disable unused_declaration
 private let needleDependenciesHash : String? = nil

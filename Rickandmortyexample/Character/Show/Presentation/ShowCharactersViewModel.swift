@@ -2,17 +2,25 @@ import RxSwift
 
 class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private let charactersRepository: CharactersRepository
+    private let filterRepository: CharacterFilterRepository
     private let disposeBag = DisposeBag()
 
     @Published var listState: NetworkData<[CharacterSummary]> = .loading
     @Published var hasFilters = false
     @Published var error: Error? = .none
 
-    init(charactersRepository: CharactersRepository) {
+    init(charactersRepository: CharactersRepository, filterRepository: CharacterFilterRepository) {
         self.charactersRepository = charactersRepository
+        self.filterRepository = filterRepository
     }
 
     func onViewMount() {
+        filterRepository.getLatestFilterObservable()
+            .subscribe(onNext: {
+                print("\($0.name)")
+            })
+            .disposed(by: disposeBag)
+
         charactersRepository.observable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {

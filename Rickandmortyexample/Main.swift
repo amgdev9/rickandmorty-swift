@@ -1,7 +1,8 @@
 import SwiftUI
+import RealmSwift
 
 @main
-struct Main: App {
+struct Main: SwiftUI.App {
     let mainContainer: MainContainer
 
     init() {

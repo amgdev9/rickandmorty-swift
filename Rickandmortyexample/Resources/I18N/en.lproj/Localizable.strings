@@ -28,7 +28,6 @@
 
 // Errors
 "error/unknown" = "An unknown error has happened. Try again later";
-"error/database" = "An unexpected error happened with the database. Try again later";
 "error/alert-title" = "An error just happened";
 
 // Forms
