@@ -13,7 +13,17 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
         self.realmQueue = realmQueue
     }
 
-    func getLatestFilter() async -> CharacterFilter? {
+    static func preload(realm: Realm) throws {
+        let filters = realm.objects(RealmCharacterFilter.self)
+        if filters.count > 0 { return }
+
+        try realm.write {
+            let defaultFilter = RealmCharacterFilter(filter: CharacterFilter())
+            realm.add(defaultFilter)
+        }
+    }
+
+    func getLatestFilter() async -> CharacterFilter {
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -23,10 +33,10 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         .sorted(by: \.createdAt, ascending: false)
                         .first?.toDomain()
 
-                    return continuation.resume(returning: filter)
+                    return continuation.resume(returning: filter ?? CharacterFilter())
                 } catch { }
 
-                return continuation.resume(returning: .none)
+                return continuation.resume(returning: CharacterFilter())
             }
         }
     }
@@ -44,7 +54,6 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         if case .error = changes { return }
                         Task {
                             let filter = await self.getLatestFilter()
-                            guard let filter = filter else { return }
                             observer.onNext(filter)
                         }
                     }
@@ -69,7 +78,6 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         let existingFilter = filters.where { $0.id == realmFilter.id }.first
                         if let existingFilter = existingFilter {
                             existingFilter.createdAt = realmFilter.createdAt
-                            print("\(filters.count)")
                             return continuation.resume(returning: ())
                         }
 

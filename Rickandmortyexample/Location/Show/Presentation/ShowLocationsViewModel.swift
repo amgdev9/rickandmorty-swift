@@ -1,5 +1,5 @@
 class ShowLocationsViewModelImpl: ShowLocationsViewModel {
-    @Published var listState: NetworkData<[LocationSummary]> = .loading
+    @Published var listState: NetworkData<PaginatedResponse<LocationSummary>> = .loading
     @Published var hasFilters: Bool = false
     @Published var error: Error? = .none
 
@@ -18,7 +18,7 @@ class ShowLocationsViewModelImpl: ShowLocationsViewModel {
 
 // MARK: - Protocol
 protocol ShowLocationsViewModel: ObservableObject {
-    var listState: NetworkData<[LocationSummary]> { get }
+    var listState: NetworkData<PaginatedResponse<LocationSummary>> { get }
     var hasFilters: Bool { get }
     var error: Error? { get set }
 

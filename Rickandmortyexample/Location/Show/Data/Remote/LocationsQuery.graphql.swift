@@ -18,7 +18,7 @@ public class LocationsQuery: GraphQLQuery {
           }
           info {
             __typename
-            pages
+            next
           }
         }
       }
@@ -109,11 +109,11 @@ public class LocationsQuery: GraphQLQuery {
 
         public static var __parentType: ParentType { Rickandmortyexample.Objects.Info }
         public static var __selections: [Selection] { [
-          .field("pages", Int?.self),
+          .field("next", Int?.self),
         ] }
 
-        /// The amount of pages.
-        public var pages: Int? { __data["pages"] }
+        /// Number of the next page (if it exists)
+        public var next: Int? { __data["next"] }
       }
     }
   }

@@ -81,8 +81,10 @@ struct FilterCharactersScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: FilterCharactersViewModel {
+        var loading = false
         var filter = CharacterFilter()
 
+        func onViewMount() {}
         func onPressApply(goBack: () -> Void) {}
         func onPressClear() {}
     }

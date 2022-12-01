@@ -4,7 +4,7 @@ query Characters($page: Int!, $filter: FilterCharacter!) {
 	  ...CharacterSummaryFragment
 	}
 	info {
-	  pages
+	  next
 	}
   }
 }

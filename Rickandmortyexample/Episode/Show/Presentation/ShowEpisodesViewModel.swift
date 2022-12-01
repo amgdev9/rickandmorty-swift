@@ -1,5 +1,5 @@
 class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
-    @Published var seasons: NetworkData<[EpisodeSeason]> = .loading
+    @Published var seasons: NetworkData<PaginatedResponse<EpisodeSeason>> = .loading
     @Published var hasFilters = false
     @Published var error: Error? = .none
 
@@ -18,7 +18,7 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
 
 // MARK: - Protocol
 protocol ShowEpisodesViewModel: ObservableObject {
-    var seasons: NetworkData<[EpisodeSeason]> { get }
+    var seasons: NetworkData<PaginatedResponse<EpisodeSeason>> { get }
     var hasFilters: Bool { get }
     var error: Error? { get set }
 

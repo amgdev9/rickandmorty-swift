@@ -75,7 +75,7 @@ class MainContainer: BootstrapComponent {
     }
 
     var charactersLocalDataSource: some CharactersLocalDataSource {
-        return RealmCharactersDataSource()
+        return RealmCharactersDataSource(realmFactory: realmFactory, realmQueue: realmQueue)
     }
 
     var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {

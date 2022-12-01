@@ -1,8 +1,7 @@
 import RxSwift
 
 protocol CharactersRepository {
-    var observable: Observable<Result<[CharacterSummary], Error>> { get }
-    func fetch() async -> Result<Void, Error>
-    func loadNextPage() async -> Result<Void, Error>
-    func refetch() async -> Result<Void, Error>
+    func fetch(filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error>
+    func fetchNextPage(filter: CharacterFilter, listSize: UInt32) async -> Result<PaginatedResponse<CharacterSummary>, Error>
+    func refetch(filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error>
 }

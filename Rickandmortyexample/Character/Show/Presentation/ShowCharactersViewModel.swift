@@ -5,9 +5,28 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private let filterRepository: CharacterFilterRepository
     private let disposeBag = DisposeBag()
 
-    @Published var listState: NetworkData<[CharacterSummary]> = .loading
-    @Published var hasFilters = false
+    @Published var listState: NetworkData<PaginatedResponse<CharacterSummary>> = .loading
     @Published var error: Error? = .none
+
+    @Published private var filter = CharacterFilter()
+    var hasFilters: Bool { !filter.isEmpty }
+
+    private var refetchContinuation: CheckedContinuation<(), Never>?
+    private var fetchNextPageContinuation: CheckedContinuation<(), Never>?
+
+    enum Action {
+        case fetch(CharacterFilter)
+        case refetch
+        case fetchNextPage
+    }
+
+    enum ActionResult {
+        case fetch(Result<PaginatedResponse<CharacterSummary>, Error>)
+        case refetch(Result<PaginatedResponse<CharacterSummary>, Error>)
+        case fetchNextPage(Result<PaginatedResponse<CharacterSummary>, Error>)
+    }
+
+    private let actionsSubject = PublishSubject<Action>()
 
     init(charactersRepository: CharactersRepository, filterRepository: CharacterFilterRepository) {
         self.charactersRepository = charactersRepository
@@ -17,61 +36,121 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     func onViewMount() {
         filterRepository.getLatestFilterObservable()
             .subscribe(onNext: {
-                print("\($0.name)")
+                self.actionsSubject.onNext(.fetch($0))
             })
             .disposed(by: disposeBag)
 
-        charactersRepository.observable
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                switch $0 {
-                case .failure(let error):
-                    self.listState = .error(error.message)
-                case .success(let characters):
-                    print("Got \(characters.count)")
-                    self.listState = .data(characters)
-                }
-            })
-            .disposed(by: disposeBag)
-
-        Task {
-            let result = await charactersRepository.fetch()
-            if let error = result.failure() {
-                await MainActor.run {
-                    self.listState = .error(error.message)
-                }
+        actionsSubject
+            .map {
+                print("\($0)")
+                return $0
             }
-        }
+            .observe(on: MainScheduler.instance)
+            .concatMap(handleAction)
+            .observe(on: MainScheduler.instance)
+            .subscribe {
+                guard let result = $0.element else { return }
+                self.handleActionResult(actionResult: result)
+            }
+            .disposed(by: disposeBag)
     }
 
     @Sendable func refetch() async {
-        let result = await charactersRepository.refetch()
-        if let error = result.failure() {
-            await MainActor.run {
-                if case .data = listState {
-                    self.error = error
-                }
-            }
+        return await withCheckedContinuation { continuation in
+            actionsSubject.onNext(.refetch)
+            self.refetchContinuation = continuation
         }
     }
 
-    func loadNextPage() async {
-        let result = await charactersRepository.loadNextPage()
-        if let error = result.failure() {
-            await MainActor.run {
-                self.error = error
+    func fetchNextPage() async {
+        return await withCheckedContinuation { continuation in
+            actionsSubject.onNext(.fetchNextPage)
+            self.fetchNextPageContinuation = continuation
+        }
+    }
+
+    private func handleAction(action: Action) -> Observable<ActionResult> {
+        switch action {
+        case .fetch(let filter):
+            return .create { observer in
+                print("FETCH")
+                self.filter = filter
+                Task {
+                    let result = await self.charactersRepository.fetch(filter: filter)
+                    print("FINISH FETCH")
+                    observer.onNext(.fetch(result))
+                }
+
+                return Disposables.create()
+            }.take(1)
+        case .refetch:
+            return .create { observer in
+                print("REFETCH")
+                Task {
+                    let result = await self.charactersRepository.refetch(filter: self.filter)
+                    observer.onNext(.fetch(result))
+                }
+
+                return Disposables.create()
+            }.take(1)
+        case .fetchNextPage:
+            return .create { observer in
+                print("NEXTPAGE")
+                Task {
+                    guard case let .data(list) = self.listState else { return }
+                    let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
+                    observer.onNext(.fetch(result))
+                }
+
+                return Disposables.create()
+            }.take(1)
+        }
+    }
+
+    private func handleActionResult(actionResult: ActionResult) {
+        switch actionResult {
+        case .fetch(let result):
+            guard let result = result.unwrap() else {
+                listState = .error(result.failure()!.message)
+                return
             }
+
+            listState = .data(result)
+        case .refetch(let result):
+            guard let result = result.unwrap() else {
+                if case .error = listState {
+                    listState = .error(result.failure()!.message)
+                } else {
+                    error = result.failure()!
+                }
+                return
+            }
+
+            listState = .data(result)
+            refetchContinuation?.resume(returning: ())
+            refetchContinuation = .none
+        case .fetchNextPage(let result):
+            guard let result = result.unwrap() else {
+                error = result.failure()!
+                return
+            }
+
+            guard case let .data(list) = self.listState else { return }
+
+            listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
+            fetchNextPageContinuation?.resume(returning: ())
+            fetchNextPageContinuation = .none
         }
     }
 }
 
 // MARK: - Protocol
 protocol ShowCharactersViewModel: ObservableObject {
-    var listState: NetworkData<[CharacterSummary]> { get }
+    var listState: NetworkData<PaginatedResponse<CharacterSummary>> { get }
     var hasFilters: Bool { get }
     var error: Error? { get set }
 
     func onViewMount()
     @Sendable func refetch() async
-    func loadNextPage() async
+    func fetchNextPage() async
 }

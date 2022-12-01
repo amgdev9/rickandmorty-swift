@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LocationList: View {
-    let data: NetworkData<[LocationSummary]>
+    let data: NetworkData<PaginatedResponse<LocationSummary>>
     let onRefetch: @Sendable () async -> Void
     let onLoadNextPage: () async -> Void
     let onPress: (_ id: String) -> Void
@@ -31,6 +31,6 @@ struct LocationListPreviews: PreviewProvider {
     }
 
     static var previews: some View {
-        LocationList(data: .data(locations), onRefetch: delay, onLoadNextPage: delay, onPress: { _ in })
+        LocationList(data: .data(PaginatedResponse(items: locations, hasNext: false)), onRefetch: delay, onLoadNextPage: delay, onPress: { _ in })
     }
 }

@@ -19,7 +19,7 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
-        guard let pages = result.data?.episodes?.info?.pages else {
+        guard let info = result.data?.episodes?.info else {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
@@ -33,7 +33,7 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
             EpisodeSeason(id: key, episodes: episodes)
         }
 
-        return .success(PaginatedResponse(numPages: UInt32(pages), items: seasons))
+        return .success(PaginatedResponse(items: seasons, hasNext: info.next != nil))
     }
 }
 

@@ -8,6 +8,8 @@ class RealmCharacterFilter: RealmSwift.Object {
     @Persisted var gender: Int8
     @Persisted var createdAt: Date
 
+    @Persisted var list: RealmCharacterList?
+
     convenience init(filter: CharacterFilter) {
         self.init()
         name = filter.name
@@ -19,6 +21,7 @@ class RealmCharacterFilter: RealmSwift.Object {
     }
 
     func delete(realm: Realm) {
+        list?.delete(realm: realm)
         realm.delete(self)
     }
 

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct PaginatedList<Data, Content>: View where Content: View {
-    let data: NetworkData<Data>
+    let data: NetworkData<PaginatedResponse<Data>>
     let onRefetch: @Sendable () async -> Void
     let onLoadNextPage: () async -> Void
-    @ViewBuilder let content: (_: Data) -> Content
+    @ViewBuilder let content: (_: [Data]) -> Content
 
     @State private var loadingNextPage = false
 
@@ -12,7 +12,7 @@ struct PaginatedList<Data, Content>: View where Content: View {
         NetworkDataContainer(data: data, onRefetch: onRefetch) { loadedData in
             BottomDetectorScrollView {
                 VStack(spacing: 0) {
-                    content(loadedData)
+                    content(loadedData.items)
                     if loadingNextPage { ProgressView().padding(16) }
                 }
             } onBottomReached: {
@@ -26,6 +26,8 @@ struct PaginatedList<Data, Content>: View where Content: View {
 extension PaginatedList {
     func handleLoadNextPage() {
         if loadingNextPage { return }
+        if case .data(let paginatedData) = data, !paginatedData.hasNext { return }
+
         loadingNextPage = true
         Task { @MainActor in
             await onLoadNextPage()
@@ -38,15 +40,15 @@ extension PaginatedList {
 struct PaginatedListPreviews: PreviewProvider {
     static var previews: some View {
         PaginatedList(
-            data: NetworkData<String>.data("Hello!"),
+            data: NetworkData.data(PaginatedResponse(items: ["Hello"], hasNext: false)),
             onRefetch: delay,
             onLoadNextPage: delay) { data in
-            Text(data, variant: .body15)
+                Text(data.first!, variant: .body15)
 
         }
             .previewDisplayName("With data")
         PaginatedList(
-            data: NetworkData<String>.loading,
+            data: NetworkData<PaginatedResponse<String>>.loading,
             onRefetch: delay,
             onLoadNextPage: delay) { _ in }
             .previewDisplayName("Loading")

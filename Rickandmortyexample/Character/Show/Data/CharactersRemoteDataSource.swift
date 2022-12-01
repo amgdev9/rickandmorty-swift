@@ -1,4 +1,4 @@
 protocol CharactersRemoteDataSource {
-    var pageSize: UInt { get }
-    func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error>
+    var pageSize: UInt32 { get }
+    func getCharacters(page: UInt32, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error>
 }

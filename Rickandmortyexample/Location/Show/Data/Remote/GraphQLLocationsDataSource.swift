@@ -19,7 +19,7 @@ class GraphQLLocationsDataSource: LocationsRemoteDataSource {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
-        guard let pages = result.data?.locations?.info?.pages else {
+        guard let info = result.data?.locations?.info else {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
@@ -27,7 +27,7 @@ class GraphQLLocationsDataSource: LocationsRemoteDataSource {
             .compactMap { $0 }
             .map { $0.fragments.locationSummaryFragment.toDomain() }
 
-        return .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
+        return .success(PaginatedResponse(items: domainCharacters, hasNext: info.next != nil))
     }
 }
 

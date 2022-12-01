@@ -38,13 +38,13 @@ struct ShowLocationsScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: ShowLocationsViewModel {
-        var listState: NetworkData<[LocationSummary]> = .data((1...10).map { i in
+        var listState: NetworkData<PaginatedResponse<LocationSummary>> = .data(PaginatedResponse(items:(1...10).map { i in
             LocationSummary.Builder()
                 .set(id: String(i))
                 .set(name: "Earth (C-137)")
                 .set(type: "Planet")
                 .build()
-        })
+        }, hasNext: false))
         var hasFilters = true
         var error: Error? = .none
 

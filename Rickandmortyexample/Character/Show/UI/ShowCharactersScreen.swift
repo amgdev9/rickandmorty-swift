@@ -12,7 +12,7 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
 
     var body: some View {
         NavigationContainer(title: String(localized: "routes/character")) {
-            PaginatedList(data: viewModel.listState, onRefetch: viewModel.refetch, onLoadNextPage: viewModel.loadNextPage) { characters in
+            PaginatedList(data: viewModel.listState, onRefetch: viewModel.refetch, onLoadNextPage: viewModel.fetchNextPage) { characters in
                 CharacterList(characters: characters,
                               onPress: router.gotoCharacterDetail)
                 .padding(.top, 20)
@@ -46,17 +46,17 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
         var error: Error? = .none
 
         func onViewMount() {}
-        var listState: NetworkData<[CharacterSummary]> = .data(CharacterListPreviews.characters.map {
+        var listState: NetworkData<PaginatedResponse<CharacterSummary>> = .data(PaginatedResponse(items: CharacterListPreviews.characters.map {
             CharacterSummary.Builder()
                 .set(id: $0.id)
                 .set(name: $0.name)
                 .set(imageURL: $0.imageURL)
                 .set(status: $0.status)
                 .build()
-        })
+        }, hasNext: false))
         var hasFilters: Bool = true
 
-        func loadNextPage() async {}
+        func fetchNextPage() async {}
         func refetch() async {
             await ShowCharactersScreenPreviews.delay()
         }

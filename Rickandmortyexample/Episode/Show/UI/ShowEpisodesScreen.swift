@@ -47,11 +47,11 @@ struct ShowEpisodesScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: ShowEpisodesViewModel {
-        var seasons: NetworkData<[EpisodeSeason]> = .data([
+        var seasons: NetworkData<PaginatedResponse<EpisodeSeason>> = .data(PaginatedResponse(items: [
             EpisodeSeason(id: 1, episodes: EpisodeListPreviews.EPISODES),
             EpisodeSeason(id: 2, episodes: EpisodeListPreviews.EPISODES),
             EpisodeSeason(id: 3, episodes: EpisodeListPreviews.EPISODES)
-        ])
+        ], hasNext: false))
 
         var hasFilters: Bool = false
         var error: Error? = .none

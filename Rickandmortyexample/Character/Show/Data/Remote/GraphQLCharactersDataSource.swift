@@ -1,7 +1,7 @@
 import Apollo
 
 class GraphQLCharactersDataSource: CharactersRemoteDataSource {
-    var pageSize: UInt = 20
+    var pageSize: UInt32 = 20
 
     let apolloClient: ApolloClient
 
@@ -9,7 +9,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getCharacters(page: UInt, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
+    func getCharacters(page: UInt32, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
         let result = await apolloClient.fetchAsync(query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter)))
         guard let result = result.unwrap() else {
             return .failure(Error(message: result.failure()!.localizedDescription))
@@ -19,7 +19,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
-        guard let pages = result.data?.characters?.info?.pages else {
+        guard let info = result.data?.characters?.info else {
             return .failure(Error(message: String(localized: "error/unknown")))
         }
 
@@ -27,7 +27,7 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
             .compactMap { $0 }
             .map { $0.fragments.characterSummaryFragment.toDomain() }
 
-        return .success(PaginatedResponse(numPages: UInt32(pages), items: domainCharacters))
+        return .success(PaginatedResponse(items: domainCharacters, hasNext: info.next != nil))
     }
 }
 

@@ -86,6 +86,8 @@
 		E59EF7BF2920FF3300628FED /* ShowCharactersScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59EF7BE2920FF3300628FED /* ShowCharactersScreen.swift */; };
 		E59EF7C22920FF9900628FED /* TabsNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59EF7C12920FF9900628FED /* TabsNavigator.swift */; };
 		E59EF7C42921015700628FED /* ShowCharactersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59EF7C32921015700628FED /* ShowCharactersViewModel.swift */; };
+		E5A0E0E829391943007CC6EB /* RealmCharacterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A0E0E729391943007CC6EB /* RealmCharacterList.swift */; };
+		E5A0E0EC293919BD007CC6EB /* RealmCharacterSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */; };
 		E5A1ECF4292E1E4D00A8B13F /* EpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF3292E1E4D00A8B13F /* EpisodeList.swift */; };
 		E5A1ECF6292E205400A8B13F /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF5292E205400A8B13F /* DateFormat.swift */; };
 		E5A1ECF8292E22FD00A8B13F /* Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF7292E22FD00A8B13F /* Separator.swift */; };
@@ -295,6 +297,8 @@
 		E59EF7BE2920FF3300628FED /* ShowCharactersScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCharactersScreen.swift; sourceTree = "<group>"; };
 		E59EF7C12920FF9900628FED /* TabsNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsNavigator.swift; sourceTree = "<group>"; };
 		E59EF7C32921015700628FED /* ShowCharactersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCharactersViewModel.swift; sourceTree = "<group>"; };
+		E5A0E0E729391943007CC6EB /* RealmCharacterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterList.swift; sourceTree = "<group>"; };
+		E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterSummary.swift; sourceTree = "<group>"; };
 		E5A1ECF3292E1E4D00A8B13F /* EpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeList.swift; sourceTree = "<group>"; };
 		E5A1ECF5292E205400A8B13F /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		E5A1ECF7292E22FD00A8B13F /* Separator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separator.swift; sourceTree = "<group>"; };
@@ -464,6 +468,7 @@
 		E5381E96292D348C00606A89 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E5A0E0E92939197F007CC6EB /* Data */,
 				E5BD505F29376CFE006C2A6B /* Presentation */,
 				E5381E97292D349100606A89 /* Domain */,
 			);
@@ -758,6 +763,7 @@
 			isa = PBXGroup;
 			children = (
 				E59413892937C9EB0051ACF8 /* RealmFactory.swift */,
+				E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -958,6 +964,22 @@
 				E5D5D0A62924257C006771CA /* Remote */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		E5A0E0E92939197F007CC6EB /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				E5A0E0EA29391989007CC6EB /* Local */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		E5A0E0EA29391989007CC6EB /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				E5BD506429378E9F006C2A6B /* RealmCharacterFilter.swift */,
+			);
+			path = Local;
 			sourceTree = "<group>";
 		};
 		E5A1ECFD292E2EAA00A8B13F /* Presentation */ = {
@@ -1337,7 +1359,6 @@
 			isa = PBXGroup;
 			children = (
 				E5BD506229376F4E006C2A6B /* RealmCharacterFilterRepository.swift */,
-				E5BD506429378E9F006C2A6B /* RealmCharacterFilter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1400,6 +1421,7 @@
 			isa = PBXGroup;
 			children = (
 				E5B1851A2925799100400366 /* RealmCharactersDataSource.swift */,
+				E5A0E0E729391943007CC6EB /* RealmCharacterList.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -1748,6 +1770,7 @@
 				E5B24EC92934F101007EE90D /* Router.swift in Sources */,
 				E5B24EC02934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift in Sources */,
 				E597A2732933F7D100225DAE /* FilterLocation.graphql.swift in Sources */,
+				E5A0E0EC293919BD007CC6EB /* RealmCharacterSummary.swift in Sources */,
 				E5B1851B2925799100400366 /* RealmCharactersDataSource.swift in Sources */,
 				E5AAC50529314B7600FF695C /* EpisodeDetailsViewModel.swift in Sources */,
 				E5B24EA82934D92E007EE90D /* AutocompleteByEpisodeNameQuery.graphql.swift in Sources */,
@@ -1816,6 +1839,7 @@
 				E5D5D0A0292421C5006771CA /* CharacterSummary.swift in Sources */,
 				E5AAC4E429312F7600FF695C /* LocationDetail.swift in Sources */,
 				E594DD1229214AE2002F7038 /* Character.swift in Sources */,
+				E5A0E0E829391943007CC6EB /* RealmCharacterList.swift in Sources */,
 				E59B488C2913EE5500AB3085 /* Main.swift in Sources */,
 				E5BF19332930018800AE44BE /* CharacterAvatar.swift in Sources */,
 				E597A24A2933E5DE00225DAE /* EpisodeSummaryFragment.graphql.swift in Sources */,
@@ -1960,6 +1984,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
