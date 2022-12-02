@@ -1,20 +1,31 @@
 import RealmSwift
 
 class RealmCharacterList: RealmSwift.Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var primaryId: String
+
     @Persisted var characters: List<RealmCharacterSummary>
     @Persisted var filter: RealmCharacterFilter?
+
+    static private let schemaId = "character-list-"
+
+    static func primaryId(id: String) -> String {
+        return "\(schemaId)\(id)"
+    }
 
     convenience init(filter: RealmCharacterFilter) {
         self.init()
         self.filter = filter
-        id = "character-list-\(filter.id)"
+        primaryId = "\(Self.schemaId)\(filter.primaryId)"
     }
 
     func delete(realm: Realm) {
         filter = .none
 
-        let oldCharacters = characters.map { RealmCharacterSummary(value: $0) }
+        var oldCharacters: [RealmCharacterSummary] = []
+
+        characters.forEach {
+            oldCharacters.append($0)
+        }
 
         characters.removeAll()
         realm.delete(self)

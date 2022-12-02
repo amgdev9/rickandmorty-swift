@@ -1,8 +1,9 @@
 import RealmSwift
 
 class RealmCharacterDetails: RealmSwift.Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var primaryId: String
     @Persisted var gender: Int8
+    @Persisted var species: String
     @Persisted var type: String?
 
     @Persisted var origin: RealmLocationSummary?
@@ -10,9 +11,16 @@ class RealmCharacterDetails: RealmSwift.Object {
     @Persisted var episodes: List<RealmEpisodeSummary>
     @Persisted(originProperty: "detail") var summary: LinkingObjects<RealmCharacterSummary>
 
+    static private let schemaId = "character-details-"
+
+    static func primaryId(id: String) -> String {
+        return "\(schemaId)\(id)"
+    }
+
     convenience init(detail: CharacterDetails) {
         self.init()
-        self.id = "character-detail-\(detail.id)"
+        self.primaryId = "\(Self.schemaId)\(detail.id)"
+        self.species = detail.species
         self.gender = mapFromDomain(gender: detail.gender)
         self.type = detail.type
     }
@@ -49,6 +57,7 @@ class RealmCharacterDetails: RealmSwift.Object {
             .set(name: summary.name)
             .set(imageURL: summary.imageURL)
             .set(status: summary.status)
+            .set(species: species)
             .set(gender: mapGenderToDomain(gender: gender))
             .set(type: type)
             .set(origin: origin?.toCharacterLocation())

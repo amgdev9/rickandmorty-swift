@@ -34,10 +34,8 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     func onViewMount() {
-        print("MOUNT")
         filterRepository.getLatestFilterObservable()
             .subscribe(onNext: {
-                print("FILTER")
                 self.actionsSubject.onNext(.fetch($0))
             })
             .disposed(by: disposeBag)
@@ -74,11 +72,9 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         switch action {
         case .fetch(let filter):
             return .create { observer in
-                print("FETCH")
                 self.filter = filter
                 Task {
                     let result = await self.charactersRepository.fetch(filter: filter)
-                    print("FINISH FETCH")
                     observer.onNext(.fetch(result))
                 }
 
@@ -86,7 +82,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
             }.take(1)
         case .refetch:
             return .create { observer in
-                print("REFETCH")
                 Task {
                     let result = await self.charactersRepository.refetch(filter: self.filter)
                     observer.onNext(.fetch(result))
@@ -96,7 +91,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
             }.take(1)
         case .fetchNextPage:
             return .create { observer in
-                print("NEXTPAGE")
                 Task {
                     guard case let .data(list) = self.listState else { return }
                     let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
@@ -124,6 +118,8 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
                 } else {
                     error = result.failure()!
                 }
+                refetchContinuation?.resume(returning: ())
+                refetchContinuation = .none
                 return
             }
 
@@ -133,6 +129,8 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         case .fetchNextPage(let result):
             guard let result = result.unwrap() else {
                 error = result.failure()!
+                fetchNextPageContinuation?.resume(returning: ())
+                fetchNextPageContinuation = .none
                 return
             }
 

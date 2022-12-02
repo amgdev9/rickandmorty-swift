@@ -12,7 +12,7 @@
 "card/location" = "Location";
 
 // Dateformats
-"dateformat/MMMM dd, yyyy" = "MMMM dd, yyyy";
+"dateformat/MMMM d, yyyy" = "MMMM d, yyyy";
 
 // Enums
 "enums/TabItemID/character" = "Character";

@@ -10,7 +10,7 @@ struct EpisodeList: View {
                 SectionButton(
                     title: episode.seasonId,
                     subtitle: episode.name,
-                    info: episode.date.formatted(format: "dateformat/MMMM dd, yyyy"),
+                    info: episode.date.formatted(format: "dateformat/MMMM d, yyyy"),
                     showBorder: false,
                     onPress: { onPress(episode.id) }
                 )

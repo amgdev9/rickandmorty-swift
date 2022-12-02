@@ -1,7 +1,8 @@
 extension Date {
     func formatted(format: String.LocalizationValue) -> String {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate(String(localized: format))
+        formatter.dateFormat = String(localized: format)
+        formatter.locale = Locale(identifier: "en_US")  // TODO Change when supporting multiple languages
         return formatter.string(from: self)
     }
 }

@@ -6,6 +6,7 @@ class GraphQLCharacterDetailDataSource: CharacterDetailRemoteDataSource {
     }
 
     func getCharacterDetail(id: String) async -> Result<CharacterDetails, Error> {
+        print("GQL.getCharacterDetail \(id)")
         let result = await apolloClient.fetchAsync(query: CharacterDetailQuery(id: id))
 
         guard let result = result.unwrap() else {
@@ -30,8 +31,15 @@ extension CharacterDetailQuery.Data.Character {
         }
     }
 
+    func typeToDomain() -> String? {
+        guard let type = type else { return .none }
+        if type.isEmpty { return .none }
+        return type
+    }
+
     func toDomain() -> CharacterDetails {
         let summary = self.fragments.characterSummaryFragment.toDomain()
+
         return CharacterDetails.Builder()
             .set(id: summary.id)
             .set(name: summary.name)
@@ -39,7 +47,7 @@ extension CharacterDetailQuery.Data.Character {
             .set(status: summary.status)
             .set(species: species ?? "")
             .set(gender: genderToDomain())
-            .set(type: type)
+            .set(type: typeToDomain())
             .set(origin: origin?.fragments.characterLocationFragment.toDomain())
             .set(location: location?.fragments.characterLocationFragment.toDomain())
             .set(episodes: episode.compactMap { $0 }.map { $0.fragments.episodeSummaryFragment.toDomain() })

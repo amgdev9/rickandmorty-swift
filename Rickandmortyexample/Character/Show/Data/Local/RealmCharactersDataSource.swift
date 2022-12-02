@@ -12,7 +12,7 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func getCharacters(filter: CharacterFilter) async -> [CharacterSummary]? {
-        print("GETCHARACTERS")
+        print("Realm.getCharacters")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -20,14 +20,16 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
                     let realmFilter = RealmCharacterFilter(filter: filter)
                     let list = realm.objects(RealmCharacterList.self)
-                        .where { $0.filter.id.equals(realmFilter.id) }
+                        .where { $0.filter.primaryId.equals(realmFilter.primaryId) }
+
+                    guard let list = list.first else { return continuation.resume(returning: .none) }
 
                     var domainCharacters: [CharacterSummary] = []
-                    list.first?.characters.forEach {
+                    list.characters.forEach {
                         domainCharacters.append($0.toDomain())
                     }
 
-                    print("GETCHARACTERS \(domainCharacters.count)")
+                    print("\(domainCharacters.count)")
 
                     return continuation.resume(returning: domainCharacters)
                 } catch {}
@@ -36,19 +38,19 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func insertCharacters(characters: [CharacterSummary], filter: CharacterFilter) async {
-        print("INSERTCHARACTERS")
+        print("Realm.insertCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
                     let realm = try self.realmFactory.build()
 
-                    let filterId = RealmCharacterFilter(filter: filter).id
+                    let filterId = RealmCharacterFilter(filter: filter).primaryId
                     let realmFilter = realm.objects(RealmCharacterFilter.self)
-                        .where { $0.id.equals(filterId) }
+                        .where { $0.primaryId.equals(filterId) }
                     guard let realmFilter = realmFilter.first else { return continuation.resume(returning: ()) }
 
                     let list = realm.objects(RealmCharacterList.self)
-                        .where { $0.filter.id.equals(realmFilter.id) }
+                        .where { $0.filter.primaryId.equals(realmFilter.primaryId) }
 
                     if let list = list.first {
                         if list.characters.count + characters.count > self.maxCharactersPerList { return continuation.resume(returning: ()) }
@@ -76,7 +78,7 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func setCharacters(characters: [CharacterSummary], filter: CharacterFilter) async {
-        print("SETCHARACTERS")
+        print("Realm.setCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -84,13 +86,13 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
                     let realm = try self.realmFactory.build()
 
-                    let filterId = RealmCharacterFilter(filter: filter).id
+                    let filterId = RealmCharacterFilter(filter: filter).primaryId
                     let realmFilter = realm.objects(RealmCharacterFilter.self)
-                        .where { $0.id.equals(filterId) }
+                        .where { $0.primaryId.equals(filterId) }
                     guard let realmFilter = realmFilter.first else { return continuation.resume(returning: ()) }
 
                     let list = realm.objects(RealmCharacterList.self)
-                        .where { $0.filter.id.equals(realmFilter.id) }
+                        .where { $0.filter.primaryId.equals(realmFilter.primaryId) }
                         .first
 
                     try realm.write {

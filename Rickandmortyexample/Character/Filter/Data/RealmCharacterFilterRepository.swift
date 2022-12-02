@@ -75,7 +75,7 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                     try realm.write {
                         let filters = realm.objects(RealmCharacterFilter.self)
 
-                        let existingFilter = filters.where { $0.id == realmFilter.id }.first
+                        let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
                         if let existingFilter = existingFilter {
                             existingFilter.createdAt = realmFilter.createdAt
                             return continuation.resume(returning: ())

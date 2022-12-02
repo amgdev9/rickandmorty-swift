@@ -23,7 +23,7 @@ class CharacterDetailsRepositoryImpl: CharacterDetailsRepository {
                 let remoteDetails = await self.remoteDataSource.getCharacterDetail(id: id)
                 guard let remoteDetails = remoteDetails.unwrap() else { return observer.onNext(.failure(remoteDetails.failure()!)) }
 
-                observer.onNext(.success(remoteDetails))
+                await self.localDataSource.upsertCharacterDetail(detail: remoteDetails)
             }
 
             return Disposables.create {

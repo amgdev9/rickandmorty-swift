@@ -1,22 +1,28 @@
 import RealmSwift
 
 class RealmLocationSummary: RealmSwift.Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var primaryId: String
     @Persisted var name: String
     @Persisted var type: String?
     @Persisted(originProperty: "origin") var originInCharacter: LinkingObjects<RealmCharacterDetails>
     @Persisted(originProperty: "location") var locationInCharacter: LinkingObjects<RealmCharacterDetails>
 
+    static private let schemaId = "location-summary-"
+
+    static func primaryId(id: String) -> String {
+        return "\(schemaId)\(id)"
+    }
+
     convenience init(characterLocation: CharacterLocation) {
         self.init()
-        self.id = characterLocation.id
+        self.primaryId = "\(Self.schemaId)\(characterLocation.id)"
         self.name = characterLocation.name
         self.type = .none
     }
 
     convenience init(locationSummary: LocationSummary) {
         self.init()
-        self.id = locationSummary.id
+        self.primaryId = "\(Self.schemaId)\(locationSummary.id)"
         self.name = locationSummary.name
         self.type = locationSummary.type
     }
@@ -29,13 +35,13 @@ class RealmLocationSummary: RealmSwift.Object {
     }
 
     func toCharacterLocation() -> CharacterLocation {
-        return CharacterLocation(id: id, name: name)
+        return CharacterLocation(id: String(primaryId.dropFirst(Self.schemaId.count)), name: name)
     }
 
     func toLocationSummary() -> LocationSummary? {
         guard let type = type else { return .none }
         return LocationSummary.Builder()
-            .set(id: id)
+            .set(id: String(primaryId.dropFirst(Self.schemaId.count)))
             .set(name: name)
             .set(type: type)
             .build()

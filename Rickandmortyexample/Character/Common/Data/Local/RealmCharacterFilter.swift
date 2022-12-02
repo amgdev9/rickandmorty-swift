@@ -1,7 +1,7 @@
 import RealmSwift
 
 class RealmCharacterFilter: RealmSwift.Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var primaryId: String
     @Persisted var name: String
     @Persisted var species: String
     @Persisted var status: Int8
@@ -10,18 +10,26 @@ class RealmCharacterFilter: RealmSwift.Object {
 
     @Persisted var list: RealmCharacterList?
 
+    static private let schemaId = "character-filter-"
+
+    static func primaryId(id: String) -> String {
+        return "\(schemaId)\(id)"
+    }
+
     convenience init(filter: CharacterFilter) {
         self.init()
         name = filter.name
         species = filter.species
         status = mapFromDomain(status: filter.status)
         gender = mapFromDomain(gender: filter.gender)
-        id = "\(name)-\(species)-\(status)-\(gender)"
+        primaryId = "\(Self.schemaId)\(name)-\(species)-\(status)-\(gender)"
         createdAt = Date()
     }
 
     func delete(realm: Realm) {
-        list?.delete(realm: realm)
+        let oldList = list
+        list = .none
+        oldList?.delete(realm: realm)
         realm.delete(self)
     }
 

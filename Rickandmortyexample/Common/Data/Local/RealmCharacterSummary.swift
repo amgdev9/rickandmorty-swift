@@ -1,7 +1,7 @@
 import RealmSwift
 
 class RealmCharacterSummary: RealmSwift.Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var primaryId: String
     @Persisted var imageURL: String
     @Persisted var name: String
     @Persisted var status: Int8
@@ -10,9 +10,15 @@ class RealmCharacterSummary: RealmSwift.Object {
     @Persisted var uncachedList: RealmCharacterList?
     @Persisted var detail: RealmCharacterDetails?
 
+    static private let schemaId = "character-summary-"
+
+    static func primaryId(id: String) -> String {
+        return "\(schemaId)\(id)"
+    }
+
     convenience init(character: CharacterSummary) {
         self.init()
-        id = character.id
+        primaryId = "\(Self.schemaId)\(character.id)"
         imageURL = character.imageURL
         name = character.name
         status = mapFromDomain(status: character.status)
@@ -45,7 +51,7 @@ class RealmCharacterSummary: RealmSwift.Object {
 
     func toDomain() -> CharacterSummary {
         return CharacterSummary.Builder()
-            .set(id: id)
+            .set(id: String(primaryId.dropFirst(Self.schemaId.count)))
             .set(name: name)
             .set(imageURL: imageURL)
             .set(status: mapStatusToDomain(status: status))

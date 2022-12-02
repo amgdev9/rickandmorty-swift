@@ -76,7 +76,7 @@ class CharacterDetails {
         }
 
         func set(location: CharacterLocation?) -> Self {
-            self.location = origin
+            self.location = location
             return self
         }
 

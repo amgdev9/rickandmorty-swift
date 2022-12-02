@@ -14,7 +14,7 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
             NetworkDataContainer(data: viewModel.episode, onRefetch: viewModel.refetch) { episode in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Header(title: episode.name, subtitle: episode.id, info: episode.date.formatted(format: "dateformat/MMMM dd, yyyy"))
+                        Header(title: episode.name, subtitle: episode.id, info: episode.date.formatted(format: "dateformat/MMMM d, yyyy"))
                         Text(String(localized: "section/characters"), variant: .body20, weight: .bold, color: .graybaseGray1)
                             .padding(.leading, 16)
                             .padding(.top, 20)
