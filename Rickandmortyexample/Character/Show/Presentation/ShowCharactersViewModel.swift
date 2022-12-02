@@ -34,8 +34,10 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     func onViewMount() {
+        print("MOUNT")
         filterRepository.getLatestFilterObservable()
             .subscribe(onNext: {
+                print("FILTER")
                 self.actionsSubject.onNext(.fetch($0))
             })
             .disposed(by: disposeBag)
@@ -48,10 +50,9 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
             .observe(on: MainScheduler.instance)
             .concatMap(handleAction)
             .observe(on: MainScheduler.instance)
-            .subscribe {
-                guard let result = $0.element else { return }
-                self.handleActionResult(actionResult: result)
-            }
+            .subscribe(onNext: {
+                self.handleActionResult(actionResult: $0)
+            })
             .disposed(by: disposeBag)
     }
 

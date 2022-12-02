@@ -20,7 +20,7 @@ class CharactersRepositoryImpl: CharactersRepository {
 
     func fetchNextPage(filter: CharacterFilter, listSize: UInt32) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
         if listSize % remoteDataSource.pageSize > 0 { return .success(PaginatedResponse(items: [], hasNext: false)) }
-        let page = UInt32(listSize / remoteDataSource.pageSize)
+        let page = UInt32(listSize / remoteDataSource.pageSize) + 1
 
         let characters = await remoteDataSource.getCharacters(page: page, filter: filter)
         guard let characters = characters.unwrap() else { return .failure(characters.failure()!)}

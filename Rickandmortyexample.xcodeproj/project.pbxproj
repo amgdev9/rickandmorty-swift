@@ -176,6 +176,14 @@
 		E5BD506129376D1C006C2A6B /* CharacterFilterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BD506029376D1C006C2A6B /* CharacterFilterRepository.swift */; };
 		E5BD506329376F4E006C2A6B /* RealmCharacterFilterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BD506229376F4E006C2A6B /* RealmCharacterFilterRepository.swift */; };
 		E5BD506529378E9F006C2A6B /* RealmCharacterFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BD506429378E9F006C2A6B /* RealmCharacterFilter.swift */; };
+		E5BEDCFF293A19DE0029C79A /* OnMountModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDCFE293A19DE0029C79A /* OnMountModifier.swift */; };
+		E5BEDD01293A1BE60029C79A /* CharacterDetailsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD00293A1BE60029C79A /* CharacterDetailsRepository.swift */; };
+		E5BEDD03293A20250029C79A /* CharacterDetailsRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD02293A20250029C79A /* CharacterDetailsRepositoryImpl.swift */; };
+		E5BEDD05293A21BF0029C79A /* CharacterDetailsLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD04293A21BE0029C79A /* CharacterDetailsLocalDataSource.swift */; };
+		E5BEDD08293A24B00029C79A /* RealmCharacterDetailsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD07293A24B00029C79A /* RealmCharacterDetailsDataSource.swift */; };
+		E5BEDD0A293A24E50029C79A /* RealmCharacterDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD09293A24E50029C79A /* RealmCharacterDetails.swift */; };
+		E5BEDD0C293A259B0029C79A /* RealmEpisodeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD0B293A259B0029C79A /* RealmEpisodeSummary.swift */; };
+		E5BEDD0E293A25A80029C79A /* RealmLocationSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEDD0D293A25A80029C79A /* RealmLocationSummary.swift */; };
 		E5BF19332930018800AE44BE /* CharacterAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19322930018800AE44BE /* CharacterAvatar.swift */; };
 		E5BF19352930020D00AE44BE /* CharacterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19342930020D00AE44BE /* CharacterHeader.swift */; };
 		E5BF1937293003E000AE44BE /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF1936293003E000AE44BE /* CharacterInfo.swift */; };
@@ -386,6 +394,14 @@
 		E5BD506029376D1C006C2A6B /* CharacterFilterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterFilterRepository.swift; sourceTree = "<group>"; };
 		E5BD506229376F4E006C2A6B /* RealmCharacterFilterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterFilterRepository.swift; sourceTree = "<group>"; };
 		E5BD506429378E9F006C2A6B /* RealmCharacterFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterFilter.swift; sourceTree = "<group>"; };
+		E5BEDCFE293A19DE0029C79A /* OnMountModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnMountModifier.swift; sourceTree = "<group>"; };
+		E5BEDD00293A1BE60029C79A /* CharacterDetailsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsRepository.swift; sourceTree = "<group>"; };
+		E5BEDD02293A20250029C79A /* CharacterDetailsRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsRepositoryImpl.swift; sourceTree = "<group>"; };
+		E5BEDD04293A21BE0029C79A /* CharacterDetailsLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsLocalDataSource.swift; sourceTree = "<group>"; };
+		E5BEDD07293A24B00029C79A /* RealmCharacterDetailsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterDetailsDataSource.swift; sourceTree = "<group>"; };
+		E5BEDD09293A24E50029C79A /* RealmCharacterDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterDetails.swift; sourceTree = "<group>"; };
+		E5BEDD0B293A259B0029C79A /* RealmEpisodeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmEpisodeSummary.swift; sourceTree = "<group>"; };
+		E5BEDD0D293A25A80029C79A /* RealmLocationSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmLocationSummary.swift; sourceTree = "<group>"; };
 		E5BF19322930018800AE44BE /* CharacterAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterAvatar.swift; sourceTree = "<group>"; };
 		E5BF19342930020D00AE44BE /* CharacterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterHeader.swift; sourceTree = "<group>"; };
 		E5BF1936293003E000AE44BE /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
@@ -579,6 +595,7 @@
 				E5A4E70F292950F700672FDA /* BottomDetectorScrollView.swift */,
 				E5DC9F392931100F00ED98AF /* UIScreen.swift */,
 				E5AAC4D02931250100FF695C /* Previews.swift */,
+				E5BEDCFE293A19DE0029C79A /* OnMountModifier.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -764,6 +781,8 @@
 			children = (
 				E59413892937C9EB0051ACF8 /* RealmFactory.swift */,
 				E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */,
+				E5BEDD0B293A259B0029C79A /* RealmEpisodeSummary.swift */,
+				E5BEDD0D293A25A80029C79A /* RealmLocationSummary.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -913,8 +932,11 @@
 		E59C562929339EC9005324F4 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E5BEDD06293A249B0029C79A /* Local */,
 				E59C562C29339F1F005324F4 /* Remote */,
 				E59C562A29339EE5005324F4 /* CharacterDetailRemoteDataSource.swift */,
+				E5BEDD02293A20250029C79A /* CharacterDetailsRepositoryImpl.swift */,
+				E5BEDD04293A21BE0029C79A /* CharacterDetailsLocalDataSource.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -986,6 +1008,7 @@
 			isa = PBXGroup;
 			children = (
 				E58539B929212DD6008C9FC5 /* CharacterDetailsViewModel.swift */,
+				E5BEDD00293A1BE60029C79A /* CharacterDetailsRepository.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1371,6 +1394,15 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		E5BEDD06293A249B0029C79A /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				E5BEDD07293A24B00029C79A /* RealmCharacterDetailsDataSource.swift */,
+				E5BEDD09293A24E50029C79A /* RealmCharacterDetails.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
 		E5BF19382930052500AE44BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1730,6 +1762,7 @@
 			files = (
 				E5BF193F293008E100AE44BE /* LocationCard.swift in Sources */,
 				E5A4E70E29294D3200672FDA /* ChildSizeReader.swift in Sources */,
+				E5BEDD01293A1BE60029C79A /* CharacterDetailsRepository.swift in Sources */,
 				E59EF7BF2920FF3300628FED /* ShowCharactersScreen.swift in Sources */,
 				E585399729210949008C9FC5 /* SchemaMetadata.graphql.swift in Sources */,
 				E58539AD29211883008C9FC5 /* FilterCharactersViewModel.swift in Sources */,
@@ -1740,6 +1773,7 @@
 				E5381E94292D323900606A89 /* SectionButton.swift in Sources */,
 				E594DD0D292143D7002F7038 /* FilterButton.swift in Sources */,
 				E5B24E872934CFD8007EE90D /* AutocompleteRepository.swift in Sources */,
+				E5BEDD0E293A25A80029C79A /* RealmLocationSummary.swift in Sources */,
 				E5AD1D252925411C007B7315 /* CharactersLocalDataSource.swift in Sources */,
 				E597A2692933F55F00225DAE /* LocationSummaryFragment.graphql.swift in Sources */,
 				E5B24EB22934D958007EE90D /* AutocompleteByCharacterNameQuery.graphql.swift in Sources */,
@@ -1780,6 +1814,7 @@
 				E5D5D0A529242552006771CA /* CharactersRepositoryImpl.swift in Sources */,
 				E5B24EBC2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift in Sources */,
 				E5AAC4F0293140F400FF695C /* ShowEpisodesViewModel.swift in Sources */,
+				E5BEDD0C293A259B0029C79A /* RealmEpisodeSummary.swift in Sources */,
 				E597A24E2933E61400225DAE /* Location.graphql.swift in Sources */,
 				E5DC9F3A2931100F00ED98AF /* UIScreen.swift in Sources */,
 				E5B24EB42934D961007EE90D /* AutocompleteByCharacterSpeciesQuery.graphql.swift in Sources */,
@@ -1796,6 +1831,7 @@
 				E5B24E652934AEF8007EE90D /* LocationDetailRemoteDataSource.swift in Sources */,
 				E5B24EB82934DA95007EE90D /* AutocompleteByCharacterNameRepository.swift in Sources */,
 				E5A458622934FE4800C3E562 /* FilterCharactersStack.swift in Sources */,
+				E5BEDD03293A20250029C79A /* CharacterDetailsRepositoryImpl.swift in Sources */,
 				E56D16DC2922C96300B55DAF /* NetworkData.swift in Sources */,
 				E5381EA2292D4ABD00606A89 /* EpisodeSummary.swift in Sources */,
 				E5B096A7292C111F005B283D /* RadioButton.swift in Sources */,
@@ -1812,6 +1848,7 @@
 				E54AA6182915A9050069B3B4 /* Tabs.swift in Sources */,
 				E5AAC50229314B0400FF695C /* EpisodeDetail.swift in Sources */,
 				E5AD1D2129253120007B7315 /* Configuration.swift in Sources */,
+				E5BEDCFF293A19DE0029C79A /* OnMountModifier.swift in Sources */,
 				E597A24D2933E61400225DAE /* Episode.graphql.swift in Sources */,
 				E585398A29210859008C9FC5 /* CharactersQuery.graphql.swift in Sources */,
 				E597A26B2933F56F00225DAE /* LocationSummaryFragmentMapper.swift in Sources */,
@@ -1837,7 +1874,9 @@
 				E5AAC4DE2931292B00FF695C /* LocationFilter.swift in Sources */,
 				E5AAC4FC2931497E00FF695C /* EpisodeFilter.swift in Sources */,
 				E5D5D0A0292421C5006771CA /* CharacterSummary.swift in Sources */,
+				E5BEDD0A293A24E50029C79A /* RealmCharacterDetails.swift in Sources */,
 				E5AAC4E429312F7600FF695C /* LocationDetail.swift in Sources */,
+				E5BEDD08293A24B00029C79A /* RealmCharacterDetailsDataSource.swift in Sources */,
 				E594DD1229214AE2002F7038 /* Character.swift in Sources */,
 				E5A0E0E829391943007CC6EB /* RealmCharacterList.swift in Sources */,
 				E59B488C2913EE5500AB3085 /* Main.swift in Sources */,
@@ -1878,6 +1917,7 @@
 				E59C562B29339EE5005324F4 /* CharacterDetailRemoteDataSource.swift in Sources */,
 				E5B24EAA2934D937007EE90D /* AutocompleteByEpisodeSeasonIDQuery.graphql.swift in Sources */,
 				E5B24EB02934D951007EE90D /* AutocompleteByLocationDimensionQuery.graphql.swift in Sources */,
+				E5BEDD05293A21BF0029C79A /* CharacterDetailsLocalDataSource.swift in Sources */,
 				E5945624292D1C280005E4C9 /* RadioButtonGroup.swift in Sources */,
 				E5B24EB62934D970007EE90D /* AutocompleteByCharacterSpeciesRepository.swift in Sources */,
 			);

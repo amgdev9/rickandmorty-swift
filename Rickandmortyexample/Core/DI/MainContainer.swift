@@ -31,7 +31,7 @@ class MainContainer: BootstrapComponent {
     }
 
     var characterDetailsViewModel: some CharacterDetailsViewModel {
-        return CharacterDetailsViewModelImpl()
+        return CharacterDetailsViewModelImpl(characterDetailsRepository: characterDetailsRepository)
     }
 
     var locationDetailsViewModel: some LocationDetailsViewModel {
@@ -64,6 +64,20 @@ class MainContainer: BootstrapComponent {
         }
     }
 
+    var characterDetailsRepository: some CharacterDetailsRepository {
+        return shared {
+            CharacterDetailsRepositoryImpl(remoteDataSource: characterDetailRemoteDataSource, localDataSource: characterDetailLocalDataSource)
+        }
+    }
+
+    var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {
+        return GraphQLCharacterDetailDataSource(apolloClient: apolloClient)
+    }
+
+    var characterDetailLocalDataSource: some CharacterDetailsLocalDataSource {
+        return RealmCharacterDetailsDataSource(realmFactory: realmFactory, realmQueue: realmQueue)
+    }
+
     var characterFilterRepository: some CharacterFilterRepository {
         return shared {
             RealmCharacterFilterRepository(realmFactory: realmFactory, realmQueue: realmQueue)
@@ -76,10 +90,6 @@ class MainContainer: BootstrapComponent {
 
     var charactersLocalDataSource: some CharactersLocalDataSource {
         return RealmCharactersDataSource(realmFactory: realmFactory, realmQueue: realmQueue)
-    }
-
-    var characterDetailRemoteDataSource: some CharacterDetailRemoteDataSource {
-        return GraphQLCharacterDetailDataSource(apolloClient: apolloClient)
     }
 
     var autocompleteByCharacterNameRepository: some AutocompleteRepository {

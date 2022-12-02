@@ -28,6 +28,10 @@ struct CharacterDetailsScreen<ViewModel>: View where ViewModel: CharacterDetails
                     }
                 }
             }
+            .onMount {
+                viewModel.onViewMount(characterId: router.params.id)
+            }
+            .errorAlert($viewModel.error)
         }
     }
 
@@ -64,6 +68,7 @@ struct CharacterDetailsScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: CharacterDetailsViewModel {
+        func onViewMount(characterId: String) {}
         func refetch() async {
             do {
                 try await Task.sleep(nanoseconds: 2_000_000_000)
@@ -84,6 +89,7 @@ struct CharacterDetailsScreenPreviews: PreviewProvider {
                 .set(episodes: EpisodeListPreviews.EPISODES)
                 .build()
         )
+        var error: Error? = .none
     }
 
     static var previews: some View {

@@ -5,8 +5,10 @@ class RealmCharacterSummary: RealmSwift.Object {
     @Persisted var imageURL: String
     @Persisted var name: String
     @Persisted var status: Int8
+
     @Persisted(originProperty: "characters") var lists: LinkingObjects<RealmCharacterList>
     @Persisted var uncachedList: RealmCharacterList?
+    @Persisted var detail: RealmCharacterDetails?
 
     convenience init(character: CharacterSummary) {
         self.init()
@@ -19,6 +21,9 @@ class RealmCharacterSummary: RealmSwift.Object {
     func delete(realm: Realm) {
         if !lists.isEmpty { return }
         if uncachedList != nil { return }
+
+        detail = .none
+        detail?.delete(realm: realm)
         realm.delete(self)
     }
 

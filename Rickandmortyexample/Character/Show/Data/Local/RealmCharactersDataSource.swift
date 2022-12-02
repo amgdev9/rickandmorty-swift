@@ -42,7 +42,10 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                 do {
                     let realm = try self.realmFactory.build()
 
-                    let realmFilter = RealmCharacterFilter(filter: filter)
+                    let filterId = RealmCharacterFilter(filter: filter).id
+                    let realmFilter = realm.objects(RealmCharacterFilter.self)
+                        .where { $0.id.equals(filterId) }
+                    guard let realmFilter = realmFilter.first else { return continuation.resume(returning: ()) }
 
                     let list = realm.objects(RealmCharacterList.self)
                         .where { $0.filter.id.equals(realmFilter.id) }
@@ -81,7 +84,10 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
                     let realm = try self.realmFactory.build()
 
-                    let realmFilter = RealmCharacterFilter(filter: filter)
+                    let filterId = RealmCharacterFilter(filter: filter).id
+                    let realmFilter = realm.objects(RealmCharacterFilter.self)
+                        .where { $0.id.equals(filterId) }
+                    guard let realmFilter = realmFilter.first else { return continuation.resume(returning: ()) }
 
                     let list = realm.objects(RealmCharacterList.self)
                         .where { $0.filter.id.equals(realmFilter.id) }

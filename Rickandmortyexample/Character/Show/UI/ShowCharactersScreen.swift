@@ -21,7 +21,7 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
         .toolbar {
             FilterButton(showDot: viewModel.hasFilters, action: router.gotoCharacterFilters)
         }
-        .onAppear(perform: viewModel.onViewMount)
+        .onMount(perform: viewModel.onViewMount)
         .errorAlert($viewModel.error)
     }
 }
