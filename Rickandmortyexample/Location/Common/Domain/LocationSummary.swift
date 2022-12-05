@@ -34,3 +34,15 @@ class LocationSummary {
         }
     }
 }
+
+extension LocationSummary {
+    class Mother {
+        static func build(id: String) -> LocationSummary {
+            LocationSummary.Builder()
+                .set(id: id)
+                .set(name: "Earth (C-137)")
+                .set(type: "Planet")
+                .build()
+        }
+    }
+}

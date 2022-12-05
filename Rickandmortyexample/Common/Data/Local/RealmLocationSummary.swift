@@ -4,7 +4,7 @@ class RealmLocationSummary: RealmSwift.Object {
     @Persisted(primaryKey: true) var primaryId: String
     @Persisted var name: String
     @Persisted var type: String?
-    
+
     @Persisted(originProperty: "origin") var originInCharacter: LinkingObjects<RealmCharacterDetails>
     @Persisted(originProperty: "location") var locationInCharacter: LinkingObjects<RealmCharacterDetails>
 
@@ -16,14 +16,14 @@ class RealmLocationSummary: RealmSwift.Object {
 
     convenience init(characterLocation: CharacterLocation) {
         self.init()
-        self.primaryId = "\(Self.schemaId)\(characterLocation.id)"
+        self.primaryId = Self.primaryId(id: characterLocation.id)
         self.name = characterLocation.name
         self.type = .none
     }
 
     convenience init(locationSummary: LocationSummary) {
         self.init()
-        self.primaryId = "\(Self.schemaId)\(locationSummary.id)"
+        self.primaryId = Self.primaryId(id: locationSummary.id)
         self.name = locationSummary.name
         self.type = locationSummary.type
     }

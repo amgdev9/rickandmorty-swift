@@ -10,7 +10,7 @@ extension CharacterSummaryFragment {
             .set(id: id ?? "")
             .set(name: name ?? "")
             .set(imageURL: image ?? "")
-            .set(status: CharacterSummaryFragment.toDomainStatus[status ?? "unknown"] ?? .unknown)
+            .set(status: Self.toDomainStatus[status ?? "unknown"] ?? .unknown)
             .build()
     }
 }

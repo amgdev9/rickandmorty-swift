@@ -10,7 +10,9 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
     }
 
     func getEpisodes(page: UInt, filter: EpisodeFilter) async -> Result<PaginatedResponse<EpisodeSeason>, Error> {
-        let result = await apolloClient.fetchAsync(query: EpisodesQuery(page: Int(page), filter: FilterEpisode.from(filter: filter)))
+        let result = await apolloClient.fetchAsync(
+            query: EpisodesQuery(page: Int(page), filter: FilterEpisode.from(filter: filter))
+        )
         guard let result = result.unwrap() else {
             return .failure(Error(message: result.failure()!.localizedDescription))
         }
@@ -38,16 +40,10 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
 }
 
 extension FilterEpisode {
-    // TODO This is used in multiple places
-    static func mapString(_ value: String) -> GraphQLNullable<String> {
-        if value.isEmpty { return .none }
-        return .some(value)
-    }
-
     static func from(filter: EpisodeFilter) -> Self {
         return FilterEpisode(
-            name: mapString(filter.name),
-            episode: mapString(filter.episode)
+            name: .from(filter.name),
+            episode: .from(filter.episode)
         )
     }
 }

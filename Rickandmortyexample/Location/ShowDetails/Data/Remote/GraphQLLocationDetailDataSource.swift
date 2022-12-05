@@ -27,7 +27,10 @@ extension LocationDetailQuery.Data.Location {
             .set(name: summary.name)
             .set(type: summary.type)
             .set(dimension: dimension ?? String(localized: "misc/unknown"))
-            .set(residents: residents.compactMap{ $0 }.map { $0.fragments.characterSummaryFragment.toDomain() })
+            .set(residents: residents
+                .compactMap { $0 }
+                .map { $0.fragments.characterSummaryFragment.toDomain() }
+            )
             .build()
     }
 }

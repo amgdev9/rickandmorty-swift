@@ -12,7 +12,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func getCharacters(filter: CharacterFilter) async -> [CharacterSummary]? {
-        print("Realm.getCharacters")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -29,8 +28,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                         domainCharacters.append($0.toDomain())
                     }
 
-                    print("\(domainCharacters.count)")
-
                     return continuation.resume(returning: domainCharacters)
                 } catch {
                     return continuation.resume(returning: .none)
@@ -40,7 +37,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func insertCharacters(characters: [CharacterSummary], filter: CharacterFilter) async {
-        print("Realm.insertCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 defer {
@@ -99,7 +95,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
     }
 
     func setCharacters(characters: [CharacterSummary], filter: CharacterFilter) async {
-        print("Realm.setCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 defer {

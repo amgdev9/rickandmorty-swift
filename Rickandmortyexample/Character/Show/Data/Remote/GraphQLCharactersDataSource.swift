@@ -13,7 +13,6 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         page: UInt32,
         filter: CharacterFilter
     ) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
-        print("GQL.getCharacters \(page)")
         let result = await apolloClient.fetchAsync(
             query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter))
         )
@@ -59,16 +58,11 @@ extension FilterCharacter {
         }
     }
 
-    static func mapString(_ value: String) -> GraphQLNullable<String> {
-        if value.isEmpty { return .none }
-        return .some(value)
-    }
-
     static func from(filter: CharacterFilter) -> Self {
         return FilterCharacter(
-            name: mapString(filter.name),
+            name: .from(filter.name),
             status: mapStatus(filter.status),
-            species: mapString(filter.species),
+            species: .from(filter.species),
             gender: mapGender(filter.gender)
         )
     }

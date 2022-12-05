@@ -30,7 +30,10 @@ class CharactersComponent: Component<CharactersDependencies> {
 
     var characterDetailsRepository: some CharacterDetailsRepository {
         return shared {
-            CharacterDetailsRepositoryImpl(remoteDataSource: characterDetailRemoteDataSource, localDataSource: characterDetailLocalDataSource)
+            CharacterDetailsRepositoryImpl(
+                remoteDataSource: characterDetailRemoteDataSource,
+                localDataSource: characterDetailLocalDataSource
+            )
         }
     }
 
@@ -39,12 +42,18 @@ class CharactersComponent: Component<CharactersDependencies> {
     }
 
     var characterDetailLocalDataSource: some CharacterDetailsLocalDataSource {
-        return RealmCharacterDetailsDataSource(realmFactory: dependency.realm.realmFactory, realmQueue: dependency.realm.realmQueue)
+        return RealmCharacterDetailsDataSource(
+            realmFactory: dependency.realm.realmFactory,
+            realmQueue: dependency.realm.realmQueue
+        )
     }
 
     var characterFilterRepository: some CharacterFilterRepository {
         return shared {
-            RealmCharacterFilterRepository(realmFactory: dependency.realm.realmFactory, realmQueue: dependency.realm.realmQueue)
+            RealmCharacterFilterRepository(
+                realmFactory: dependency.realm.realmFactory,
+                realmQueue: dependency.realm.realmQueue
+            )
         }
     }
 
@@ -53,7 +62,10 @@ class CharactersComponent: Component<CharactersDependencies> {
     }
 
     var charactersLocalDataSource: some CharactersLocalDataSource {
-        return RealmCharactersDataSource(realmFactory: dependency.realm.realmFactory, realmQueue: dependency.realm.realmQueue)
+        return RealmCharactersDataSource(
+            realmFactory: dependency.realm.realmFactory,
+            realmQueue: dependency.realm.realmQueue
+        )
     }
 
     var characterDetailsViewModel: some CharacterDetailsViewModel {

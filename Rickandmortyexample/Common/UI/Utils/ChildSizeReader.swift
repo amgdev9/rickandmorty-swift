@@ -1,9 +1,7 @@
 import SwiftUI
 
 struct ChildSizeReader<Content: View>: View {
-
     @Binding var size: CGSize
-
     @ViewBuilder let content: () -> Content
 
     var body: some View {

@@ -14,7 +14,6 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
         return .create { observer in
             var subscription: NotificationToken? = .none
             do {
-                print("SUB")
                 let realm = try self.realmFactory.buildWithoutQueue()
                 subscription = realm.objects(RealmCharacterDetails.self)
                     .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
@@ -30,14 +29,12 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
             } catch {}
 
             return Disposables.create {
-                print("UNSUB")
                 subscription?.invalidate()
             }
         }
     }
 
     private func getCharacterDetail(id: String) async -> CharacterDetails? {
-        print("Realm.getCharacterDetail \(id)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -45,7 +42,6 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                     let detail = realm.objects(RealmCharacterDetails.self)
                         .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
                         .first
-                    print("\(detail != nil)")
                     return continuation.resume(returning: detail?.toDomain())
                 } catch {
                     return continuation.resume(returning: .none)
@@ -55,7 +51,6 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
     }
 
     func upsertCharacterDetail(detail: CharacterDetails) async {
-        print("Realm.upsertCharacterDetail \(detail.id)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 defer {
@@ -129,7 +124,6 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
     }
 
     func existsCharacterDetails(id: String) async -> Bool {
-        print("Realm.existsCharacterDetails \(id)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
@@ -137,7 +131,6 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                     let exists = realm.objects(RealmCharacterDetails.self)
                         .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
                         .count > 0
-                    print("\(exists)")
                     return continuation.resume(returning: exists)
                 } catch {
                     continuation.resume(returning: false)

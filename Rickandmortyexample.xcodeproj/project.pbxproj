@@ -100,7 +100,6 @@
 		E5A0E0E829391943007CC6EB /* RealmCharacterList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A0E0E729391943007CC6EB /* RealmCharacterList.swift */; };
 		E5A0E0EC293919BD007CC6EB /* RealmCharacterSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */; };
 		E5A1ECF4292E1E4D00A8B13F /* EpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF3292E1E4D00A8B13F /* EpisodeList.swift */; };
-		E5A1ECF6292E205400A8B13F /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF5292E205400A8B13F /* DateFormat.swift */; };
 		E5A1ECF8292E22FD00A8B13F /* Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECF7292E22FD00A8B13F /* Separator.swift */; };
 		E5A1ECFC292E273A00A8B13F /* CharacterLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECFB292E273A00A8B13F /* CharacterLocation.swift */; };
 		E5A1ECFF292E325900A8B13F /* NavigationContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A1ECFE292E325900A8B13F /* NavigationContainer.swift */; };
@@ -113,6 +112,7 @@
 		E5A4E710292950F700672FDA /* BottomDetectorScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A4E70F292950F700672FDA /* BottomDetectorScrollView.swift */; };
 		E5A4E71329295EBC00672FDA /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A4E71229295EBC00672FDA /* ErrorAlert.swift */; };
 		E5A9599F2915A27C00CE6358 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A9599E2915A27C00CE6358 /* TabItem.swift */; };
+		E5A9BD03293E57EE0088F93E /* GraphQLMapperUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A9BD02293E57EE0088F93E /* GraphQLMapperUtils.swift */; };
 		E5AAC4CF2931248100FF695C /* LocationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC4CE2931248100FF695C /* LocationList.swift */; };
 		E5AAC4D52931289700FF695C /* FilterLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC4D42931289700FF695C /* FilterLocationsScreen.swift */; };
 		E5AAC4D8293128B400FF695C /* FilterLocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC4D7293128B400FF695C /* FilterLocationsViewModel.swift */; };
@@ -329,7 +329,6 @@
 		E5A0E0E729391943007CC6EB /* RealmCharacterList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterList.swift; sourceTree = "<group>"; };
 		E5A0E0EB293919BD007CC6EB /* RealmCharacterSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterSummary.swift; sourceTree = "<group>"; };
 		E5A1ECF3292E1E4D00A8B13F /* EpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeList.swift; sourceTree = "<group>"; };
-		E5A1ECF5292E205400A8B13F /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		E5A1ECF7292E22FD00A8B13F /* Separator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separator.swift; sourceTree = "<group>"; };
 		E5A1ECFB292E273A00A8B13F /* CharacterLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterLocation.swift; sourceTree = "<group>"; };
 		E5A1ECFE292E325900A8B13F /* NavigationContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainer.swift; sourceTree = "<group>"; };
@@ -342,6 +341,7 @@
 		E5A4E70F292950F700672FDA /* BottomDetectorScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDetectorScrollView.swift; sourceTree = "<group>"; };
 		E5A4E71229295EBC00672FDA /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		E5A9599E2915A27C00CE6358 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		E5A9BD02293E57EE0088F93E /* GraphQLMapperUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphQLMapperUtils.swift; sourceTree = "<group>"; };
 		E5AAC4CE2931248100FF695C /* LocationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationList.swift; sourceTree = "<group>"; };
 		E5AAC4D42931289700FF695C /* FilterLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterLocationsScreen.swift; sourceTree = "<group>"; };
 		E5AAC4D7293128B400FF695C /* FilterLocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterLocationsViewModel.swift; sourceTree = "<group>"; };
@@ -570,7 +570,6 @@
 			isa = PBXGroup;
 			children = (
 				E597120D293DF3DD002F7E9E /* I18N.swift */,
-				E5A1ECF5292E205400A8B13F /* DateFormat.swift */,
 				E59B48C32914106000AB3085 /* Colors.swift */,
 				E594DD14292150C0002F7038 /* LocalizedEnums.swift */,
 				E54AA6162915A88E0069B3B4 /* Utils */,
@@ -628,6 +627,7 @@
 				E5C7C2DC29190E2300FA74F8 /* Schema.graphqls */,
 				E585398C29210949008C9FC5 /* Generated */,
 				E5A4345A29353654001EAE03 /* ClientExtensions.swift */,
+				E5A9BD02293E57EE0088F93E /* GraphQLMapperUtils.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -1920,7 +1920,6 @@
 				E5381E9D292D40F200606A89 /* SearchScreen.swift in Sources */,
 				E585399429210949008C9FC5 /* Character.graphql.swift in Sources */,
 				E59B48C829141BDD00AB3085 /* Text.swift in Sources */,
-				E5A1ECF6292E205400A8B13F /* DateFormat.swift in Sources */,
 				E597A26D2933F60C00225DAE /* PaginatedResponse.swift in Sources */,
 				E5D5D0B129243512006771CA /* Info.graphql.swift in Sources */,
 				E5AAC4DE2931292B00FF695C /* LocationFilter.swift in Sources */,
@@ -1949,6 +1948,7 @@
 				E597A2672933F55600225DAE /* LocationsQuery.graphql.swift in Sources */,
 				E58539AB29211874008C9FC5 /* FilterCharactersScreen.swift in Sources */,
 				E58539B829212DB0008C9FC5 /* CharacterDetailsScreen.swift in Sources */,
+				E5A9BD03293E57EE0088F93E /* GraphQLMapperUtils.swift in Sources */,
 				E59EF7C22920FF9900628FED /* TabsNavigator.swift in Sources */,
 				E58539BA29212DD6008C9FC5 /* CharacterDetailsViewModel.swift in Sources */,
 				E56D16DE2922CA0D00B55DAF /* ErrorState.swift in Sources */,

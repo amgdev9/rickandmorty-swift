@@ -14,7 +14,7 @@ struct RadioButtonGroup<T: LocalizedEnum & Equatable & Hashable>: View {
                 RadioButton(value: $value, targetValue: targetValue)
                 if let lastValue = values.last, targetValue != lastValue {
                     Separator()
-                        .offset(CGSize(width: 56, height: 0))
+                        .offset(x: 56)
                 }
             }
             Separator()

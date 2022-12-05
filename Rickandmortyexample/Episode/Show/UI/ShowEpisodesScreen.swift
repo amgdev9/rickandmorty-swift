@@ -4,6 +4,8 @@ struct ShowEpisodesScreen<ViewModel>: View where ViewModel: ShowEpisodesViewMode
     @StateObject private var viewModel: ViewModel
     let router: ShowEpisodesScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: ShowEpisodesScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
@@ -11,10 +13,19 @@ struct ShowEpisodesScreen<ViewModel>: View where ViewModel: ShowEpisodesViewMode
 
     var body: some View {
         NavigationContainer(title: String(localized: "routes/episodes")) {
-            PaginatedList(data: viewModel.seasons, onRefetch: viewModel.refetch, onLoadNextPage: viewModel.loadNextPage) { seasons in
+            PaginatedList(
+                data: viewModel.seasons,
+                onRefetch: viewModel.refetch,
+                onLoadNextPage: viewModel.loadNextPage
+            ) { seasons in
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(seasons, id: \.id) { season in
-                        Text(String(format: String(localized: "section/season"), String(season.id)), variant: .body20, weight: .bold, color: .graybaseGray1)
+                        Text(
+                            String(format: i18n.t("section/season"), String(season.id)),
+                            variant: .body20,
+                            weight: .bold,
+                            color: .graybaseGray1
+                        )
                             .padding(.leading, 16)
                             .padding(.top, 21)
                             .padding(.bottom, 9.5)

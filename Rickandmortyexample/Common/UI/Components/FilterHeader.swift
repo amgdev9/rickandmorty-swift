@@ -6,16 +6,18 @@ struct FilterHeader: View {
     let onPressClear: () -> Void
     let clearDisabled: Bool
 
+    @EnvironmentObject var i18n: I18N
+
     var body: some View {
         container {
             if !clearDisabled {
-                TextButton(title: String(localized: "action/clear"), onPress: onPressClear)
+                TextButton(title: i18n.t("action/clear"), onPress: onPressClear)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 Spacer().frame(maxWidth: .infinity)
             }
-            title(String(localized: "routes/filter"))
-            ActionButton(title: String(localized: "action/apply"), onPress: onPressApply)
+            title(i18n.t("routes/filter"))
+            ActionButton(title: i18n.t("action/apply"), onPress: onPressApply)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }

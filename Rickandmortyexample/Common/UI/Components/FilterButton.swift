@@ -25,11 +25,7 @@ extension FilterButton {
 // MARK: - Previews
 struct FilterButtonPreviews: PreviewProvider {
     static var previews: some View {
-        FilterButton(showDot: false) {
-            print("Pressed")
-        }
-        FilterButton(showDot: true) {
-            print("Pressed")
-        }
+        FilterButton(showDot: false) {}
+        FilterButton(showDot: true) {}
     }
 }

@@ -6,7 +6,6 @@ class GraphQLCharacterDetailDataSource: CharacterDetailRemoteDataSource {
     }
 
     func getCharacterDetail(id: String) async -> Result<CharacterDetails, Error> {
-        print("GQL.getCharacterDetail \(id)")
         let result = await apolloClient.fetchAsync(query: CharacterDetailQuery(id: id))
 
         guard let result = result.unwrap() else {

@@ -6,6 +6,8 @@ struct ErrorState: View {
     let loading: Bool
     let onPress: () -> Void
 
+    @EnvironmentObject var i18n: I18N
+
     var body: some View {
             container {
                 Text(message, variant: .body17)
@@ -13,7 +15,7 @@ struct ErrorState: View {
                     if loading {
                         ProgressView()
                     } else {
-                        Button(String(localized: "action/try-again"), action: onPress)
+                        Button(i18n.t("action/try-again"), action: onPress)
                     }
                 }
             }

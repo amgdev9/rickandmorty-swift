@@ -4,6 +4,8 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
     @StateObject private var viewModel: ViewModel
     let router: EpisodeDetailsScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: EpisodeDetailsScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
@@ -14,8 +16,12 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
             NetworkDataContainer(data: viewModel.episode, onRefetch: viewModel.refetch) { episode in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Header(title: episode.name, subtitle: episode.id, info: episode.date.formatted(format: "dateformat/MMMM d, yyyy"))
-                        Text(String(localized: "section/characters"), variant: .body20, weight: .bold, color: .graybaseGray1)
+                        Header(
+                            title: episode.name,
+                            subtitle: episode.id,
+                            info: i18n.tDate(episode.date, format: "dateformat/MMMM d, yyyy")
+                        )
+                        Text(i18n.t("section/characters"), variant: .body20, weight: .bold, color: .graybaseGray1)
                             .padding(.leading, 16)
                             .padding(.top, 20)
                             .padding(.bottom, 10)

@@ -11,6 +11,8 @@ struct AutocompleteBar: View {
     @State private var disposeBag = DisposeBag()
     @State private var isFocused = false
 
+    @EnvironmentObject var i18n: I18N
+
     init(initialSearchText: String,
          autocompletions: [String],
          onAutocomplete: @escaping (_: String) -> Void,
@@ -25,8 +27,10 @@ struct AutocompleteBar: View {
         VStack(alignment: .leading, spacing: 0) {
             input {
                 if !isFocused { searchIcon() }
-                TextField(String(localized: "form/search"), text: $searchText, onEditingChanged: {
-                    isFocused = $0
+                TextField(i18n.t("form/search"), text: $searchText, onEditingChanged: { isEditing in
+                    withAnimation {
+                        isFocused = isEditing
+                    }
                 })
                 .accentColor(.gray40)
                 .onSubmit {
@@ -34,7 +38,9 @@ struct AutocompleteBar: View {
                 }
                 if !searchText.isEmpty {
                     cancelButton {
-                        searchText = ""
+                        withAnimation {
+                            searchText = ""
+                        }
                     }
                 }
             }
@@ -68,7 +74,6 @@ extension AutocompleteBar {
             .padding(.horizontal, 10)
             .background(Color.inputGray)
             .cornerRadius(10)
-            .animation(Animation.default.speed(1))
     }
 
     func searchIcon() -> some View {

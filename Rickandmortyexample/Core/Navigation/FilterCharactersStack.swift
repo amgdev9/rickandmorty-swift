@@ -19,15 +19,27 @@ struct FilterCharactersStack: View {
                 switch screen {
                 case .byName(let params):
                     SearchScreen(
-                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByNameRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByCharacterNameRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByCharacterNameRepository
+                        )
                     }
                 case .bySpecies(let params):
                     SearchScreen(
-                        router: SwiftUISearchBySpeciesRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchBySpeciesRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByCharacterSpeciesRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByCharacterSpeciesRepository
+                        )
                     }
                 }
             }
@@ -60,7 +72,10 @@ extension FilterCharactersStack {
 
         func goSearchBySpecies(initialValue: String) {
             path.wrappedValue.append(
-                SearchScreens.bySpecies(.init(titleLocalizationKey: "section/species-title", initialValue: initialValue))
+                SearchScreens.bySpecies(.init(
+                    titleLocalizationKey: "section/species-title",
+                    initialValue: initialValue)
+                )
             )
         }
 

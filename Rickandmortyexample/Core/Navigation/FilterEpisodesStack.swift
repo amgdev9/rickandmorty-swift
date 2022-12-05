@@ -18,15 +18,27 @@ struct FilterEpisodesStack: View {
                 switch screenType {
                 case .byName(let params):
                     SearchScreen(
-                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByNameRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByEpisodeNameRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByEpisodeNameRepository
+                        )
                     }
                 case .byEpisode(let params):
                     SearchScreen(
-                        router: SwiftUISearchByEpisodeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByEpisodeRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByEpisodeSeasonIDRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByEpisodeSeasonIDRepository
+                        )
                     }
                 }
             }

@@ -18,7 +18,12 @@ struct CharacterDetailsScreen<ViewModel>: View where ViewModel: CharacterDetails
                     CharacterHeader(character: character)
                     VStack(alignment: .leading, spacing: 0) {
                         CharacterInfo(character: character, onPressLocation: router.gotoLocation)
-                        Text(i18n.t("section/character-episodes"), variant: .body20, weight: .bold, color: .graybaseGray1)
+                        Text(
+                            i18n.t("section/character-episodes"),
+                            variant: .body20,
+                            weight: .bold,
+                            color: .graybaseGray1
+                        )
                             .padding(.top, 39.5)
                             .padding(.bottom, 17)
                             .padding(.leading, 16)

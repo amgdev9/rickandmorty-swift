@@ -1,3 +1,7 @@
+protocol LocalizedEnum {
+    func localized() -> String
+}
+
 extension Character.Status: LocalizedEnum {
     static private let localizedKeys: [Self: String.LocalizationValue] = [
         .alive: "enums/CharacterStatus/alive",
@@ -21,8 +25,4 @@ extension Character.Gender: LocalizedEnum {
     func localized() -> String {
         return String(localized: Self.localizedKeys[self]!)
     }
-}
-
-protocol LocalizedEnum {
-    func localized() -> String
 }

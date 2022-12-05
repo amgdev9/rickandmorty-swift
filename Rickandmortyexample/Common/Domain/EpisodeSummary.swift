@@ -11,3 +11,11 @@ class EpisodeSummary {
         self.date = date
     }
 }
+
+extension EpisodeSummary {
+    class Mother {
+        static func build(id: String) -> EpisodeSummary {
+            return EpisodeSummary(id: id, seasonId: "S01E01", name: "Pilot", date: Date())
+        }
+    }
+}

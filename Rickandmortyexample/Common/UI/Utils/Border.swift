@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct EdgeBorder: Shape {
-
     var width: CGFloat
     var edges: [Edge]
 

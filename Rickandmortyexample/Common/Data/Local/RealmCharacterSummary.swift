@@ -18,7 +18,7 @@ class RealmCharacterSummary: RealmSwift.Object {
 
     convenience init(character: CharacterSummary) {
         self.init()
-        primaryId = "\(Self.schemaId)\(character.id)"
+        primaryId = Self.primaryId(id: character.id)
         imageURL = character.imageURL
         name = character.name
         status = mapFromDomain(status: character.status)

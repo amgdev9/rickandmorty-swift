@@ -52,7 +52,7 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
         var error: Error? = .none
 
         func onViewMount() {}
-        var listState: NetworkData<PaginatedResponse<CharacterSummary>> = .data(PaginatedResponse(items: (1...10).map { i in
+        var listState = NetworkData.data(PaginatedResponse(items: (1...10).map { i in
             CharacterSummary.Mother.build(id: String(i))
         }, hasNext: false))
         var hasFilters: Bool = true

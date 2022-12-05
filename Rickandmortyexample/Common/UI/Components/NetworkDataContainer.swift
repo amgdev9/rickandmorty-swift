@@ -35,16 +35,15 @@ extension NetworkDataContainer {
 
 // MARK: - Previews
 struct NetworkDataContainerPreviews: PreviewProvider {
-    @Sendable static func delay() async {
-        try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-    }
-
     static var previews: some View {
-        NetworkDataContainer(data: NetworkData<String>.loading, onRefetch: delay) { _ in }
+        NetworkDataContainer(data: NetworkData<String>.loading, onRefetch: PreviewUtils.delay) { _ in }
             .previewDisplayName("Loading state")
-        NetworkDataContainer(data: NetworkData<String>.error("An error happened!"), onRefetch: delay) { _ in }
+        NetworkDataContainer(
+            data: NetworkData<String>.error("An error happened!"),
+            onRefetch: PreviewUtils.delay
+        ) { _ in }
             .previewDisplayName("Error state")
-        NetworkDataContainer(data: NetworkData.data("Loaded data"), onRefetch: delay) { data in
+        NetworkDataContainer(data: NetworkData.data("Loaded data"), onRefetch: PreviewUtils.delay) { data in
             ScrollView {
                 Text(data, variant: .body15)
             }

@@ -4,6 +4,8 @@ struct LocationDetailsScreen<ViewModel>: View where ViewModel: LocationDetailsVi
     @StateObject private var viewModel: ViewModel
     let router: LocationDetailsScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: LocationDetailsScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
@@ -15,7 +17,7 @@ struct LocationDetailsScreen<ViewModel>: View where ViewModel: LocationDetailsVi
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         Header(title: location.name, subtitle: location.dimension, info: location.type)
-                        Text(String(localized: "section/residents"), variant: .body20, weight: .bold, color: .graybaseGray1)
+                        Text(i18n.t("section/residents"), variant: .body20, weight: .bold, color: .graybaseGray1)
                             .padding(.leading, 16)
                             .padding(.top, 20)
                             .padding(.bottom, 10)

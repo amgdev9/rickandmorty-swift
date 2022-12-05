@@ -24,6 +24,13 @@ class I18N: ObservableObject {
         return value.localized()
     }
 
+    func tDate(_ date: Date, format: String.LocalizationValue) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = String(localized: format)
+        formatter.locale = Locale(identifier: language.languageCode?.identifier ?? "en_US")
+        return formatter.string(from: date)
+    }
+
     @objc private func onLocaleChange() {
         language = Locale.current.language
     }

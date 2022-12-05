@@ -31,7 +31,7 @@ extension RadioButton {
 // MARK: - Logic
 extension RadioButton {
     func handlePress() {
-        if value != targetValue  {
+        if value != targetValue {
             value = targetValue
         } else {
             value = .none

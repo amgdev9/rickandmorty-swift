@@ -16,7 +16,7 @@ class RealmEpisodeSummary: RealmSwift.Object {
 
     convenience init(episodeSummary: EpisodeSummary) {
         self.init()
-        self.primaryId = "\(Self.schemaId)\(episodeSummary.id)"
+        self.primaryId = Self.primaryId(id: episodeSummary.id)
         self.seasonId = episodeSummary.seasonId
         self.name = episodeSummary.name
         self.date = episodeSummary.date
@@ -29,6 +29,11 @@ class RealmEpisodeSummary: RealmSwift.Object {
     }
 
     func toDomain() -> EpisodeSummary {
-        return EpisodeSummary(id: String(primaryId.dropFirst(Self.schemaId.count)), seasonId: seasonId, name: name, date: date)
+        return EpisodeSummary(
+            id: String(primaryId.dropFirst(Self.schemaId.count)),
+            seasonId: seasonId,
+            name: name,
+            date: date
+        )
     }
 }

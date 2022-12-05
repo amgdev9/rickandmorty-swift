@@ -10,7 +10,9 @@ class GraphQLLocationsDataSource: LocationsRemoteDataSource {
     }
 
     func getLocations(page: UInt, filter: LocationFilter) async -> Result<PaginatedResponse<LocationSummary>, Error> {
-        let result = await apolloClient.fetchAsync(query: LocationsQuery(page: Int(page), filter: FilterLocation.from(filter: filter)))
+        let result = await apolloClient.fetchAsync(
+            query: LocationsQuery(page: Int(page), filter: FilterLocation.from(filter: filter))
+        )
         guard let result = result.unwrap() else {
             return .failure(Error(message: result.failure()!.localizedDescription))
         }
@@ -32,17 +34,12 @@ class GraphQLLocationsDataSource: LocationsRemoteDataSource {
 }
 
 extension FilterLocation {
-    // TODO This is used in multiple places
-    static func mapString(_ value: String) -> GraphQLNullable<String> {
-        if value.isEmpty { return .none }
-        return .some(value)
-    }
 
     static func from(filter: LocationFilter) -> Self {
         return FilterLocation(
-            name: mapString(filter.name),
-            type: mapString(filter.type),
-            dimension: mapString(filter.dimension)
+            name: .from(filter.name),
+            type: .from(filter.type),
+            dimension: .from(filter.dimension)
         )
     }
 }

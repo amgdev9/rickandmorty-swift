@@ -28,7 +28,7 @@ extension EpisodeDetailQuery.Data.Episode {
             .set(id: summary.id)
             .set(name: summary.name)
             .set(date: summary.date)
-            .set(characters: characters.compactMap{ $0 }.map { $0.fragments.characterSummaryFragment.toDomain() })
+            .set(characters: characters.compactMap { $0 }.map { $0.fragments.characterSummaryFragment.toDomain() })
             .build()
     }
 }

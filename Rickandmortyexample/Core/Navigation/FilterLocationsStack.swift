@@ -19,21 +19,39 @@ struct FilterLocationsStack: View {
                 switch screenType {
                 case .byName(let params):
                     SearchScreen(
-                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByNameRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationNameRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByLocationNameRepository
+                        )
                     }
                 case .byType(let params):
                     SearchScreen(
-                        router: SwiftUISearchByTypeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByTypeRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationTypeRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByLocationTypeRepository
+                        )
                     }
                 case .byDimension(let params):
                     SearchScreen(
-                        router: SwiftUISearchByDimensionRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                        router: SwiftUISearchByDimensionRouter(
+                            path: $path,
+                            params: params,
+                            mainScreenParams: $mainScreenParams
+                        )
                     ) {
-                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationDimensionRepository)
+                        mainContainer.search.searchViewModel(
+                            autocompleteRepository: mainContainer.search.autocompleteByLocationDimensionRepository
+                        )
                     }
                 }
             }

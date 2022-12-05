@@ -70,19 +70,7 @@ protocol CharacterCardItem {
 
 // MARK: - Previews
 struct CharacterCardPreviews: PreviewProvider {
-    struct Item: CharacterCardItem {
-        let id: String
-        let imageURL: String
-        let name: String
-        let status: Character.Status
-    }
-
-    static let item = Item(id: "1", imageURL: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                           name: "Rick Sanchez", status: .alive)
-
     static var previews: some View {
-        CharacterCard(item: item) { id in
-            print("Pressed", id)
-        }.frame(width: 163)
+        CharacterCard(item: CharacterSummary.Mother.build(id: "1")) { _ in }.frame(width: 163)
     }
 }
