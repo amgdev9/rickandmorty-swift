@@ -11,20 +11,20 @@ class CharacterDetailsViewModelImpl: CharacterDetailsViewModel {
 
     init(characterDetailsRepository: CharacterDetailsRepository) {
         self.characterDetailsRepository = characterDetailsRepository
-        print("MOUNT")
     }
 
     func onViewMount(characterId: String) {
         self.characterId = characterId
         characterDetailsRepository.getObservable(id: characterId)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak self] in
+                guard let viewModel = self else { return }
                 guard let details = $0.unwrap() else {
-                    self.character = .error($0.failure()!.message)
+                    viewModel.character = .error($0.failure()!.message)
                     return
                 }
 
-                self.character = .data(details)
+                viewModel.character = .data(details)
             })
             .disposed(by: disposeBag)
     }
@@ -42,10 +42,6 @@ class CharacterDetailsViewModelImpl: CharacterDetailsViewModel {
                 }
             }
         }
-    }
-
-    deinit {
-        print("UNMOUNT")
     }
 }
 

@@ -23,17 +23,19 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
 
     func onViewMount() {
         filterRepository.getLatestFilterObservable()
-            .subscribe(onNext: {
-                self.actionsSubject.onNext(.fetch($0))
+            .subscribe(onNext: { [weak self] in
+                self?.actionsSubject.onNext(.fetch($0))
             })
             .disposed(by: disposeBag)
 
         actionsSubject
             .observe(on: MainScheduler.instance)
-            .concatMap(handleAction)
+            .concatMap { [weak self] in
+                self?.handleAction(action: $0) ?? .empty()
+            }
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                self.handleActionResult(actionResult: $0)
+            .subscribe(onNext: { [weak self] in
+                self?.handleActionResult(actionResult: $0)
             })
             .disposed(by: disposeBag)
     }
@@ -106,7 +108,10 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private func handleFetchNextPageAction(observer: AnyObserver<ActionResult>) {
         Task {
             guard case let .data(list) = self.listState else { return }
-            let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
+            let result = await self.charactersRepository.fetchNextPage(
+                filter: self.filter,
+                listSize: UInt32(list.items.count)
+            )
             observer.onNext(.fetchNextPage(result))
         }
     }
