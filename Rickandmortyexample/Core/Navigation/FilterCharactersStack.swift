@@ -10,18 +10,24 @@ struct FilterCharactersStack: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            FilterCharactersScreen(router: SwiftUIFilterCharactersScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)) {
-                mainContainer.filterCharactersViewModel
+            FilterCharactersScreen(
+                router: SwiftUIFilterCharactersScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)
+            ) {
+                mainContainer.characters.filterCharactersViewModel
             }
             .navigationDestination(for: SearchScreens.self) { screen in
                 switch screen {
                 case .byName(let params):
-                    SearchScreen(router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByCharacterNameRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByCharacterNameRepository)
                     }
                 case .bySpecies(let params):
-                    SearchScreen(router: SwiftUISearchBySpeciesRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByCharacterSpeciesRepository)
+                    SearchScreen(
+                        router: SwiftUISearchBySpeciesRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByCharacterSpeciesRepository)
                     }
                 }
             }
@@ -47,11 +53,15 @@ extension FilterCharactersStack {
         }
 
         func goSearchByName(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue))
+            )
         }
 
         func goSearchBySpecies(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.bySpecies(.init(titleLocalizationKey: "section/species-title", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.bySpecies(.init(titleLocalizationKey: "section/species-title", initialValue: initialValue))
+            )
         }
 
         func goBack() {
@@ -63,7 +73,11 @@ extension FilterCharactersStack {
         let params: SearchScreenParams
         let mainScreenParams: Binding<FilterCharactersScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterCharactersScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterCharactersScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)
@@ -79,7 +93,11 @@ extension FilterCharactersStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterCharactersScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterCharactersScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterCharactersScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)

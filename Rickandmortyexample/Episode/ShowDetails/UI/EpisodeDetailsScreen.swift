@@ -73,7 +73,7 @@ struct EpisodeDetailsScreenPreviews: PreviewProvider {
         )
 
         func refetch() async {
-            await EpisodeDetailsScreenPreviews.delay()
+            await PreviewUtils.delay()
         }
     }
 

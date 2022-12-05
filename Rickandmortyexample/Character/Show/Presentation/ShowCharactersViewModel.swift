@@ -14,18 +14,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     private var refetchContinuation: CheckedContinuation<(), Never>?
     private var fetchNextPageContinuation: CheckedContinuation<(), Never>?
 
-    enum Action {
-        case fetch(CharacterFilter)
-        case refetch
-        case fetchNextPage
-    }
-
-    enum ActionResult {
-        case fetch(Result<PaginatedResponse<CharacterSummary>, Error>)
-        case refetch(Result<PaginatedResponse<CharacterSummary>, Error>)
-        case fetchNextPage(Result<PaginatedResponse<CharacterSummary>, Error>)
-    }
-
     private let actionsSubject = PublishSubject<Action>()
 
     init(charactersRepository: CharactersRepository, filterRepository: CharacterFilterRepository) {
@@ -41,10 +29,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
             .disposed(by: disposeBag)
 
         actionsSubject
-            .map {
-                print("\($0)")
-                return $0
-            }
             .observe(on: MainScheduler.instance)
             .concatMap(handleAction)
             .observe(on: MainScheduler.instance)
@@ -76,78 +60,106 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         }
     }
 
-    private func handleAction(action: Action) -> Observable<ActionResult> {
-        switch action {
-        case .fetch(let filter):
-            return .create { observer in
-                self.filter = filter
-                Task {
-                    let result = await self.charactersRepository.fetch(filter: filter)
-                    observer.onNext(.fetch(result))
-                }
+    private func handleFetchAction(filter: CharacterFilter, observer: AnyObserver<ActionResult>) {
+        self.filter = filter
 
-                return Disposables.create()
-            }.take(1)
-        case .refetch:
-            return .create { observer in
-                Task {
-                    let result = await self.charactersRepository.refetch(filter: self.filter)
-                    observer.onNext(.refetch(result))
-                }
-
-                return Disposables.create()
-            }.take(1)
-        case .fetchNextPage:
-            return .create { observer in
-                Task {
-                    guard case let .data(list) = self.listState else { return }
-                    let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
-                    observer.onNext(.fetchNextPage(result))
-                }
-
-                return Disposables.create()
-            }.take(1)
+        Task {
+            let result = await self.charactersRepository.fetch(filter: filter)
+            observer.onNext(.fetch(result))
         }
+    }
+
+    private func handleFetchActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
+        guard let result = result.unwrap() else {
+            listState = .error(result.failure()!.message)
+            return
+        }
+
+        listState = .data(result)
+    }
+
+    private func handleRefetchAction(observer: AnyObserver<ActionResult>) {
+        Task {
+            let result = await self.charactersRepository.refetch(filter: self.filter)
+            observer.onNext(.refetch(result))
+        }
+    }
+
+    private func handleRefetchActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
+        defer {
+            refetchContinuation?.resume(returning: ())
+            refetchContinuation = .none
+        }
+
+        guard let result = result.unwrap() else {
+            if case .error = listState {
+                listState = .error(result.failure()!.message)
+            } else {
+                error = result.failure()!
+            }
+            return
+        }
+
+        listState = .data(result)
+    }
+
+    private func handleFetchNextPageAction(observer: AnyObserver<ActionResult>) {
+        Task {
+            guard case let .data(list) = self.listState else { return }
+            let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
+            observer.onNext(.fetchNextPage(result))
+        }
+    }
+
+    private func handleFetchNextPageActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
+        defer {
+            fetchNextPageContinuation?.resume(returning: ())
+            fetchNextPageContinuation = .none
+        }
+
+        guard let result = result.unwrap() else {
+            error = result.failure()!
+            return
+        }
+
+        guard case let .data(list) = self.listState else { return }
+
+        listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
+    }
+
+    private func handleAction(action: Action) -> Observable<ActionResult> {
+        return .create { observer in
+            switch action {
+            case .fetch(let filter): self.handleFetchAction(filter: filter, observer: observer)
+            case .refetch: self.handleRefetchAction(observer: observer)
+            case .fetchNextPage: self.handleFetchNextPageAction(observer: observer)
+            }
+
+            return Disposables.create()
+        }.take(1)
     }
 
     private func handleActionResult(actionResult: ActionResult) {
         switch actionResult {
-        case .fetch(let result):
-            guard let result = result.unwrap() else {
-                listState = .error(result.failure()!.message)
-                return
-            }
-
-            listState = .data(result)
-        case .refetch(let result):
-            guard let result = result.unwrap() else {
-                if case .error = listState {
-                    listState = .error(result.failure()!.message)
-                } else {
-                    error = result.failure()!
-                }
-                refetchContinuation?.resume(returning: ())
-                refetchContinuation = .none
-                return
-            }
-
-            listState = .data(result)
-            refetchContinuation?.resume(returning: ())
-            refetchContinuation = .none
-        case .fetchNextPage(let result):
-            guard let result = result.unwrap() else {
-                error = result.failure()!
-                fetchNextPageContinuation?.resume(returning: ())
-                fetchNextPageContinuation = .none
-                return
-            }
-
-            guard case let .data(list) = self.listState else { return }
-
-            listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
-            fetchNextPageContinuation?.resume(returning: ())
-            fetchNextPageContinuation = .none
+        case .fetch(let result): handleFetchActionResult(result: result)
+        case .refetch(let result): handleRefetchActionResult(result: result)
+        case .fetchNextPage(let result): handleFetchNextPageActionResult(result: result)
         }
+    }
+}
+
+// MARK: - Types
+extension ShowCharactersViewModelImpl {
+    enum Action {
+        case fetch(CharacterFilter)
+        case refetch
+        case fetchNextPage
+    }
+
+    enum ActionResult {
+        case fetch(Result<PaginatedResponse<CharacterSummary>, Error>)
+        case refetch(Result<PaginatedResponse<CharacterSummary>, Error>)
+        case fetchNextPage(Result<PaginatedResponse<CharacterSummary>, Error>)
     }
 }
 

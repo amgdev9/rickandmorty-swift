@@ -21,7 +21,9 @@ class CharacterDetailsRepositoryImpl: CharacterDetailsRepository {
                 if characterExists { return }
 
                 let remoteDetails = await self.remoteDataSource.getCharacterDetail(id: id)
-                guard let remoteDetails = remoteDetails.unwrap() else { return observer.onNext(.failure(remoteDetails.failure()!)) }
+                guard let remoteDetails = remoteDetails.unwrap() else {
+                    return observer.onNext(.failure(remoteDetails.failure()!))
+                }
 
                 await self.localDataSource.upsertCharacterDetail(detail: remoteDetails)
             }

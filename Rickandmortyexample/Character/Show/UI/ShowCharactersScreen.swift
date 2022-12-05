@@ -5,14 +5,20 @@ struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersView
     @StateObject private var viewModel: ViewModel
     let router: ShowCharactersScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: ShowCharactersScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
     }
 
     var body: some View {
-        NavigationContainer(title: String(localized: "routes/character")) {
-            PaginatedList(data: viewModel.listState, onRefetch: viewModel.refetch, onLoadNextPage: viewModel.fetchNextPage) { characters in
+        NavigationContainer(title: i18n.t("routes/character")) {
+            PaginatedList(
+                data: viewModel.listState,
+                onRefetch: viewModel.refetch,
+                onLoadNextPage: viewModel.fetchNextPage
+            ) { characters in
                 CharacterList(characters: characters,
                               onPress: router.gotoCharacterDetail)
                 .padding(.top, 20)
@@ -46,19 +52,16 @@ struct ShowCharactersScreenPreviews: PreviewProvider {
         var error: Error? = .none
 
         func onViewMount() {}
-        var listState: NetworkData<PaginatedResponse<CharacterSummary>> = .data(PaginatedResponse(items: CharacterListPreviews.characters.map {
-            CharacterSummary.Builder()
-                .set(id: $0.id)
-                .set(name: $0.name)
-                .set(imageURL: $0.imageURL)
-                .set(status: $0.status)
-                .build()
+        var listState: NetworkData<PaginatedResponse<CharacterSummary>> = .data(PaginatedResponse(items: (1...10).map { i in
+            CharacterSummary.Mother.build(id: String(i))
         }, hasNext: false))
         var hasFilters: Bool = true
 
-        func fetchNextPage() async {}
+        func fetchNextPage() async {
+            await PreviewUtils.delay()
+        }
         func refetch() async {
-            await ShowCharactersScreenPreviews.delay()
+            await PreviewUtils.delay()
         }
     }
 

@@ -32,7 +32,9 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                     print("\(domainCharacters.count)")
 
                     return continuation.resume(returning: domainCharacters)
-                } catch {}
+                } catch {
+                    return continuation.resume(returning: .none)
+                }
             }
         }
     }
@@ -41,6 +43,10 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
         print("Realm.insertCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
+                defer {
+                    continuation.resume(returning: ())
+                }
+
                 do {
                     let realm = try self.realmFactory.build()
 
@@ -54,11 +60,18 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
                     if let list = list.first {
                         try realm.write {
-                            let numDiscardedCharacters = max(list.characters.count + characters.count - self.maxCharactersPerList, 0)
-                            let realmCharacters = characters.dropLast(numDiscardedCharacters).map { RealmCharacterSummary(character: $0) }
+                            let numDiscardedCharacters = max(
+                                list.characters.count + characters.count - self.maxCharactersPerList,
+                                0
+                            )
+                            let realmCharacters = characters
+                                .dropLast(numDiscardedCharacters)
+                                .map { RealmCharacterSummary(character: $0) }
+
                             realmCharacters.forEach {
                                 realm.add($0, update: .modified)
                             }
+
                             list.characters.append(objectsIn: realmCharacters)
                         }
                     } else {
@@ -66,8 +79,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                             self.createNewList(with: characters, realm: realm, filter: realmFilter)
                         }
                     }
-
-                    return continuation.resume(returning: ())
                 } catch {}
             }
         }
@@ -78,6 +89,7 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
         let numDiscardedCharacters = max(characters.count - self.maxCharactersPerList, 0)
         let realmCharacters = characters.dropLast(numDiscardedCharacters).map { RealmCharacterSummary(character: $0) }
+
         realmCharacters.forEach {
             realm.add($0, update: .modified)
         }
@@ -90,6 +102,10 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
         print("Realm.setCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
+                defer {
+                    continuation.resume(returning: ())
+                }
+
                 do {
                     let realm = try self.realmFactory.build()
 
@@ -109,8 +125,6 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
 
                         self.createNewList(with: characters, realm: realm, filter: realmFilter)
                     }
-
-                    return continuation.resume(returning: ())
                 } catch {}
             }
         }

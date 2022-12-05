@@ -90,3 +90,22 @@ class CharacterDetails {
         }
     }
 }
+
+extension CharacterDetails {
+    class Mother {
+        static func buildMock() -> CharacterDetails {
+            CharacterDetails.Builder()
+                .set(id: "1")
+                .set(name: "Rick Sanchez")
+                .set(imageURL: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
+                .set(status: .alive)
+                .set(species: "Human")
+                .set(gender: .male)
+                .set(origin: CharacterLocation(id: "1", name: "Earth (C-137)"))
+                .set(type: .none)
+                .set(location: CharacterLocation(id: "2", name: "Earth (Replacement Dimension)"))
+                .set(episodes: EpisodeListPreviews.EPISODES)
+                .build()
+        }
+    }
+}

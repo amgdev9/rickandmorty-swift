@@ -11,6 +11,7 @@ class CharacterDetailsViewModelImpl: CharacterDetailsViewModel {
 
     init(characterDetailsRepository: CharacterDetailsRepository) {
         self.characterDetailsRepository = characterDetailsRepository
+        print("MOUNT")
     }
 
     func onViewMount(characterId: String) {
@@ -41,6 +42,10 @@ class CharacterDetailsViewModelImpl: CharacterDetailsViewModel {
                 }
             }
         }
+    }
+
+    deinit {
+        print("UNMOUNT")
     }
 }
 

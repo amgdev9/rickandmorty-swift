@@ -10,18 +10,23 @@ struct FilterEpisodesStack: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            FilterEpisodesScreen(router: SwiftUIFilterEpisodesScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)) {
-                mainContainer.filterEpisodesViewModel
+            FilterEpisodesScreen(
+                router: SwiftUIFilterEpisodesScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)) {
+                    mainContainer.episodes.filterEpisodesViewModel
             }
             .navigationDestination(for: SearchScreens.self) { screenType in
                 switch screenType {
                 case .byName(let params):
-                    SearchScreen(router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByEpisodeNameRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByEpisodeNameRepository)
                     }
                 case .byEpisode(let params):
-                    SearchScreen(router: SwiftUISearchByEpisodeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByEpisodeSeasonIDRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByEpisodeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByEpisodeSeasonIDRepository)
                     }
                 }
             }
@@ -47,11 +52,15 @@ extension FilterEpisodesStack {
         }
 
         func goSearchByName(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue))
+            )
         }
 
         func goSearchByEpisode(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byEpisode(.init(titleLocalizationKey: "section/episode", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byEpisode(.init(titleLocalizationKey: "section/episode", initialValue: initialValue))
+            )
         }
 
         func goBack() {
@@ -63,7 +72,11 @@ extension FilterEpisodesStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterEpisodesScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterEpisodesScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterEpisodesScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)
@@ -79,7 +92,11 @@ extension FilterEpisodesStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterEpisodesScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterEpisodesScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterEpisodesScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)

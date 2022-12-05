@@ -4,38 +4,47 @@ struct CharacterInfo<Character: CharacterInfoData>: View {
     let character: Character
     let onPressLocation: (_ id: String) -> Void
 
+    @EnvironmentObject var i18n: I18N
+
     var body: some View {
-        Text(String(localized: "section/character-info"),
+        Text(i18n.t("section/character-info"),
              variant: .body20, weight: .bold, color: .graybaseGray1)
         .padding(.top, 20)
         .padding(.bottom, 9.5)
         .padding(.leading, 16)
         Separator()
         SectionButton(
-            title: String(localized: "card/gender"),
+            title: i18n.t("card/gender"),
             subtitle: character.gender.localized(),
             showBorder: false
         )
-        Separator().offset(x: 16)
+        midSeparator()
         SectionButton(
-            title: String(localized: "card/origin"),
-            subtitle: character.origin?.name ?? String(localized: "misc/unknown"),
+            title: i18n.t("card/origin"),
+            subtitle: character.origin?.name ?? i18n.t("misc/unknown"),
             showBorder: false
         )
-        Separator().offset(x: 16)
+        midSeparator()
         SectionButton(
-            title: String(localized: "card/type"),
-            subtitle: character.type ?? String(localized: "misc/unknown"),
+            title: i18n.t("card/type"),
+            subtitle: character.type ?? i18n.t("misc/unknown"),
             showBorder: false
         )
-        Separator().offset(x: 16)
+        midSeparator()
         SectionButton(
-            title: String(localized: "card/location"),
-            subtitle: character.location?.name ?? String(localized: "misc/unknown"),
+            title: i18n.t("card/location"),
+            subtitle: character.location?.name ?? i18n.t("misc/unknown"),
             showBorder: false,
             onPress: character.location != nil ? handlePressLocation : .none
         )
         Separator()
+    }
+}
+
+// MARK: - Styles
+extension CharacterInfo {
+    func midSeparator() -> some View {
+        Separator().offset(x: 16)
     }
 }
 

@@ -41,16 +41,16 @@ struct PaginatedListPreviews: PreviewProvider {
     static var previews: some View {
         PaginatedList(
             data: NetworkData.data(PaginatedResponse(items: ["Hello"], hasNext: false)),
-            onRefetch: delay,
-            onLoadNextPage: delay) { data in
+            onRefetch: PreviewUtils.delay,
+            onLoadNextPage: PreviewUtils.delay) { data in
                 Text(data.first!, variant: .body15)
 
         }
             .previewDisplayName("With data")
         PaginatedList(
             data: NetworkData<PaginatedResponse<String>>.loading,
-            onRefetch: delay,
-            onLoadNextPage: delay) { _ in }
+            onRefetch: PreviewUtils.delay,
+            onLoadNextPage: PreviewUtils.delay) { _ in }
             .previewDisplayName("Loading")
     }
 }

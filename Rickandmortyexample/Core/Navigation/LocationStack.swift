@@ -11,21 +11,21 @@ struct LocationStack: View {
         NavigationStack(path: $path) {
             ShowLocationsScreen(router: SwiftUIShowLocationsScreenRouter(path: $path,
                                                                         filterPresented: $filterPresented)) {
-                mainContainer.showLocationsViewModel
+                mainContainer.locations.showLocationsViewModel
             }
             .navigationDestination(for: LocationDetailsScreenParams.self) { params in
                 LocationDetailsScreen(router: SwiftUILocationDetailsScreenRouter(path: $path, params: params)) {
-                    mainContainer.locationDetailsViewModel
+                    mainContainer.locations.locationDetailsViewModel
                 }
             }
             .navigationDestination(for: CharacterDetailsScreenParams.self) { params in
                 CharacterDetailsScreen(router: SwiftUICharacterDetailsScreenRouter(path: $path, params: params)) {
-                    mainContainer.characterDetailsViewModel
+                    mainContainer.characters.characterDetailsViewModel
                 }
             }
             .navigationDestination(for: EpisodeDetailsScreenParams.self) { params in
                 EpisodeDetailsScreen(router: SwiftUIEpisodeDetailsScreenRouter(path: $path, params: params)) {
-                    mainContainer.episodeDetailsViewModel
+                    mainContainer.episodes.episodeDetailsViewModel
                 }
             }
             .sheet(isPresented: $filterPresented) {
@@ -51,49 +51,6 @@ extension LocationStack {
 
         func gotoLocationDetail(id: String) {
             path.wrappedValue.append(LocationDetailsScreenParams(id: id))
-        }
-    }
-
-    class SwiftUICharacterDetailsScreenRouter: Router & CharacterDetailsScreenRouter {
-        var params: CharacterDetailsScreenParams
-
-        init(path: Binding<NavigationPath>, params: CharacterDetailsScreenParams) {
-            self.params = params
-            super.init(path: path)
-        }
-
-        func gotoLocation(id: String) {
-            path.wrappedValue.append(LocationDetailsScreenParams(id: id))
-        }
-
-        func gotoEpisode(id: String) {
-            path.wrappedValue.append(EpisodeDetailsScreenParams(id: id))
-        }
-    }
-
-    class SwiftUILocationDetailsScreenRouter: Router & LocationDetailsScreenRouter {
-        var params: LocationDetailsScreenParams
-
-        init(path: Binding<NavigationPath>, params: LocationDetailsScreenParams) {
-            self.params = params
-            super.init(path: path)
-        }
-
-        func gotoCharacter(id: String) {
-            path.wrappedValue.append(CharacterDetailsScreenParams(id: id))
-        }
-    }
-
-    class SwiftUIEpisodeDetailsScreenRouter: Router & EpisodeDetailsScreenRouter {
-        var params: EpisodeDetailsScreenParams
-
-        init(path: Binding<NavigationPath>, params: EpisodeDetailsScreenParams) {
-            self.params = params
-            super.init(path: path)
-        }
-
-        func gotoCharacter(id: String) {
-            path.wrappedValue.append(CharacterDetailsScreenParams(id: id))
         }
     }
 }

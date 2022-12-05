@@ -5,6 +5,8 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
     @StateObject private var viewModel: ViewModel
     let router: FilterCharactersScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     private let statusList: [Character.Status] = [.alive, .dead, .unknown]
     private let genderList: [Character.Gender] = [.female, .male, .genderless, .unknown]
 
@@ -21,24 +23,24 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
                 .padding(.bottom, 26.5)
                 .padding(.top, 18)
                 SectionButton(
-                    title: String(localized: "section/name-title"),
-                    subtitle: String(localized: "section/name-subtitle"),
+                    title: i18n.t("section/name-title"),
+                    subtitle: i18n.t("section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
                         router.goSearchByName(initialValue: viewModel.filter.name)
                     }.padding(.bottom, 19)
                 SectionButton(
-                    title: String(localized: "section/species-title"),
-                    subtitle: String(localized: "action/select-one"),
+                    title: i18n.t("section/species-title"),
+                    subtitle: i18n.t("action/select-one"),
                     active: !viewModel.filter.species.isEmpty) {
                         router.goSearchBySpecies(initialValue: viewModel.filter.species)
                     }.padding(.bottom, 19.5)
                 RadioButtonGroup(
-                    title: String(localized: "section/status"),
+                    title: i18n.t("section/status"),
                     values: statusList,
                     value: $viewModel.filter.status)
                 .padding(.bottom, 29.5)
                 RadioButtonGroup(
-                    title: String(localized: "section/gender"),
+                    title: i18n.t("section/gender"),
                     values: genderList,
                     value: $viewModel.filter.gender)
             }

@@ -5,25 +5,20 @@ import RealmSwift
 struct Main: SwiftUI.App {
     let mainContainer: MainContainer
 
-    private func preloadDatabase() {
-        do {
-            let realm = try mainContainer.realmFactory.buildWithoutQueue()
-            try RealmCharacterFilterRepository.preload(realm: realm)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
+    @StateObject var i18n = I18N()
 
     init() {
         registerProviderFactories()
         mainContainer = MainContainer()
 
-        preloadDatabase()
+        let preloader = mainContainer.realm.realmPreloader
+        preloader.preload()
     }
 
     var body: some Scene {
         WindowGroup {
             TabsNavigator(mainContainer: mainContainer)
+                .environmentObject(i18n)
         }
     }
 }

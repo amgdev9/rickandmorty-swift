@@ -59,11 +59,11 @@ struct ShowEpisodesScreenPreviews: PreviewProvider {
         func onViewMount() {}
 
         func refetch() async {
-            await ShowEpisodesScreenPreviews.delay()
+            await PreviewUtils.delay()
         }
 
         func loadNextPage() async {
-            await ShowEpisodesScreenPreviews.delay()
+            await PreviewUtils.delay()
         }
     }
 

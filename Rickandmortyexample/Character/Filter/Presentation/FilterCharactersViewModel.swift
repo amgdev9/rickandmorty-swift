@@ -12,7 +12,6 @@ class FilterCharactersViewModelImpl: FilterCharactersViewModel {
             let latestFilter = await characterFilterRepository.getLatestFilter()
 
             await MainActor.run {
-                print("Filter \(latestFilter.name)")
                 self.filter = latestFilter
             }
         }

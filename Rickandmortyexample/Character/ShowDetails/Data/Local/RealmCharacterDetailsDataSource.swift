@@ -14,6 +14,7 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
         return .create { observer in
             var subscription: NotificationToken? = .none
             do {
+                print("SUB")
                 let realm = try self.realmFactory.buildWithoutQueue()
                 subscription = realm.objects(RealmCharacterDetails.self)
                     .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
@@ -29,6 +30,7 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
             } catch {}
 
             return Disposables.create {
+                print("UNSUB")
                 subscription?.invalidate()
             }
         }
@@ -45,7 +47,9 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                         .first
                     print("\(detail != nil)")
                     return continuation.resume(returning: detail?.toDomain())
-                } catch {}
+                } catch {
+                    return continuation.resume(returning: .none)
+                }
             }
         }
     }
@@ -54,6 +58,10 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
         print("Realm.upsertCharacterDetail \(detail.id)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
+                defer {
+                    continuation.resume(returning: ())
+                }
+
                 do {
                     let realm = try self.realmFactory.build()
 
@@ -73,8 +81,10 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                                 .set(imageURL: detail.imageURL)
                                 .set(status: detail.status)
                                 .build()
+
                             let realmSummary = RealmCharacterSummary(character: summary)
                             let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
+
                             realmSummary.detail = realmDetail
                             realm.add(realmSummary)
 
@@ -84,29 +94,31 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
 
                             let list = realm.objects(RealmCharacterList.self)
                                 .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
-                                .first!
+                                .first! // List must exist here
 
                             list.uncachedCharacters.append(realmSummary)
                         }
                     }
                 } catch {}
-                continuation.resume(returning: ())
             }
         }
     }
 
     private func buildCharacterDetail(detail: CharacterDetails, realm: Realm) -> RealmCharacterDetails {
         let realmDetail = RealmCharacterDetails(detail: detail)
+
         if let origin = detail.origin {
             let realmOrigin = RealmLocationSummary(characterLocation: origin)
             realm.add(realmOrigin, update: .modified)
             realmDetail.origin = realmOrigin
         }
+
         if let location = detail.location {
             let realmLocation = RealmLocationSummary(characterLocation: location)
             realm.add(realmLocation, update: .modified)
             realmDetail.location = realmLocation
         }
+
         let realmEpisodes = detail.episodes.map { RealmEpisodeSummary(episodeSummary: $0) }
         realmEpisodes.forEach {
             realm.add($0, update: .modified)
@@ -127,7 +139,9 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                         .count > 0
                     print("\(exists)")
                     return continuation.resume(returning: exists)
-                } catch {}
+                } catch {
+                    continuation.resume(returning: false)
+                }
             }
         }
     }

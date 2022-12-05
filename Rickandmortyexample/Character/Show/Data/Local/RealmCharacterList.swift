@@ -16,7 +16,7 @@ class RealmCharacterList: RealmSwift.Object {
     convenience init(filter: RealmCharacterFilter) {
         self.init()
         self.filter = filter
-        primaryId = "\(Self.schemaId)\(filter.primaryId)"
+        primaryId = Self.primaryId(id: filter.primaryId)
     }
 
     func delete(realm: Realm) {

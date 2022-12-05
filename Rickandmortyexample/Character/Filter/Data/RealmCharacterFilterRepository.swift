@@ -34,9 +34,9 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         .first?.toDomain()
 
                     return continuation.resume(returning: filter ?? CharacterFilter())
-                } catch { }
-
-                return continuation.resume(returning: CharacterFilter())
+                } catch {
+                    return continuation.resume(returning: CharacterFilter())
+                }
             }
         }
     }
@@ -68,6 +68,10 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
     func addFilter(filter: CharacterFilter) async {
         return await withCheckedContinuation { continuation in
             realmQueue.async {
+                defer {
+                    continuation.resume(returning: ())
+                }
+
                 do {
                     let realm = try self.realmFactory.build()
                     let realmFilter = RealmCharacterFilter(filter: filter)
@@ -78,7 +82,7 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
                         if let existingFilter = existingFilter {
                             existingFilter.createdAt = realmFilter.createdAt
-                            return continuation.resume(returning: ())
+                            return
                         }
 
                         if filters.count >= self.maxFilters {
@@ -87,8 +91,6 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
                         }
 
                         realm.add(realmFilter)
-
-                        continuation.resume(returning: ())
                     }
                 } catch { }
             }

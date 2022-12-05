@@ -10,22 +10,30 @@ struct FilterLocationsStack: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            FilterLocationsScreen(router: SwiftUIFilterLocationsScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)) {
-                mainContainer.filterLocationsViewModel
+            FilterLocationsScreen(
+                router: SwiftUIFilterLocationsScreenRouter(path: $path, params: mainScreenParams, dismiss: dismiss)
+            ) {
+                mainContainer.locations.filterLocationsViewModel
             }
             .navigationDestination(for: SearchScreens.self) { screenType in
                 switch screenType {
                 case .byName(let params):
-                    SearchScreen(router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationNameRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByNameRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationNameRepository)
                     }
                 case .byType(let params):
-                    SearchScreen(router: SwiftUISearchByTypeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationTypeRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByTypeRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationTypeRepository)
                     }
                 case .byDimension(let params):
-                    SearchScreen(router: SwiftUISearchByDimensionRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)) {
-                        mainContainer.searchViewModel(autocompleteRepository: mainContainer.autocompleteByLocationDimensionRepository)
+                    SearchScreen(
+                        router: SwiftUISearchByDimensionRouter(path: $path, params: params, mainScreenParams: $mainScreenParams)
+                    ) {
+                        mainContainer.search.searchViewModel(autocompleteRepository: mainContainer.search.autocompleteByLocationDimensionRepository)
                     }
                 }
             }
@@ -52,15 +60,21 @@ extension FilterLocationsStack {
         }
 
         func goSearchByName(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byName(.init(titleLocalizationKey: "section/name-title", initialValue: initialValue))
+            )
         }
 
         func goSearchByType(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byType(.init(titleLocalizationKey: "section/type", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byType(.init(titleLocalizationKey: "section/type", initialValue: initialValue))
+            )
         }
 
         func goSearchByDimension(initialValue: String) {
-            path.wrappedValue.append(SearchScreens.byDimension(.init(titleLocalizationKey: "section/dimension", initialValue: initialValue)))
+            path.wrappedValue.append(
+                SearchScreens.byDimension(.init(titleLocalizationKey: "section/dimension", initialValue: initialValue))
+            )
         }
 
         func goBack() {
@@ -72,7 +86,11 @@ extension FilterLocationsStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterLocationsScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterLocationsScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterLocationsScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)
@@ -88,7 +106,11 @@ extension FilterLocationsStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterLocationsScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterLocationsScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterLocationsScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)
@@ -104,7 +126,11 @@ extension FilterLocationsStack {
         var params: SearchScreenParams
         let mainScreenParams: Binding<FilterLocationsScreenParams>
 
-        init(path: Binding<NavigationPath>, params: SearchScreenParams, mainScreenParams: Binding<FilterLocationsScreenParams>) {
+        init(
+            path: Binding<NavigationPath>,
+            params: SearchScreenParams,
+            mainScreenParams: Binding<FilterLocationsScreenParams>
+        ) {
             self.params = params
             self.mainScreenParams = mainScreenParams
             super.init(path: path)

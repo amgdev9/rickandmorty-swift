@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
     @StateObject private var viewModel: ViewModel
+    @EnvironmentObject var i18n: I18N
     let router: SearchScreenRouter
 
     init(router: SearchScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
@@ -10,7 +11,7 @@ struct SearchScreen<ViewModel>: View where ViewModel: SearchViewModel {
     }
 
     var title: String {
-        String(localized: String.LocalizationValue(router.params.titleLocalizationKey))
+        i18n.t(String.LocalizationValue(router.params.titleLocalizationKey))
     }
 
     var body: some View {

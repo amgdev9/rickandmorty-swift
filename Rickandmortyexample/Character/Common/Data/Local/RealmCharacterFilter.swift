@@ -70,6 +70,11 @@ class RealmCharacterFilter: RealmSwift.Object {
     }
 
     func toDomain() -> CharacterFilter {
-        return CharacterFilter(name: name, species: species, status: mapStatusToDomain(status: status), gender: mapGenderToDomain(gender: gender))
+        return CharacterFilter(
+            name: name,
+            species: species,
+            status: mapStatusToDomain(status: status),
+            gender: mapGenderToDomain(gender: gender)
+        )
     }
 }

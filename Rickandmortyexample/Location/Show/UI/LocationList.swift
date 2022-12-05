@@ -31,6 +31,11 @@ struct LocationListPreviews: PreviewProvider {
     }
 
     static var previews: some View {
-        LocationList(data: .data(PaginatedResponse(items: locations, hasNext: false)), onRefetch: delay, onLoadNextPage: delay, onPress: { _ in })
+        LocationList(
+            data: .data(PaginatedResponse(items: locations, hasNext: false)),
+            onRefetch: PreviewUtils.delay,
+            onLoadNextPage: PreviewUtils.delay,
+            onPress: { _ in }
+        )
     }
 }

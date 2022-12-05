@@ -19,7 +19,7 @@ class RealmCharacterDetails: RealmSwift.Object {
 
     convenience init(detail: CharacterDetails) {
         self.init()
-        self.primaryId = "\(Self.schemaId)\(detail.id)"
+        self.primaryId = Self.primaryId(id: detail.id)
         self.species = detail.species
         self.gender = mapFromDomain(gender: detail.gender)
         self.type = detail.type

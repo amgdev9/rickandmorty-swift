@@ -42,3 +42,16 @@ class CharacterSummary {
         }
     }
 }
+
+extension CharacterSummary {
+    class Mother {
+        static func build(id: String) -> CharacterSummary {
+            return CharacterSummary.Builder()
+                .set(id: id)
+                .set(name: "Rick Sanchez")
+                .set(imageURL: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
+                .set(status: .alive)
+                .build()
+        }
+    }
+}

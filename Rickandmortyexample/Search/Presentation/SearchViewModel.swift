@@ -11,11 +11,11 @@ class SearchViewModelImpl: SearchViewModel {
 
     func search(text: String) {
         Task {
-            let result = await autocompleteRepository.getAutocompletions(search: text)
+            let suggestions = await self.autocompleteRepository.getAutocompletions(search: text)
 
-            guard let result = result.unwrap() else { return }
+            guard let suggestions = suggestions.unwrap() else { return }
             await MainActor.run {
-                suggestions = result
+                self.suggestions = suggestions
             }
         }
     }

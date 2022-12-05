@@ -9,9 +9,14 @@ class GraphQLCharactersDataSource: CharactersRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getCharacters(page: UInt32, filter: CharacterFilter) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
+    func getCharacters(
+        page: UInt32,
+        filter: CharacterFilter
+    ) async -> Result<PaginatedResponse<CharacterSummary>, Error> {
         print("GQL.getCharacters \(page)")
-        let result = await apolloClient.fetchAsync(query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter)))
+        let result = await apolloClient.fetchAsync(
+            query: CharactersQuery(page: Int(page), filter: FilterCharacter.from(filter: filter))
+        )
         guard let result = result.unwrap() else {
             return .failure(Error(message: result.failure()!.localizedDescription))
         }

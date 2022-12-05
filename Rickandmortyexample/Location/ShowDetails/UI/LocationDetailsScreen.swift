@@ -74,7 +74,7 @@ struct LocationDetailsScreenPreviews: PreviewProvider {
         )
 
         func refetch() async {
-            await LocationDetailsScreenPreviews.delay()
+            await PreviewUtils.delay()
         }
     }
 
