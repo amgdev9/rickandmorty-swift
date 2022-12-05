@@ -5,6 +5,7 @@ class RealmEpisodeSummary: RealmSwift.Object {
     @Persisted var seasonId: String
     @Persisted var name: String
     @Persisted var date: Date
+
     @Persisted(originProperty: "episodes") var episodeInCharacter: LinkingObjects<RealmCharacterDetails>
 
     static private let schemaId = "episode-summary-"

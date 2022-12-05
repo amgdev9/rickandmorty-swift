@@ -64,7 +64,7 @@ struct AutocompleteBar: View {
                 }
             }
         }
-        .onAppear(perform: onMount)
+        .onMount(perform: onMount)
         .onChange(of: searchText, perform: onSearchTextChange)
     }
 }

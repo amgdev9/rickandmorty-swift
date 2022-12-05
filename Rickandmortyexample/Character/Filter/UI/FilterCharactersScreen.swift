@@ -44,6 +44,7 @@ struct FilterCharactersScreen<ViewModel>: View where ViewModel: FilterCharacters
             }
         }
         .presentationDetents([.fraction(1), .large])
+        .onMount(perform: viewModel.onViewMount)
         .onChange(of: router.params, perform: { params in
             if let name = params.name {
                 ($viewModel.filter.name).wrappedValue = name

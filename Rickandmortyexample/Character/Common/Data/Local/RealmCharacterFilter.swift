@@ -8,7 +8,7 @@ class RealmCharacterFilter: RealmSwift.Object {
     @Persisted var gender: Int8
     @Persisted var createdAt: Date
 
-    @Persisted var list: RealmCharacterList?
+    @Persisted(originProperty: "filter") var list: LinkingObjects<RealmCharacterList>
 
     static private let schemaId = "character-filter-"
 
@@ -27,9 +27,7 @@ class RealmCharacterFilter: RealmSwift.Object {
     }
 
     func delete(realm: Realm) {
-        let oldList = list
-        list = .none
-        oldList?.delete(realm: realm)
+        list.forEach { $0.delete(realm: realm) }
         realm.delete(self)
     }
 

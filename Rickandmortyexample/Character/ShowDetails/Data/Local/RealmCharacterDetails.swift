@@ -26,9 +26,21 @@ class RealmCharacterDetails: RealmSwift.Object {
     }
 
     func delete(realm: Realm) {
-        origin?.delete(realm: realm)
-        location?.delete(realm: realm)
-        episodes.forEach { $0.delete(realm: realm) }
+        let oldOrigin = origin
+        origin = .none
+        oldOrigin?.delete(realm: realm)
+
+        let oldLocation = location
+        location = .none
+        oldLocation?.delete(realm: realm)
+
+        var oldEpisodes: [RealmEpisodeSummary] = []
+        episodes.forEach {
+            oldEpisodes.append($0)
+        }
+        episodes.removeAll()
+        oldEpisodes.forEach { $0.delete(realm: realm) }
+
         realm.delete(self)
     }
 

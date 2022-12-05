@@ -53,21 +53,17 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                         .where { $0.filter.primaryId.equals(realmFilter.primaryId) }
 
                     if let list = list.first {
-                        if list.characters.count + characters.count > self.maxCharactersPerList { return continuation.resume(returning: ()) }
-
                         try realm.write {
-                            let realmCharacters = characters.map { RealmCharacterSummary(character: $0) }
+                            let numDiscardedCharacters = max(list.characters.count + characters.count - self.maxCharactersPerList, 0)
+                            let realmCharacters = characters.dropLast(numDiscardedCharacters).map { RealmCharacterSummary(character: $0) }
+                            realmCharacters.forEach {
+                                realm.add($0, update: .modified)
+                            }
                             list.characters.append(objectsIn: realmCharacters)
                         }
                     } else {
-                        let list = RealmCharacterList(filter: realmFilter)
-                        if characters.count > self.maxCharactersPerList { return continuation.resume(returning: ()) }
-
                         try realm.write {
-                            let realmCharacters = characters.map { RealmCharacterSummary(character: $0) }
-                            list.characters.append(objectsIn: realmCharacters)
-
-                            realm.add(list)
+                            self.createNewList(with: characters, realm: realm, filter: realmFilter)
                         }
                     }
 
@@ -77,13 +73,24 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
         }
     }
 
+    private func createNewList(with characters: [CharacterSummary], realm: Realm, filter: RealmCharacterFilter) {
+        let list = RealmCharacterList(filter: filter)
+
+        let numDiscardedCharacters = max(characters.count - self.maxCharactersPerList, 0)
+        let realmCharacters = characters.dropLast(numDiscardedCharacters).map { RealmCharacterSummary(character: $0) }
+        realmCharacters.forEach {
+            realm.add($0, update: .modified)
+        }
+        list.characters.append(objectsIn: realmCharacters)
+
+        realm.add(list)
+    }
+
     func setCharacters(characters: [CharacterSummary], filter: CharacterFilter) async {
         print("Realm.setCharacters \(characters.count)")
         return await withCheckedContinuation { continuation in
             realmQueue.async {
                 do {
-                    if characters.count > self.maxCharactersPerList { return continuation.resume(returning: ()) }
-
                     let realm = try self.realmFactory.build()
 
                     let filterId = RealmCharacterFilter(filter: filter).primaryId
@@ -100,12 +107,7 @@ class RealmCharactersDataSource: CharactersLocalDataSource {
                             list.delete(realm: realm)
                         }
 
-                        let list = RealmCharacterList(filter: realmFilter)
-
-                        let realmCharacters = characters.map { RealmCharacterSummary(character: $0) }
-                        list.characters.append(objectsIn: realmCharacters)
-
-                        realm.add(list)
+                        self.createNewList(with: characters, realm: realm, filter: realmFilter)
                     }
 
                     return continuation.resume(returning: ())

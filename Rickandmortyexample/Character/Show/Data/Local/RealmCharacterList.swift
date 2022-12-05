@@ -5,6 +5,7 @@ class RealmCharacterList: RealmSwift.Object {
 
     @Persisted var characters: List<RealmCharacterSummary>
     @Persisted var filter: RealmCharacterFilter?
+    @Persisted var uncachedCharacters: List<RealmCharacterSummary>
 
     static private let schemaId = "character-list-"
 
@@ -19,18 +20,26 @@ class RealmCharacterList: RealmSwift.Object {
     }
 
     func delete(realm: Realm) {
-        filter = .none
-
         var oldCharacters: [RealmCharacterSummary] = []
+        var oldUncachedCharacters: [RealmCharacterSummary] = []
 
         characters.forEach {
             oldCharacters.append($0)
         }
 
+        uncachedCharacters.forEach {
+            oldUncachedCharacters.append($0)
+        }
+
         characters.removeAll()
+        uncachedCharacters.removeAll()
         realm.delete(self)
 
         oldCharacters.forEach {
+            $0.delete(realm: realm)
+        }
+
+        oldUncachedCharacters.forEach {
             $0.delete(realm: realm)
         }
     }

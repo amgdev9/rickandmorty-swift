@@ -7,7 +7,7 @@ class RealmCharacterSummary: RealmSwift.Object {
     @Persisted var status: Int8
 
     @Persisted(originProperty: "characters") var lists: LinkingObjects<RealmCharacterList>
-    @Persisted var uncachedList: RealmCharacterList?
+    @Persisted(originProperty: "uncachedCharacters") var uncachedLists: LinkingObjects<RealmCharacterList>
     @Persisted var detail: RealmCharacterDetails?
 
     static private let schemaId = "character-summary-"
@@ -26,11 +26,11 @@ class RealmCharacterSummary: RealmSwift.Object {
 
     func delete(realm: Realm) {
         if !lists.isEmpty { return }
-        if uncachedList != nil { return }
+        if !uncachedLists.isEmpty { return }
 
-        detail = .none
-        detail?.delete(realm: realm)
+        let oldDetail = detail
         realm.delete(self)
+        oldDetail?.delete(realm: realm)
     }
 
     private func mapFromDomain(status: Character.Status) -> Int8 {

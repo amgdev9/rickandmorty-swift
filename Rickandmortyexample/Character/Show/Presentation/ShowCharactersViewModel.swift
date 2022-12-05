@@ -56,15 +56,23 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
 
     @Sendable func refetch() async {
         return await withCheckedContinuation { continuation in
-            actionsSubject.onNext(.refetch)
-            self.refetchContinuation = continuation
+            Task {
+                await MainActor.run {
+                    actionsSubject.onNext(.refetch)
+                    self.refetchContinuation = continuation
+                }
+            }
         }
     }
 
     func fetchNextPage() async {
         return await withCheckedContinuation { continuation in
-            actionsSubject.onNext(.fetchNextPage)
-            self.fetchNextPageContinuation = continuation
+            Task {
+                await MainActor.run {
+                    actionsSubject.onNext(.fetchNextPage)
+                    self.fetchNextPageContinuation = continuation
+                }
+            }
         }
     }
 
@@ -84,7 +92,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
             return .create { observer in
                 Task {
                     let result = await self.charactersRepository.refetch(filter: self.filter)
-                    observer.onNext(.fetch(result))
+                    observer.onNext(.refetch(result))
                 }
 
                 return Disposables.create()
@@ -94,7 +102,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
                 Task {
                     guard case let .data(list) = self.listState else { return }
                     let result = await self.charactersRepository.fetchNextPage(filter: self.filter, listSize: UInt32(list.items.count))
-                    observer.onNext(.fetch(result))
+                    observer.onNext(.fetchNextPage(result))
                 }
 
                 return Disposables.create()

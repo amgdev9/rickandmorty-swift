@@ -60,24 +60,60 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
                     try realm.write {
                         let summary = realm.objects(RealmCharacterSummary.self)
                             .where { $0.primaryId.equals(RealmCharacterSummary.primaryId(id: detail.id)) }
+                            .first
 
-                        let realmDetail = RealmCharacterDetails(detail: detail)
-                        if let origin = detail.origin {
-                            realmDetail.origin = RealmLocationSummary(characterLocation: origin)
+                        if let summary = summary {
+                            let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
+                            realm.add(realmDetail, update: .modified)
+                            summary.detail = realmDetail
+                        } else {
+                            let summary = CharacterSummary.Builder()
+                                .set(id: detail.id)
+                                .set(name: detail.name)
+                                .set(imageURL: detail.imageURL)
+                                .set(status: detail.status)
+                                .build()
+                            let realmSummary = RealmCharacterSummary(character: summary)
+                            let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
+                            realmSummary.detail = realmDetail
+                            realm.add(realmSummary)
+
+                            let latestFilter = realm.objects(RealmCharacterFilter.self)
+                                .sorted(by: \.createdAt, ascending: false)
+                                .first!
+
+                            let list = realm.objects(RealmCharacterList.self)
+                                .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
+                                .first!
+
+                            list.uncachedCharacters.append(realmSummary)
                         }
-                        if let location = detail.location {
-                            realmDetail.location = RealmLocationSummary(characterLocation: location)
-                        }
-                        realmDetail.episodes.append(objectsIn: detail.episodes.map { RealmEpisodeSummary(episodeSummary: $0) })
-
-                        summary.first?.detail = realmDetail
-
-                        realm.add(realmDetail, update: .modified)
                     }
                 } catch {}
                 continuation.resume(returning: ())
             }
         }
+    }
+
+    private func buildCharacterDetail(detail: CharacterDetails, realm: Realm) -> RealmCharacterDetails {
+        let realmDetail = RealmCharacterDetails(detail: detail)
+        if let origin = detail.origin {
+            let realmOrigin = RealmLocationSummary(characterLocation: origin)
+            realm.add(realmOrigin, update: .modified)
+            realmDetail.origin = realmOrigin
+        }
+        if let location = detail.location {
+            let realmLocation = RealmLocationSummary(characterLocation: location)
+            realm.add(realmLocation, update: .modified)
+            realmDetail.location = realmLocation
+        }
+        let realmEpisodes = detail.episodes.map { RealmEpisodeSummary(episodeSummary: $0) }
+        realmEpisodes.forEach {
+            realm.add($0, update: .modified)
+        }
+        realmDetail.episodes.append(objectsIn: realmEpisodes)
+
+        return realmDetail
     }
 
     func existsCharacterDetails(id: String) async -> Bool {

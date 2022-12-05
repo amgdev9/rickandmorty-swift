@@ -4,6 +4,7 @@ class RealmLocationSummary: RealmSwift.Object {
     @Persisted(primaryKey: true) var primaryId: String
     @Persisted var name: String
     @Persisted var type: String?
+    
     @Persisted(originProperty: "origin") var originInCharacter: LinkingObjects<RealmCharacterDetails>
     @Persisted(originProperty: "location") var locationInCharacter: LinkingObjects<RealmCharacterDetails>
 
