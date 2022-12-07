@@ -29,7 +29,7 @@ struct EpisodeStack: View {
                 }
             }
             .sheet(isPresented: $filterPresented) {
-                FilterCharactersStack(mainContainer: mainContainer)
+                FilterEpisodesStack(mainContainer: mainContainer)
             }
         }
     }

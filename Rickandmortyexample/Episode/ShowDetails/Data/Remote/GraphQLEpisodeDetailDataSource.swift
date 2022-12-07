@@ -26,6 +26,7 @@ extension EpisodeDetailQuery.Data.Episode {
         let summary = fragments.episodeSummaryFragment.toDomain()
         return EpisodeDetail.Builder()
             .set(id: summary.id)
+            .set(seasonID: summary.seasonId)
             .set(name: summary.name)
             .set(date: summary.date)
             .set(characters: characters.compactMap { $0 }.map { $0.fragments.characterSummaryFragment.toDomain() })

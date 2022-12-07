@@ -8,7 +8,9 @@ class RealmCharacterSummary: RealmSwift.Object {
 
     @Persisted(originProperty: "characters") var lists: LinkingObjects<RealmCharacterList>
     @Persisted(originProperty: "uncachedCharacters") var uncachedLists: LinkingObjects<RealmCharacterList>
+    @Persisted(originProperty: "characters") var characterInEpisode: LinkingObjects<RealmEpisodeDetails>
     @Persisted var detail: RealmCharacterDetails?
+    @Persisted(originProperty: "residents") var residentFrom: LinkingObjects<RealmLocationDetail>
 
     static private let schemaId = "character-summary-"
 
@@ -27,6 +29,8 @@ class RealmCharacterSummary: RealmSwift.Object {
     func delete(realm: Realm) {
         if !lists.isEmpty { return }
         if !uncachedLists.isEmpty { return }
+        if !residentFrom.isEmpty { return }
+        if !characterInEpisode.isEmpty { return }
 
         let oldDetail = detail
         realm.delete(self)

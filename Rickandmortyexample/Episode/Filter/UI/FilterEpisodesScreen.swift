@@ -5,6 +5,8 @@ struct FilterEpisodesScreen<ViewModel>: View where ViewModel: FilterEpisodesView
     @StateObject private var viewModel: ViewModel
     let router: FilterEpisodesScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: FilterEpisodesScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
@@ -18,20 +20,29 @@ struct FilterEpisodesScreen<ViewModel>: View where ViewModel: FilterEpisodesView
                 .padding(.bottom, 26.5)
                 .padding(.top, 18)
                 SectionButton(
-                    title: String(localized: "section/name-title"),
-                    subtitle: String(localized: "section/name-subtitle"),
+                    title: i18n.t("section/name-title"),
+                    subtitle: i18n.t("section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearchByName(initialValue: "") // TODO
+                        router.goSearchByName(initialValue: viewModel.filter.name)
                     }.padding(.bottom, 19)
                 SectionButton(
-                    title: String(localized: "section/episode"),
-                    subtitle: String(localized: "action/select-one"),
+                    title: i18n.t("section/episode"),
+                    subtitle: i18n.t("action/select-one"),
                     active: !viewModel.filter.episode.isEmpty) {
-                        router.goSearchByEpisode(initialValue: "")  // TODO
+                        router.goSearchByEpisode(initialValue: viewModel.filter.episode)
                     }.padding(.bottom, 19)
             }
         }
         .presentationDetents([.fraction(1), .large])
+        .onMount(perform: viewModel.onViewMount)
+        .onChange(of: router.params, perform: { params in
+            if let name = params.name {
+                ($viewModel.filter.name).wrappedValue = name
+            }
+            if let episode = params.episode {
+                ($viewModel.filter.episode).wrappedValue = episode
+            }
+        })
     }
 }
 
@@ -62,6 +73,7 @@ struct FilterEpisodesScreenPreviews: PreviewProvider {
     class ViewModelMock: FilterEpisodesViewModel {
         var filter = EpisodeFilter()
 
+        func onViewMount() {}
         func onPressApply(goBack: () -> Void) {}
         func onPressClear() {}
     }

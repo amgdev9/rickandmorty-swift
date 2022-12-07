@@ -50,3 +50,19 @@ class LocationDetail {
         }
     }
 }
+
+extension LocationDetail {
+    class Mother {
+        static func build(id: String) -> LocationDetail {
+            LocationDetail.Builder()
+                .set(id: id)
+                .set(name: "Earth (Replacement Dimension)")
+                .set(type: "Planet")
+                .set(dimension: "Replacement Dimension")
+                .set(residents: (1...10).map { i in
+                    CharacterSummary.Mother.build(id: String(i))
+                })
+                .build()
+        }
+    }
+}

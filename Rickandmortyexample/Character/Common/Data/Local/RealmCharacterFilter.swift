@@ -12,10 +12,6 @@ class RealmCharacterFilter: RealmSwift.Object {
 
     static private let schemaId = "character-filter-"
 
-    static func primaryId(id: String) -> String {
-        return "\(schemaId)\(id)"
-    }
-
     convenience init(filter: CharacterFilter) {
         self.init()
         name = filter.name

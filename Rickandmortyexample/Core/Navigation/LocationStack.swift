@@ -29,7 +29,7 @@ struct LocationStack: View {
                 }
             }
             .sheet(isPresented: $filterPresented) {
-                FilterCharactersStack(mainContainer: mainContainer)
+                FilterLocationsStack(mainContainer: mainContainer)
             }
         }
     }

@@ -1,17 +1,33 @@
 class FilterLocationsViewModelImpl: FilterLocationsViewModel {
-    @Published var filter: LocationFilter
+    @Published var filter = LocationFilter()
 
-    init() {
-        self.filter = LocationFilter()
+    let locationFilterRepository: LocationFilterRepository
+
+    init(locationFilterRepository: LocationFilterRepository) {
+        self.locationFilterRepository = locationFilterRepository
     }
 
-    func onPressApply(goBack: () -> Void) {
-        // TODO
-        goBack()
+    func onViewMount() {
+        Task {
+            let latestFilter = await locationFilterRepository.getLatestFilter()
+
+            await MainActor.run {
+                self.filter = latestFilter
+            }
+        }
+    }
+
+    func onPressApply(goBack: @escaping () -> Void) {
+        Task {
+            await locationFilterRepository.addFilter(filter: filter)
+            await MainActor.run {
+                goBack()
+            }
+        }
     }
 
     func onPressClear() {
-        // TODO
+        filter = LocationFilter()
     }
 }
 
@@ -19,6 +35,7 @@ class FilterLocationsViewModelImpl: FilterLocationsViewModel {
 protocol FilterLocationsViewModel: ObservableObject {
     var filter: LocationFilter { get set }
 
-    func onPressApply(goBack: () -> Void)
+    func onViewMount()
+    func onPressApply(goBack: @escaping () -> Void)
     func onPressClear()
 }

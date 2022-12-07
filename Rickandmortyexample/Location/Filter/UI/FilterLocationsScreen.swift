@@ -5,6 +5,8 @@ struct FilterLocationsScreen<ViewModel>: View where ViewModel: FilterLocationsVi
     @StateObject private var viewModel: ViewModel
     let router: FilterLocationsScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: FilterLocationsScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
@@ -18,26 +20,38 @@ struct FilterLocationsScreen<ViewModel>: View where ViewModel: FilterLocationsVi
                 .padding(.bottom, 26.5)
                 .padding(.top, 18)
                 SectionButton(
-                    title: String(localized: "section/name-title"),
-                    subtitle: String(localized: "section/name-subtitle"),
+                    title: i18n.t("section/name-title"),
+                    subtitle: i18n.t("section/name-subtitle"),
                     active: !viewModel.filter.name.isEmpty) {
-                        router.goSearchByName(initialValue: "") // TODO
+                        router.goSearchByName(initialValue: viewModel.filter.name)
                     }.padding(.bottom, 19)
                 SectionButton(
-                    title: String(localized: "section/type"),
-                    subtitle: String(localized: "action/select-one"),
+                    title: i18n.t("section/type"),
+                    subtitle: i18n.t("action/select-one"),
                     active: !viewModel.filter.type.isEmpty) {
-                        router.goSearchByType(initialValue: "") // TODO
+                        router.goSearchByType(initialValue: viewModel.filter.type)
                     }.padding(.bottom, 19)
                 SectionButton(
-                    title: String(localized: "section/dimension"),
-                    subtitle: String(localized: "action/select-one"),
+                    title: i18n.t("section/dimension"),
+                    subtitle: i18n.t("action/select-one"),
                     active: !viewModel.filter.dimension.isEmpty) {
-                        router.goSearchByDimension(initialValue: "")
+                        router.goSearchByDimension(initialValue: viewModel.filter.dimension)
                     }.padding(.bottom, 19)
             }
         }
         .presentationDetents([.fraction(1), .large])
+        .onMount(perform: viewModel.onViewMount)
+        .onChange(of: router.params, perform: { params in
+            if let name = params.name {
+                ($viewModel.filter.name).wrappedValue = name
+            }
+            if let type = params.type {
+                ($viewModel.filter.type).wrappedValue = type
+            }
+            if let dimension = params.dimension {
+                ($viewModel.filter.dimension).wrappedValue = dimension
+            }
+        })
     }
 }
 
@@ -51,7 +65,7 @@ protocol FilterLocationsScreenRouter {
     func goSearchByDimension(initialValue: String)
 }
 
-struct FilterLocationsScreenParams {
+struct FilterLocationsScreenParams: Hashable {
     let name: String?
     let type: String?
     let dimension: String?
@@ -70,6 +84,7 @@ struct FilterLocationsScreenPreviews: PreviewProvider {
     class ViewModelMock: FilterLocationsViewModel {
         var filter = LocationFilter()
 
+        func onViewMount() {}
         func onPressApply(goBack: () -> Void) {}
         func onPressClear() {}
     }

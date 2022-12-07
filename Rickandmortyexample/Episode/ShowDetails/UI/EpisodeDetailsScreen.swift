@@ -29,15 +29,17 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
                     }
                 }
             }
+            .onMount {
+                viewModel.onViewMount(episodeId: router.params.id)
+            }
+            .errorAlert($viewModel.error)
         }
     }
 
     var navigationTitle: String {
-        if case let .data(episode) = viewModel.episode {
-            return episode.name
-        }
+        guard case let .data(episode) = viewModel.episode else { return "" }
 
-        return ""
+        return episode.name
     }
 }
 
@@ -60,24 +62,11 @@ struct EpisodeDetailsScreenPreviews: PreviewProvider {
         func gotoCharacter(id: String) {}
     }
 
-    static let characters = (1...10).map { i in
-        CharacterSummary.Builder()
-            .set(id: String(i))
-            .set(imageURL: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
-            .set(name: "Rick Sanchez")
-            .set(status: .alive)
-            .build()
-    }
-
     class ViewModelMock: EpisodeDetailsViewModel {
-        var episode: NetworkData<EpisodeDetail> = .data(EpisodeDetail.Builder()
-            .set(id: "S01E04")
-            .set(name: "M. Night Shaym-Aliens!")
-            .set(date: Date())
-            .set(characters: characters)
-            .build()
-        )
+        var error: Error? = .none
+        var episode = NetworkData.data(EpisodeDetail.Mother.build(id: "1"))
 
+        func onViewMount(episodeId: String) {}
         func refetch() async {
             await PreviewUtils.delay()
         }

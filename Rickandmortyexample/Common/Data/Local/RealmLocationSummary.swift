@@ -5,8 +5,11 @@ class RealmLocationSummary: RealmSwift.Object {
     @Persisted var name: String
     @Persisted var type: String?
 
+    @Persisted(originProperty: "locations") var lists: LinkingObjects<RealmLocationList>
+    @Persisted(originProperty: "uncachedLocations") var uncachedLists: LinkingObjects<RealmLocationList>
     @Persisted(originProperty: "origin") var originInCharacter: LinkingObjects<RealmCharacterDetails>
     @Persisted(originProperty: "location") var locationInCharacter: LinkingObjects<RealmCharacterDetails>
+    @Persisted var detail: RealmLocationDetail?
 
     static private let schemaId = "location-summary-"
 
@@ -29,10 +32,14 @@ class RealmLocationSummary: RealmSwift.Object {
     }
 
     func delete(realm: Realm) {
+        if !lists.isEmpty { return }
+        if !uncachedLists.isEmpty { return }
         if !originInCharacter.isEmpty { return }
         if !locationInCharacter.isEmpty { return }
 
+        let oldDetail = detail
         realm.delete(self)
+        oldDetail?.delete(realm: realm)
     }
 
     func toCharacterLocation() -> CharacterLocation {

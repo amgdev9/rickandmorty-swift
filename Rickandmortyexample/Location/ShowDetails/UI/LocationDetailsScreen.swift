@@ -26,14 +26,16 @@ struct LocationDetailsScreen<ViewModel>: View where ViewModel: LocationDetailsVi
                 }
             }
         }
+        .onMount {
+            viewModel.onViewMount(locationId: router.params.id)
+        }
+        .errorAlert($viewModel.error)
     }
 
     var navigationTitle: String {
-        if case let .data(location) = viewModel.location {
-            return location.name
-        }
+        guard case let .data(location) = viewModel.location else { return "" }
 
-        return ""
+        return location.name
     }
 }
 
@@ -57,24 +59,15 @@ struct LocationDetailsScreenPreviews: PreviewProvider {
     }
 
     static let residents = (1...10).map { i in
-        CharacterSummary.Builder()
-            .set(id: String(i))
-            .set(imageURL: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
-            .set(name: "Rick Sanchez")
-            .set(status: .alive)
-            .build()
+        CharacterSummary.Mother.build(id: String(i))
     }
 
     class ViewModelMock: LocationDetailsViewModel {
-        var location: NetworkData<LocationDetail> = .data(LocationDetail.Builder()
-            .set(id: "1")
-            .set(name: "Earth (Replacement Dimension)")
-            .set(type: "Planet")
-            .set(dimension: "Replacement Dimension")
-            .set(residents: residents)
-            .build()
-        )
+        var error: Error? = .none
 
+        var location = NetworkData.data(LocationDetail.Mother.build(id: "1"))
+
+        func onViewMount(locationId: String) {}
         func refetch() async {
             await PreviewUtils.delay()
         }
