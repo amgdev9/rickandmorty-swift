@@ -69,7 +69,9 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
             UInt16($0.seasonId.slice(from: "S", to: "E")!)!
         }).map { key, episodes in
             EpisodeSeason(id: key, episodes: episodes)
-        }
+        }.sorted(by: { lhs, rhs in
+            lhs.episodes.first!.seasonId < rhs.episodes.first!.seasonId
+        })
 
         return seasons
     }
@@ -110,9 +112,10 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
     private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>, _: EpisodeFilter?) {
         Task {
             guard case let .data(list) = self.listState else { return }
+            let listSize = list.items.map { $0.episodes.count }.reduce(0, +)
             let result = await self.episodesRepository.fetchNextPage(
                 filter: self.filter,
-                listSize: UInt32(list.items.count)
+                listSize: UInt32(listSize)
             )
             observer.onNext(.fetchNextPage(result))
         }

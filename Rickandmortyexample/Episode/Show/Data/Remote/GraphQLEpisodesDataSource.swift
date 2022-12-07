@@ -1,4 +1,5 @@
 import Apollo
+import RxSwift
 
 class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
     var pageSize: UInt32 = 20
