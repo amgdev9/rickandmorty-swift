@@ -1,7 +1,7 @@
 import Apollo
 
 class GraphQLLocationsDataSource: LocationsRemoteDataSource {
-    var pageSize: UInt = 20
+    var pageSize: UInt32 = 20
 
     let apolloClient: ApolloClient
 
@@ -9,7 +9,7 @@ class GraphQLLocationsDataSource: LocationsRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getLocations(page: UInt, filter: LocationFilter) async -> Result<PaginatedResponse<LocationSummary>, Error> {
+    func getLocations(page: UInt32, filter: LocationFilter) async -> Result<PaginatedResponse<LocationSummary>, Error> {
         let result = await apolloClient.fetchAsync(
             query: LocationsQuery(page: Int(page), filter: FilterLocation.from(filter: filter))
         )

@@ -4,22 +4,24 @@ struct ShowLocationsScreen<ViewModel>: View where ViewModel: ShowLocationsViewMo
     @StateObject private var viewModel: ViewModel
     let router: ShowLocationsScreenRouter
 
+    @EnvironmentObject var i18n: I18N
+
     init(router: ShowLocationsScreenRouter, viewModelFactory: @escaping () -> ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModelFactory())
         self.router = router
     }
 
     var body: some View {
-        NavigationContainer(title: String(localized: "routes/location")) {
+        NavigationContainer(title: i18n.t("routes/location")) {
             LocationList(data: viewModel.listState,
                           onRefetch: viewModel.refetch,
-                          onLoadNextPage: viewModel.loadNextPage,
+                          onLoadNextPage: viewModel.fetchNextPage,
                           onPress: router.gotoLocationDetail)
         }
         .toolbar {
             FilterButton(showDot: viewModel.hasFilters, action: router.gotoLocationFilters)
         }
-        .onAppear(perform: viewModel.onViewMount)
+        .onMount(perform: viewModel.onViewMount)
         .errorAlert($viewModel.error)
     }
 }
@@ -45,8 +47,12 @@ struct ShowLocationsScreenPreviews: PreviewProvider {
         var error: Error? = .none
 
         func onViewMount() {}
-        func refetch() async {}
-        func loadNextPage() async {}
+        func refetch() async {
+            await PreviewUtils.delay()
+        }
+        func fetchNextPage() async {
+            await PreviewUtils.delay()
+        }
     }
 
     static var previews: some View {

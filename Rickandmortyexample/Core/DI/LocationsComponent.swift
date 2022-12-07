@@ -7,7 +7,10 @@ protocol LocationsDependencies: Dependency {
 
 class LocationsComponent: Component<LocationsDependencies> {
     var showLocationsViewModel: some ShowLocationsViewModel {
-        return ShowLocationsViewModelImpl()
+        return ShowLocationsViewModelImpl(
+            locationsRepository: locationsRepository,
+            filterRepository: locationFilterRepository
+        )
     }
 
     var locationDetailsViewModel: some LocationDetailsViewModel {
@@ -21,6 +24,26 @@ class LocationsComponent: Component<LocationsDependencies> {
                 localDataSource: locationDetailLocalDataSource
             )
         }
+    }
+
+    var locationsRepository: some LocationsRepository {
+        return shared {
+            LocationsRepositoryImpl(
+                remoteDataSource: locationsRemoteDataSource,
+                localDataSource: locationsLocalDataSource
+            )
+        }
+    }
+
+    var locationsRemoteDataSource: some LocationsRemoteDataSource {
+        return GraphQLLocationsDataSource(apolloClient: dependency.apolloClient)
+    }
+
+    var locationsLocalDataSource: some LocationsLocalDataSource {
+        return RealmLocationsDataSource(
+            realmFactory: dependency.realm.realmFactory,
+            realmQueue: dependency.realm.realmQueue
+        )
     }
 
     var locationDetailRemoteDataSource: some LocationDetailRemoteDataSource {

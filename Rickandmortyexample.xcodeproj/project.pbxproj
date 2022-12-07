@@ -148,6 +148,10 @@
 		E5ACA2352940AAE700FA55D7 /* EpisodeDetailsLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA2342940AAE700FA55D7 /* EpisodeDetailsLocalDataSource.swift */; };
 		E5ACA2372940ADE100FA55D7 /* EpisodeDetailsRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA2362940ADE100FA55D7 /* EpisodeDetailsRepositoryImpl.swift */; };
 		E5ACA2392940ADF900FA55D7 /* EpisodeDetailsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA2382940ADF900FA55D7 /* EpisodeDetailsRepository.swift */; };
+		E5ACA23B2940B14900FA55D7 /* RealmLocationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA23A2940B14900FA55D7 /* RealmLocationsDataSource.swift */; };
+		E5ACA23D2940B15F00FA55D7 /* LocationsLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA23C2940B15F00FA55D7 /* LocationsLocalDataSource.swift */; };
+		E5ACA23F2940B56F00FA55D7 /* LocationsRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA23E2940B56F00FA55D7 /* LocationsRepositoryImpl.swift */; };
+		E5ACA2412940B5A200FA55D7 /* LocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACA2402940B5A200FA55D7 /* LocationsRepository.swift */; };
 		E5AD1D2129253120007B7315 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD1D2029253120007B7315 /* Configuration.swift */; };
 		E5AD1D2329253199007B7315 /* IOSConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD1D2229253199007B7315 /* IOSConfiguration.swift */; };
 		E5AD1D252925411C007B7315 /* CharactersLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD1D242925411C007B7315 /* CharactersLocalDataSource.swift */; };
@@ -395,6 +399,10 @@
 		E5ACA2342940AAE700FA55D7 /* EpisodeDetailsLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsLocalDataSource.swift; sourceTree = "<group>"; };
 		E5ACA2362940ADE100FA55D7 /* EpisodeDetailsRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsRepositoryImpl.swift; sourceTree = "<group>"; };
 		E5ACA2382940ADF900FA55D7 /* EpisodeDetailsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsRepository.swift; sourceTree = "<group>"; };
+		E5ACA23A2940B14900FA55D7 /* RealmLocationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmLocationsDataSource.swift; sourceTree = "<group>"; };
+		E5ACA23C2940B15F00FA55D7 /* LocationsLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsLocalDataSource.swift; sourceTree = "<group>"; };
+		E5ACA23E2940B56F00FA55D7 /* LocationsRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsRepositoryImpl.swift; sourceTree = "<group>"; };
+		E5ACA2402940B5A200FA55D7 /* LocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsRepository.swift; sourceTree = "<group>"; };
 		E5AD1D2029253120007B7315 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E5AD1D2229253199007B7315 /* IOSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSConfiguration.swift; sourceTree = "<group>"; };
 		E5AD1D242925411C007B7315 /* CharactersLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersLocalDataSource.swift; sourceTree = "<group>"; };
@@ -899,6 +907,8 @@
 				E5A9BD0A293E5B980088F93E /* Local */,
 				E597A25F2933F46F00225DAE /* Remote */,
 				E597A26E2933F6EA00225DAE /* LocationsRemoteDataSource.swift */,
+				E5ACA23C2940B15F00FA55D7 /* LocationsLocalDataSource.swift */,
+				E5ACA23E2940B56F00FA55D7 /* LocationsRepositoryImpl.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1118,6 +1128,7 @@
 			isa = PBXGroup;
 			children = (
 				E5A9BD0B293E5BA40088F93E /* RealmLocationList.swift */,
+				E5ACA23A2940B14900FA55D7 /* RealmLocationsDataSource.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -1589,6 +1600,7 @@
 			isa = PBXGroup;
 			children = (
 				E585399E29211449008C9FC5 /* ShowLocationsViewModel.swift */,
+				E5ACA2402940B5A200FA55D7 /* LocationsRepository.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1975,6 +1987,7 @@
 				E5AAC4E72931307400FF695C /* LocationDetailsScreen.swift in Sources */,
 				E5BAF9FE2924E47B00F1610B /* CharactersRepository.swift in Sources */,
 				E5AD1D2329253199007B7315 /* IOSConfiguration.swift in Sources */,
+				E5ACA23D2940B15F00FA55D7 /* LocationsLocalDataSource.swift in Sources */,
 				E59B48CA2914263600AB3085 /* FontWithLineHeight.swift in Sources */,
 				E5ACA2392940ADF900FA55D7 /* EpisodeDetailsRepository.swift in Sources */,
 				E5B096A3292C08B7005B283D /* FilterHeader.swift in Sources */,
@@ -1996,6 +2009,7 @@
 				E597A2752933F8A200225DAE /* Locations.graphql.swift in Sources */,
 				E5B24E902934D551007EE90D /* AutocompleteRepositoryExtensions.swift in Sources */,
 				E5A4E710292950F700672FDA /* BottomDetectorScrollView.swift in Sources */,
+				E5ACA23F2940B56F00FA55D7 /* LocationsRepositoryImpl.swift in Sources */,
 				E5AAC4EA2931309100FF695C /* LocationDetailsViewModel.swift in Sources */,
 				E5B24EC92934F101007EE90D /* Router.swift in Sources */,
 				E5B24EC02934DB64007EE90D /* AutocompleteByEpisodeSeasonIDRepository.swift in Sources */,
@@ -2066,6 +2080,7 @@
 				E5ACA223294095A300FA55D7 /* RealmLocationFilterRepository.swift in Sources */,
 				E597A25B2933E8D200225DAE /* CharacterSummaryFragment.graphql.swift in Sources */,
 				E5971226293E1A52002F7E9E /* LocationsComponent.swift in Sources */,
+				E5ACA23B2940B14900FA55D7 /* RealmLocationsDataSource.swift in Sources */,
 				E5D5D0AA29242673006771CA /* GraphQLCharactersDataSource.swift in Sources */,
 				E5B24E762934C4D4007EE90D /* GraphQLEpisodeDetailDataSource.swift in Sources */,
 				E5B24E822934C703007EE90D /* FilterEpisode.graphql.swift in Sources */,
@@ -2105,6 +2120,7 @@
 				E597A2672933F55600225DAE /* LocationsQuery.graphql.swift in Sources */,
 				E58539AB29211874008C9FC5 /* FilterCharactersScreen.swift in Sources */,
 				E58539B829212DB0008C9FC5 /* CharacterDetailsScreen.swift in Sources */,
+				E5ACA2412940B5A200FA55D7 /* LocationsRepository.swift in Sources */,
 				E5A9BD03293E57EE0088F93E /* GraphQLMapperUtils.swift in Sources */,
 				E59EF7C22920FF9900628FED /* TabsNavigator.swift in Sources */,
 				E58539BA29212DD6008C9FC5 /* CharacterDetailsViewModel.swift in Sources */,
