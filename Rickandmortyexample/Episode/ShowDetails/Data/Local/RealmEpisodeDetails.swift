@@ -32,6 +32,7 @@ class RealmEpisodeDetails: RealmSwift.Object {
         let summary = summary.first!.toDomain()
         return EpisodeDetail.Builder()
             .set(id: summary.id)
+            .set(seasonID: summary.seasonId)
             .set(name: summary.name)
             .set(date: summary.date)
             .set(characters: characters.map { $0.toDomain() })

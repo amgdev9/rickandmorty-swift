@@ -70,6 +70,7 @@ class RealmLocationDetailDataSource: LocationDetailLocalDataSource {
                             realm.add(realmDetail, update: .modified)
                             summary.type = detail.type
                             summary.detail = realmDetail
+                            realm.add(summary, update: .modified)
                         } else {
                             let summary = LocationSummary.Builder()
                                 .set(id: detail.id)

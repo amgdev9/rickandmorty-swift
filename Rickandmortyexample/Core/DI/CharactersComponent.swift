@@ -13,12 +13,6 @@ class CharactersComponent: Component<CharactersDependencies> {
         )
     }
 
-    var filterCharactersViewModel: some FilterCharactersViewModel {
-        return FilterCharactersViewModelImpl(
-            characterFilterRepository: characterFilterRepository
-        )
-    }
-
     var charactersRepository: some CharactersRepository {
         return shared {
             CharactersRepositoryImpl(
@@ -26,6 +20,21 @@ class CharactersComponent: Component<CharactersDependencies> {
                 localDataSource: charactersLocalDataSource
             )
         }
+    }
+
+    var characterFilterRepository: some CharacterFilterRepository {
+        return shared {
+            RealmCharacterFilterRepository(
+                realmFactory: dependency.realm.realmFactory,
+                realmQueue: dependency.realm.realmQueue
+            )
+        }
+    }
+
+    var filterCharactersViewModel: some FilterCharactersViewModel {
+        return FilterCharactersViewModelImpl(
+            characterFilterRepository: characterFilterRepository
+        )
     }
 
     var characterDetailsRepository: some CharacterDetailsRepository {
@@ -46,15 +55,6 @@ class CharactersComponent: Component<CharactersDependencies> {
             realmFactory: dependency.realm.realmFactory,
             realmQueue: dependency.realm.realmQueue
         )
-    }
-
-    var characterFilterRepository: some CharacterFilterRepository {
-        return shared {
-            RealmCharacterFilterRepository(
-                realmFactory: dependency.realm.realmFactory,
-                realmQueue: dependency.realm.realmQueue
-            )
-        }
     }
 
     var charactersRemoteDataSource: some CharactersRemoteDataSource {

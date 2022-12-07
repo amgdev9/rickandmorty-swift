@@ -11,10 +11,8 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     @Published private var filter = CharacterFilter()
     var hasFilters: Bool { !filter.isEmpty }
 
-    private var refetchContinuation: CheckedContinuation<(), Never>?
-    private var fetchNextPageContinuation: CheckedContinuation<(), Never>?
-
-    private let actionsSubject = PublishSubject<Action>()
+    typealias Paginator = ListPaginator<CharacterSummary, CharacterFilter>
+    private var listPaginator: Paginator? = .none
 
     init(charactersRepository: CharactersRepository, filterRepository: CharacterFilterRepository) {
         self.charactersRepository = charactersRepository
@@ -24,45 +22,39 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     func onViewMount() {
         filterRepository.getLatestFilterObservable()
             .subscribe(onNext: { [weak self] in
-                self?.actionsSubject.onNext(.fetch($0))
+                self?.listPaginator?.fetchIntent(with: $0)
             })
             .disposed(by: disposeBag)
 
-        actionsSubject
-            .observe(on: MainScheduler.instance)
-            .concatMap { [weak self] in
-                self?.handleAction(action: $0) ?? .empty()
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                self?.handleActionResult(actionResult: $0)
-            })
-            .disposed(by: disposeBag)
+        let fetchHandler = ListPaginator.IntentHandler(
+            onReceive: handleFetchAction,
+            onResult: handleFetchActionResult
+        )
+        let refetchHandler = ListPaginator.IntentHandler(
+            onReceive: handleRefetchAction,
+            onResult: handleRefetchActionResult
+        )
+        let fetchNextPageHandler = ListPaginator.IntentHandler(
+            onReceive: handleFetchNextPageAction,
+            onResult: handleFetchNextPageActionResult
+        )
+        listPaginator = ListPaginator(
+            fetchHandler: fetchHandler, refetchHandler: refetchHandler,
+            fetchNextPageHandler: fetchNextPageHandler
+        )
+        listPaginator?.start()
     }
 
     @Sendable func refetch() async {
-        return await withCheckedContinuation { continuation in
-            Task {
-                await MainActor.run {
-                    actionsSubject.onNext(.refetch)
-                    self.refetchContinuation = continuation
-                }
-            }
-        }
+        await listPaginator?.refetchIntent()
     }
 
     func fetchNextPage() async {
-        return await withCheckedContinuation { continuation in
-            Task {
-                await MainActor.run {
-                    actionsSubject.onNext(.fetchNextPage)
-                    self.fetchNextPageContinuation = continuation
-                }
-            }
-        }
+        await listPaginator?.fetchNextPageIntent()
     }
 
-    private func handleFetchAction(filter: CharacterFilter, observer: AnyObserver<ActionResult>) {
+    private func handleFetchAction(observer: AnyObserver<Paginator.IntentResult>, filter: CharacterFilter?) {
+        guard let filter = filter else { return }
         self.filter = filter
 
         Task {
@@ -80,7 +72,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         listState = .data(result)
     }
 
-    private func handleRefetchAction(observer: AnyObserver<ActionResult>) {
+    private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>, _: CharacterFilter?) {
         Task {
             let result = await self.charactersRepository.refetch(filter: self.filter)
             observer.onNext(.refetch(result))
@@ -88,11 +80,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     private func handleRefetchActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
-        defer {
-            refetchContinuation?.resume(returning: ())
-            refetchContinuation = .none
-        }
-
         guard let result = result.unwrap() else {
             if case .error = listState {
                 listState = .error(result.failure()!.message)
@@ -105,7 +92,7 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         listState = .data(result)
     }
 
-    private func handleFetchNextPageAction(observer: AnyObserver<ActionResult>) {
+    private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>, _: CharacterFilter?) {
         Task {
             guard case let .data(list) = self.listState else { return }
             let result = await self.charactersRepository.fetchNextPage(
@@ -117,11 +104,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     private func handleFetchNextPageActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
-        defer {
-            fetchNextPageContinuation?.resume(returning: ())
-            fetchNextPageContinuation = .none
-        }
-
         guard let result = result.unwrap() else {
             error = result.failure()!
             return
@@ -130,41 +112,6 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
         guard case let .data(list) = self.listState else { return }
 
         listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
-    }
-
-    private func handleAction(action: Action) -> Observable<ActionResult> {
-        return .create { observer in
-            switch action {
-            case .fetch(let filter): self.handleFetchAction(filter: filter, observer: observer)
-            case .refetch: self.handleRefetchAction(observer: observer)
-            case .fetchNextPage: self.handleFetchNextPageAction(observer: observer)
-            }
-
-            return Disposables.create()
-        }.take(1)
-    }
-
-    private func handleActionResult(actionResult: ActionResult) {
-        switch actionResult {
-        case .fetch(let result): handleFetchActionResult(result: result)
-        case .refetch(let result): handleRefetchActionResult(result: result)
-        case .fetchNextPage(let result): handleFetchNextPageActionResult(result: result)
-        }
-    }
-}
-
-// MARK: - Types
-extension ShowCharactersViewModelImpl {
-    enum Action {
-        case fetch(CharacterFilter)
-        case refetch
-        case fetchNextPage
-    }
-
-    enum ActionResult {
-        case fetch(Result<PaginatedResponse<CharacterSummary>, Error>)
-        case refetch(Result<PaginatedResponse<CharacterSummary>, Error>)
-        case fetchNextPage(Result<PaginatedResponse<CharacterSummary>, Error>)
     }
 }
 

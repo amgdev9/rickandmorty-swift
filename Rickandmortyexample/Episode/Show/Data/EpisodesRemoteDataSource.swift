@@ -1,4 +1,4 @@
 protocol EpisodesRemoteDataSource {
-    var pageSize: UInt { get }
-    func getEpisodes(page: UInt, filter: EpisodeFilter) async -> Result<PaginatedResponse<EpisodeSeason>, Error>
+    var pageSize: UInt32 { get }
+    func getEpisodes(page: UInt32, filter: EpisodeFilter) async -> Result<PaginatedResponse<EpisodeSummary>, Error>
 }

@@ -7,7 +7,30 @@ protocol EpisodesDependencies: Dependency {
 
 class EpisodesComponent: Component<EpisodesDependencies> {
     var showEpisodesViewModel: some ShowEpisodesViewModel {
-        return ShowEpisodesViewModelImpl()
+        return ShowEpisodesViewModelImpl(
+            episodesRepository: episodesRepository,
+            filterRepository: episodeFilterRepository
+        )
+    }
+
+    var episodesRepository: some EpisodesRepository {
+        return shared {
+            EpisodesRepositoryImpl(
+                remoteDataSource: episodesRemoteDataSource,
+                localDataSource: episodesLocalDataSource
+            )
+        }
+    }
+
+    var episodesRemoteDataSource: some EpisodesRemoteDataSource {
+        return GraphQLEpisodesDataSource(apolloClient: dependency.apolloClient)
+    }
+
+    var episodesLocalDataSource: some EpisodesLocalDataSource {
+        return RealmEpisodesDataSource(
+            realmFactory: dependency.realm.realmFactory,
+            realmQueue: dependency.realm.realmQueue
+        )
     }
 
     var episodeDetailsViewModel: some EpisodeDetailsViewModel {

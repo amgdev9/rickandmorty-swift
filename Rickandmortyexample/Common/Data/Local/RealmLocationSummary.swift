@@ -17,11 +17,11 @@ class RealmLocationSummary: RealmSwift.Object {
         return "\(schemaId)\(id)"
     }
 
-    convenience init(characterLocation: CharacterLocation) {
+    convenience init(characterLocation: CharacterLocation, type: String?) {
         self.init()
         self.primaryId = Self.primaryId(id: characterLocation.id)
         self.name = characterLocation.name
-        self.type = .none
+        self.type = type
     }
 
     convenience init(locationSummary: LocationSummary) {

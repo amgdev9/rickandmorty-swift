@@ -12,11 +12,11 @@ struct ShowEpisodesScreen<ViewModel>: View where ViewModel: ShowEpisodesViewMode
     }
 
     var body: some View {
-        NavigationContainer(title: String(localized: "routes/episodes")) {
+        NavigationContainer(title: i18n.t("routes/episodes")) {
             PaginatedList(
-                data: viewModel.seasons,
+                data: viewModel.listState,
                 onRefetch: viewModel.refetch,
-                onLoadNextPage: viewModel.loadNextPage
+                onLoadNextPage: viewModel.fetchNextPage
             ) { seasons in
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(seasons, id: \.id) { season in
@@ -39,7 +39,7 @@ struct ShowEpisodesScreen<ViewModel>: View where ViewModel: ShowEpisodesViewMode
         .toolbar {
             FilterButton(showDot: viewModel.hasFilters, action: router.gotoEpisodeFilters)
         }
-        .onAppear(perform: viewModel.onViewMount)
+        .onMount(perform: viewModel.onViewMount)
         .errorAlert($viewModel.error)
     }
 }
@@ -58,7 +58,7 @@ struct ShowEpisodesScreenPreviews: PreviewProvider {
     }
 
     class ViewModelMock: ShowEpisodesViewModel {
-        var seasons: NetworkData<PaginatedResponse<EpisodeSeason>> = .data(PaginatedResponse(items: [
+        var listState: NetworkData<PaginatedResponse<EpisodeSeason>> = .data(PaginatedResponse(items: [
             EpisodeSeason(id: 1, episodes: EpisodeListPreviews.EPISODES),
             EpisodeSeason(id: 2, episodes: EpisodeListPreviews.EPISODES),
             EpisodeSeason(id: 3, episodes: EpisodeListPreviews.EPISODES)
@@ -73,7 +73,7 @@ struct ShowEpisodesScreenPreviews: PreviewProvider {
             await PreviewUtils.delay()
         }
 
-        func loadNextPage() async {
+        func fetchNextPage() async {
             await PreviewUtils.delay()
         }
     }

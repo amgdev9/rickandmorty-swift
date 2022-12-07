@@ -1,7 +1,7 @@
 import Apollo
 
 class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
-    var pageSize: UInt = 20
+    var pageSize: UInt32 = 20
 
     let apolloClient: ApolloClient
 
@@ -9,7 +9,7 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
         self.apolloClient = apolloClient
     }
 
-    func getEpisodes(page: UInt, filter: EpisodeFilter) async -> Result<PaginatedResponse<EpisodeSeason>, Error> {
+    func getEpisodes(page: UInt32, filter: EpisodeFilter) async -> Result<PaginatedResponse<EpisodeSummary>, Error> {
         let result = await apolloClient.fetchAsync(
             query: EpisodesQuery(page: Int(page), filter: FilterEpisode.from(filter: filter))
         )
@@ -29,13 +29,7 @@ class GraphQLEpisodesDataSource: EpisodesRemoteDataSource {
             .compactMap { $0 }
             .map { $0.fragments.episodeSummaryFragment.toDomain() }
 
-        let seasons: [EpisodeSeason] = Dictionary(grouping: domainEpisodes, by: {
-            UInt16($0.seasonId.slice(from: "S", to: "E")!)!
-        }).map { key, episodes in
-            EpisodeSeason(id: key, episodes: episodes)
-        }
-
-        return .success(PaginatedResponse(items: seasons, hasNext: info.next != nil))
+        return .success(PaginatedResponse(items: domainEpisodes, hasNext: info.next != nil))
     }
 }
 

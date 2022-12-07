@@ -18,7 +18,7 @@ struct EpisodeDetailsScreen<ViewModel>: View where ViewModel: EpisodeDetailsView
                     VStack(alignment: .leading, spacing: 0) {
                         Header(
                             title: episode.name,
-                            subtitle: episode.id,
+                            subtitle: episode.seasonID,
                             info: i18n.tDate(episode.date, format: "dateformat/MMMM d, yyyy")
                         )
                         Text(i18n.t("section/characters"), variant: .body20, weight: .bold, color: .graybaseGray1)

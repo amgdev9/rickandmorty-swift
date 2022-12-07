@@ -1,4 +1,4 @@
-class CharacterFilter {
+class CharacterFilter: Filter {
     var name: String
     var species: String
     var status: Character.Status?

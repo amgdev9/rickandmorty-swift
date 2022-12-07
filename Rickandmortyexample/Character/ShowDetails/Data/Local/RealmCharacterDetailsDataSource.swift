@@ -103,13 +103,19 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
         let realmDetail = RealmCharacterDetails(detail: detail)
 
         if let origin = detail.origin {
-            let realmOrigin = RealmLocationSummary(characterLocation: origin)
+            let oldOrigin = realm.objects(RealmLocationSummary.self).where {
+                $0.primaryId.equals(RealmLocationSummary.primaryId(id: origin.id))
+            }.first
+            let realmOrigin = RealmLocationSummary(characterLocation: origin, type: oldOrigin?.type)
             realm.add(realmOrigin, update: .modified)
             realmDetail.origin = realmOrigin
         }
 
         if let location = detail.location {
-            let realmLocation = RealmLocationSummary(characterLocation: location)
+            let oldLocation = realm.objects(RealmLocationSummary.self).where {
+                $0.primaryId.equals(RealmLocationSummary.primaryId(id: location.id))
+            }.first
+            let realmLocation = RealmLocationSummary(characterLocation: location, type: oldLocation?.type)
             realm.add(realmLocation, update: .modified)
             realmDetail.location = realmLocation
         }

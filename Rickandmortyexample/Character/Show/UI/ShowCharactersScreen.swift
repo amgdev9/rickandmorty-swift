@@ -1,7 +1,9 @@
 import SwiftUI
 import AlertToast
 
-struct ShowCharactersScreen<ViewModel>: View where ViewModel: ShowCharactersViewModel {
+struct ShowCharactersScreen<ViewModel>: View
+where ViewModel: ShowCharactersViewModel {
+
     @StateObject private var viewModel: ViewModel
     let router: ShowCharactersScreenRouter
 
