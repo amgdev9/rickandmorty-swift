@@ -77,12 +77,14 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     private func handleFetchActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
-        guard let result = result.unwrap() else {
-            listState = .error(result.failure()!.message)
-            return
-        }
+        Task { @MainActor in
+            guard let result = result.unwrap() else {
+                listState = .error(result.failure()!.message)
+                return
+            }
 
-        listState = .data(result)
+            listState = .data(result)
+        }
     }
 
     private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>) {
@@ -93,16 +95,18 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     private func handleRefetchActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
-        guard let result = result.unwrap() else {
-            if case .error = listState {
-                listState = .error(result.failure()!.message)
-            } else {
-                error = result.failure()!
+        Task { @MainActor in
+            guard let result = result.unwrap() else {
+                if case .error = listState {
+                    listState = .error(result.failure()!.message)
+                } else {
+                    error = result.failure()!
+                }
+                return
             }
-            return
-        }
 
-        listState = .data(result)
+            listState = .data(result)
+        }
     }
 
     private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>) {
@@ -117,14 +121,16 @@ class ShowCharactersViewModelImpl: ShowCharactersViewModel {
     }
 
     private func handleFetchNextPageActionResult(result: Result<PaginatedResponse<CharacterSummary>, Error>) {
-        guard let result = result.unwrap() else {
-            error = result.failure()!
-            return
+        Task { @MainActor in
+            guard let result = result.unwrap() else {
+                error = result.failure()!
+                return
+            }
+
+            guard case let .data(list) = self.listState else { return }
+
+            listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
         }
-
-        guard case let .data(list) = self.listState else { return }
-
-        listState = .data(PaginatedResponse(items: list.items + result.items, hasNext: result.hasNext))
     }
 }
 

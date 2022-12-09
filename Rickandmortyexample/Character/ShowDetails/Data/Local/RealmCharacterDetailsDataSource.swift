@@ -35,67 +35,63 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
     }
 
     private func getCharacterDetail(id: String) async -> CharacterDetails? {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let detail = realm.objects(RealmCharacterDetails.self)
-                        .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
-                        .first
-                    return continuation.resume(returning: detail?.toDomain())
-                } catch {
-                    return continuation.resume(returning: .none)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let detail = realm.objects(RealmCharacterDetails.self)
+                    .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
+                    .first
+                return continuation.resume(returning: detail?.toDomain())
+            } catch {
+                return continuation.resume(returning: .none)
             }
         }
     }
 
     func upsertCharacterDetail(detail: CharacterDetails) async {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                defer {
-                    continuation.resume(returning: ())
-                }
-
-                do {
-                    let realm = try self.realmFactory.build()
-
-                    try realm.write {
-                        let summary = realm.objects(RealmCharacterSummary.self)
-                            .where { $0.primaryId.equals(RealmCharacterSummary.primaryId(id: detail.id)) }
-                            .first
-
-                        if let summary = summary {
-                            let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
-                            realm.add(realmDetail, update: .modified)
-                            summary.detail = realmDetail
-                        } else {
-                            let summary = CharacterSummary.Builder()
-                                .set(id: detail.id)
-                                .set(name: detail.name)
-                                .set(imageURL: detail.imageURL)
-                                .set(status: detail.status)
-                                .build()
-
-                            let realmSummary = RealmCharacterSummary(character: summary)
-                            let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
-
-                            realmSummary.detail = realmDetail
-                            realm.add(realmSummary)
-
-                            let latestFilter = realm.objects(RealmCharacterFilter.self)
-                                .sorted(by: \.createdAt, ascending: false)
-                                .first!
-
-                            let list = realm.objects(RealmCharacterList.self)
-                                .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
-                                .first! // List must exist here
-
-                            list.uncachedCharacters.append(realmSummary)
-                        }
-                    }
-                } catch {}
+        return await realmQueue.runAsync { continuation in
+            defer {
+                continuation.resume(returning: ())
             }
+
+            do {
+                let realm = try self.realmFactory.build()
+
+                try realm.write {
+                    let summary = realm.objects(RealmCharacterSummary.self)
+                        .where { $0.primaryId.equals(RealmCharacterSummary.primaryId(id: detail.id)) }
+                        .first
+
+                    if let summary = summary {
+                        let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
+                        realm.add(realmDetail, update: .modified)
+                        summary.detail = realmDetail
+                    } else {
+                        let summary = CharacterSummary.Builder()
+                            .set(id: detail.id)
+                            .set(name: detail.name)
+                            .set(imageURL: detail.imageURL)
+                            .set(status: detail.status)
+                            .build()
+
+                        let realmSummary = RealmCharacterSummary(character: summary)
+                        let realmDetail = self.buildCharacterDetail(detail: detail, realm: realm)
+
+                        realmSummary.detail = realmDetail
+                        realm.add(realmSummary)
+
+                        let latestFilter = realm.objects(RealmCharacterFilter.self)
+                            .sorted(by: \.createdAt, ascending: false)
+                            .first!
+
+                        let list = realm.objects(RealmCharacterList.self)
+                            .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
+                            .first! // List must exist here
+
+                        list.uncachedCharacters.append(realmSummary)
+                    }
+                }
+            } catch {}
         }
     }
 
@@ -130,17 +126,15 @@ class RealmCharacterDetailsDataSource: CharacterDetailsLocalDataSource {
     }
 
     func existsCharacterDetails(id: String) async -> Bool {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let exists = realm.objects(RealmCharacterDetails.self)
-                        .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
-                        .count > 0
-                    return continuation.resume(returning: exists)
-                } catch {
-                    continuation.resume(returning: false)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let exists = realm.objects(RealmCharacterDetails.self)
+                    .where { $0.summary.primaryId.equals(RealmCharacterSummary.primaryId(id: id)) }
+                    .count > 0
+                return continuation.resume(returning: exists)
+            } catch {
+                continuation.resume(returning: false)
             }
         }
     }

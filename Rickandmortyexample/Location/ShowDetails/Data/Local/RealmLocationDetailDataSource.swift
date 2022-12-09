@@ -35,68 +35,64 @@ class RealmLocationDetailDataSource: LocationDetailLocalDataSource {
     }
 
     private func getLocationDetail(id: String) async -> LocationDetail? {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let detail = realm.objects(RealmLocationDetail.self)
-                        .where { $0.summary.primaryId.equals(RealmLocationSummary.primaryId(id: id)) }
-                        .first
-                    return continuation.resume(returning: detail?.toDomain())
-                } catch {
-                    return continuation.resume(returning: .none)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let detail = realm.objects(RealmLocationDetail.self)
+                    .where { $0.summary.primaryId.equals(RealmLocationSummary.primaryId(id: id)) }
+                    .first
+                return continuation.resume(returning: detail?.toDomain())
+            } catch {
+                return continuation.resume(returning: .none)
             }
         }
     }
 
     func upsertLocationDetail(detail: LocationDetail) async {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                defer {
-                    continuation.resume(returning: ())
-                }
-
-                do {
-                    let realm = try self.realmFactory.build()
-
-                    try realm.write {
-                        let summary = realm.objects(RealmLocationSummary.self)
-                            .where { $0.primaryId.equals(RealmLocationSummary.primaryId(id: detail.id)) }
-                            .first
-
-                        if let summary = summary {
-                            let realmDetail = self.buildLocationDetail(detail: detail, realm: realm)
-                            realm.add(realmDetail, update: .modified)
-                            summary.type = detail.type
-                            summary.detail = realmDetail
-                            realm.add(summary, update: .modified)
-                        } else {
-                            let summary = LocationSummary.Builder()
-                                .set(id: detail.id)
-                                .set(type: detail.type)
-                                .set(name: detail.name)
-                                .build()
-
-                            let realmSummary = RealmLocationSummary(locationSummary: summary)
-                            let realmDetail = self.buildLocationDetail(detail: detail, realm: realm)
-
-                            realmSummary.detail = realmDetail
-                            realm.add(realmSummary)
-
-                            let latestFilter = realm.objects(RealmLocationFilter.self)
-                                .sorted(by: \.createdAt, ascending: false)
-                                .first!
-
-                            let list = realm.objects(RealmLocationList.self)
-                                .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
-                                .first! // List must exist here
-
-                            list.uncachedLocations.append(realmSummary)
-                        }
-                    }
-                } catch {}
+        return await realmQueue.runAsync { continuation in
+            defer {
+                continuation.resume(returning: ())
             }
+
+            do {
+                let realm = try self.realmFactory.build()
+
+                try realm.write {
+                    let summary = realm.objects(RealmLocationSummary.self)
+                        .where { $0.primaryId.equals(RealmLocationSummary.primaryId(id: detail.id)) }
+                        .first
+
+                    if let summary = summary {
+                        let realmDetail = self.buildLocationDetail(detail: detail, realm: realm)
+                        realm.add(realmDetail, update: .modified)
+                        summary.type = detail.type
+                        summary.detail = realmDetail
+                        realm.add(summary, update: .modified)
+                    } else {
+                        let summary = LocationSummary.Builder()
+                            .set(id: detail.id)
+                            .set(type: detail.type)
+                            .set(name: detail.name)
+                            .build()
+
+                        let realmSummary = RealmLocationSummary(locationSummary: summary)
+                        let realmDetail = self.buildLocationDetail(detail: detail, realm: realm)
+
+                        realmSummary.detail = realmDetail
+                        realm.add(realmSummary)
+
+                        let latestFilter = realm.objects(RealmLocationFilter.self)
+                            .sorted(by: \.createdAt, ascending: false)
+                            .first!
+
+                        let list = realm.objects(RealmLocationList.self)
+                            .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
+                            .first! // List must exist here
+
+                        list.uncachedLocations.append(realmSummary)
+                    }
+                }
+            } catch {}
         }
     }
 
@@ -113,17 +109,15 @@ class RealmLocationDetailDataSource: LocationDetailLocalDataSource {
     }
 
     func existsLocationDetail(id: String) async -> Bool {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let exists = realm.objects(RealmLocationDetail.self)
-                        .where { $0.summary.primaryId.equals(RealmLocationSummary.primaryId(id: id)) }
-                        .count > 0
-                    return continuation.resume(returning: exists)
-                } catch {
-                    continuation.resume(returning: false)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let exists = realm.objects(RealmLocationDetail.self)
+                    .where { $0.summary.primaryId.equals(RealmLocationSummary.primaryId(id: id)) }
+                    .count > 0
+                return continuation.resume(returning: exists)
+            } catch {
+                continuation.resume(returning: false)
             }
         }
     }

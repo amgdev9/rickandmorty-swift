@@ -24,19 +24,17 @@ class RealmLocationFilterRepository: LocationFilterRepository {
     }
 
     func getLatestFilter() async -> LocationFilter {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
 
-                    let filter = realm.objects(RealmLocationFilter.self)
-                        .sorted(by: \.createdAt, ascending: false)
-                        .first?.toDomain()
+                let filter = realm.objects(RealmLocationFilter.self)
+                    .sorted(by: \.createdAt, ascending: false)
+                    .first?.toDomain()
 
-                    return continuation.resume(returning: filter ?? LocationFilter())
-                } catch {
-                    return continuation.resume(returning: LocationFilter())
-                }
+                return continuation.resume(returning: filter ?? LocationFilter())
+            } catch {
+                return continuation.resume(returning: LocationFilter())
             }
         }
     }
@@ -66,34 +64,32 @@ class RealmLocationFilterRepository: LocationFilterRepository {
     }
 
     func addFilter(filter: LocationFilter) async {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                defer {
-                    continuation.resume(returning: ())
-                }
-
-                do {
-                    let realm = try self.realmFactory.build()
-                    let realmFilter = RealmLocationFilter(filter: filter)
-
-                    try realm.write {
-                        let filters = realm.objects(RealmLocationFilter.self)
-
-                        let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
-                        if let existingFilter = existingFilter {
-                            existingFilter.createdAt = realmFilter.createdAt
-                            return
-                        }
-
-                        if filters.count >= self.maxFilters {
-                            let oldestFilter = filters.sorted(by: \.createdAt, ascending: true).first
-                            oldestFilter?.delete(realm: realm)
-                        }
-
-                        realm.add(realmFilter)
-                    }
-                } catch { }
+        return await realmQueue.runAsync { continuation in
+            defer {
+                continuation.resume(returning: ())
             }
+
+            do {
+                let realm = try self.realmFactory.build()
+                let realmFilter = RealmLocationFilter(filter: filter)
+
+                try realm.write {
+                    let filters = realm.objects(RealmLocationFilter.self)
+
+                    let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
+                    if let existingFilter = existingFilter {
+                        existingFilter.createdAt = realmFilter.createdAt
+                        return
+                    }
+
+                    if filters.count >= self.maxFilters {
+                        let oldestFilter = filters.sorted(by: \.createdAt, ascending: true).first
+                        oldestFilter?.delete(realm: realm)
+                    }
+
+                    realm.add(realmFilter)
+                }
+            } catch { }
         }
     }
 }

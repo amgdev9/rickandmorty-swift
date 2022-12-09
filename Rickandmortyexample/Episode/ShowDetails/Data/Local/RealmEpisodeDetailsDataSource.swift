@@ -35,67 +35,63 @@ class RealmEpisodeDetailsDataSource: EpisodeDetailsLocalDataSource {
     }
 
     private func getEpisodeDetail(id: String) async -> EpisodeDetail? {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let detail = realm.objects(RealmEpisodeDetails.self)
-                        .where { $0.summary.primaryId.equals(RealmEpisodeSummary.primaryId(id: id)) }
-                        .first
-                    return continuation.resume(returning: detail?.toDomain())
-                } catch {
-                    return continuation.resume(returning: .none)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let detail = realm.objects(RealmEpisodeDetails.self)
+                    .where { $0.summary.primaryId.equals(RealmEpisodeSummary.primaryId(id: id)) }
+                    .first
+                return continuation.resume(returning: detail?.toDomain())
+            } catch {
+                return continuation.resume(returning: .none)
             }
         }
     }
 
     func upsertEpisodeDetail(detail: EpisodeDetail) async {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                defer {
-                    continuation.resume(returning: ())
-                }
-
-                do {
-                    let realm = try self.realmFactory.build()
-
-                    try realm.write {
-                        let summary = realm.objects(RealmEpisodeSummary.self)
-                            .where { $0.primaryId.equals(RealmEpisodeSummary.primaryId(id: detail.id)) }
-                            .first
-
-                        if let summary = summary {
-                            let realmDetail = self.buildEpisodeDetail(detail: detail, realm: realm)
-                            realm.add(realmDetail, update: .modified)
-                            summary.detail = realmDetail
-                        } else {
-                            let summary = EpisodeSummary(
-                                id: detail.id,
-                                seasonId: detail.seasonID,
-                                name: detail.name,
-                                date: detail.date
-                            )
-
-                            let realmSummary = RealmEpisodeSummary(episodeSummary: summary)
-                            let realmDetail = self.buildEpisodeDetail(detail: detail, realm: realm)
-
-                            realmSummary.detail = realmDetail
-                            realm.add(realmSummary)
-
-                            let latestFilter = realm.objects(RealmEpisodeFilter.self)
-                                .sorted(by: \.createdAt, ascending: false)
-                                .first!
-
-                            let list = realm.objects(RealmEpisodeList.self)
-                                .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
-                                .first! // List must exist here
-
-                            list.uncachedEpisodes.append(realmSummary)
-                        }
-                    }
-                } catch {}
+        return await realmQueue.runAsync { continuation in
+            defer {
+                continuation.resume(returning: ())
             }
+
+            do {
+                let realm = try self.realmFactory.build()
+
+                try realm.write {
+                    let summary = realm.objects(RealmEpisodeSummary.self)
+                        .where { $0.primaryId.equals(RealmEpisodeSummary.primaryId(id: detail.id)) }
+                        .first
+
+                    if let summary = summary {
+                        let realmDetail = self.buildEpisodeDetail(detail: detail, realm: realm)
+                        realm.add(realmDetail, update: .modified)
+                        summary.detail = realmDetail
+                    } else {
+                        let summary = EpisodeSummary(
+                            id: detail.id,
+                            seasonId: detail.seasonID,
+                            name: detail.name,
+                            date: detail.date
+                        )
+
+                        let realmSummary = RealmEpisodeSummary(episodeSummary: summary)
+                        let realmDetail = self.buildEpisodeDetail(detail: detail, realm: realm)
+
+                        realmSummary.detail = realmDetail
+                        realm.add(realmSummary)
+
+                        let latestFilter = realm.objects(RealmEpisodeFilter.self)
+                            .sorted(by: \.createdAt, ascending: false)
+                            .first!
+
+                        let list = realm.objects(RealmEpisodeList.self)
+                            .where { $0.filter.primaryId.equals(latestFilter.primaryId) }
+                            .first! // List must exist here
+
+                        list.uncachedEpisodes.append(realmSummary)
+                    }
+                }
+            } catch {}
         }
     }
 
@@ -112,17 +108,15 @@ class RealmEpisodeDetailsDataSource: EpisodeDetailsLocalDataSource {
     }
 
     func existsEpisodeDetail(id: String) async -> Bool {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
-                    let exists = realm.objects(RealmEpisodeDetails.self)
-                        .where { $0.summary.primaryId.equals(RealmEpisodeSummary.primaryId(id: id)) }
-                        .count > 0
-                    return continuation.resume(returning: exists)
-                } catch {
-                    continuation.resume(returning: false)
-                }
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
+                let exists = realm.objects(RealmEpisodeDetails.self)
+                    .where { $0.summary.primaryId.equals(RealmEpisodeSummary.primaryId(id: id)) }
+                    .count > 0
+                return continuation.resume(returning: exists)
+            } catch {
+                continuation.resume(returning: false)
             }
         }
     }

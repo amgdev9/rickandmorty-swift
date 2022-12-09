@@ -228,6 +228,7 @@
 		E5BF193A2930061200AE44BE /* LocationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19392930061200AE44BE /* LocationStack.swift */; };
 		E5BF193D2930070200AE44BE /* LocationSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF193C2930070200AE44BE /* LocationSummary.swift */; };
 		E5BF193F293008E100AE44BE /* LocationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF193E293008E100AE44BE /* LocationCard.swift */; };
+		E5BF763B2943571100130202 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF763A2943571100130202 /* DispatchQueueExtensions.swift */; };
 		E5C7C2E329190E2300FA74F8 /* Schema.graphqls in Resources */ = {isa = PBXBuildFile; fileRef = E5C7C2DC29190E2300FA74F8 /* Schema.graphqls */; };
 		E5C7C2ED2919225B00FA74F8 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7C2EC2919225B00FA74F8 /* MainContainer.swift */; };
 		E5C7C2EF2919263400FA74F8 /* NeedleGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7C2EE2919263400FA74F8 /* NeedleGenerated.swift */; };
@@ -484,6 +485,7 @@
 		E5BF19392930061200AE44BE /* LocationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStack.swift; sourceTree = "<group>"; };
 		E5BF193C2930070200AE44BE /* LocationSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSummary.swift; sourceTree = "<group>"; };
 		E5BF193E293008E100AE44BE /* LocationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCard.swift; sourceTree = "<group>"; };
+		E5BF763A2943571100130202 /* DispatchQueueExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtensions.swift; sourceTree = "<group>"; };
 		E5C7C2DC29190E2300FA74F8 /* Schema.graphqls */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Schema.graphqls; sourceTree = "<group>"; };
 		E5C7C2EC2919225B00FA74F8 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		E5C7C2EE2919263400FA74F8 /* NeedleGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeedleGenerated.swift; sourceTree = "<group>"; };
@@ -869,6 +871,7 @@
 			children = (
 				E5AE4ADD2927C7D800249894 /* Utils */,
 				E594DD1129214AE2002F7038 /* Character.swift */,
+				E5BF763A2943571100130202 /* DispatchQueueExtensions.swift */,
 				E5D5D09F292421C5006771CA /* CharacterSummary.swift */,
 				E5D5D0AC2924295B006771CA /* Error.swift */,
 				E5AD1D2029253120007B7315 /* Configuration.swift */,
@@ -2052,6 +2055,7 @@
 				E5B24E7E2934C65E007EE90D /* EpisodesQuery.graphql.swift in Sources */,
 				E5B24E792934C5BA007EE90D /* EpisodesRemoteDataSource.swift in Sources */,
 				E5ACA2352940AAE700FA55D7 /* EpisodeDetailsLocalDataSource.swift in Sources */,
+				E5BF763B2943571100130202 /* DispatchQueueExtensions.swift in Sources */,
 				E5D5D0A529242552006771CA /* CharactersRepositoryImpl.swift in Sources */,
 				E5A9BD09293E5AA60088F93E /* LocationFilterRepository.swift in Sources */,
 				E5B24EBC2934DAEF007EE90D /* AutocompleteByLocationTypeRepository.swift in Sources */,

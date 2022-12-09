@@ -27,7 +27,6 @@ class ListPaginator<TItem, TPayload> {
             .concatMap { [weak self] in
                 self?.handleIntent(intent: $0) ?? .empty()
             }
-            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.handleIntentResult(intentResult: $0)
             })

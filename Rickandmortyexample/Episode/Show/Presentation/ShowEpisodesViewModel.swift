@@ -52,7 +52,8 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
             }
         )
         listPaginator = ListPaginator(
-            fetchHandler: fetchHandler, refetchHandler: refetchHandler,
+            fetchHandler: fetchHandler,
+            refetchHandler: refetchHandler,
             fetchNextPageHandler: fetchNextPageHandler
         )
         listPaginator?.start()
@@ -75,6 +76,21 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         }
     }
 
+    private func handleFetchActionResult(result: Result<PaginatedResponse<EpisodeSummary>, Error>) {
+        guard let result = result.unwrap() else {
+            Task { @MainActor in
+                listState = .error(result.failure()!.message)
+            }
+            return
+        }
+
+        let seasons = episodesToSeasons(episodes: result.items)
+
+        Task { @MainActor in
+            listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
+        }
+    }
+
     private func episodesToSeasons(episodes: [EpisodeSummary]) -> [EpisodeSeason] {
         let seasons: [EpisodeSeason] = Dictionary(grouping: episodes, by: {
             UInt16($0.seasonId.slice(from: "S", to: "E")!)!
@@ -87,17 +103,6 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         return seasons
     }
 
-    private func handleFetchActionResult(result: Result<PaginatedResponse<EpisodeSummary>, Error>) {
-        guard let result = result.unwrap() else {
-            listState = .error(result.failure()!.message)
-            return
-        }
-
-        let seasons = episodesToSeasons(episodes: result.items)
-
-        listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
-    }
-
     private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>) {
         Task {
             let result = await self.episodesRepository.refetch(filter: self.filter)
@@ -107,17 +112,21 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
 
     private func handleRefetchActionResult(result: Result<PaginatedResponse<EpisodeSummary>, Error>) {
         guard let result = result.unwrap() else {
-            if case .error = listState {
-                listState = .error(result.failure()!.message)
-            } else {
-                error = result.failure()!
+            Task { @MainActor in
+                if case .error = listState {
+                    listState = .error(result.failure()!.message)
+                } else {
+                    error = result.failure()!
+                }
             }
             return
         }
 
         let seasons = episodesToSeasons(episodes: result.items)
 
-        listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
+        Task { @MainActor in
+            listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
+        }
     }
 
     private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>) {
@@ -129,6 +138,26 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
                 listSize: UInt32(listSize)
             )
             observer.onNext(.fetchNextPage(result))
+        }
+    }
+
+    private func handleFetchNextPageActionResult(result: Result<PaginatedResponse<EpisodeSummary>, Error>) {
+        guard let result = result.unwrap() else {
+            Task { @MainActor in
+                error = result.failure()!
+            }
+            return
+        }
+
+        guard case let .data(list) = self.listState else { return }
+
+        let seasons = episodesToSeasons(episodes: result.items)
+        let mergedSeasons = mergeSeasons(oldSeasons: list.items, newSeasons: seasons)
+
+        Task { @MainActor in
+            listState = .data(
+                PaginatedResponse(items: mergedSeasons, hasNext: result.hasNext)
+            )
         }
     }
 
@@ -151,21 +180,6 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         } else {
             return oldSeasons + newSeasons
         }
-    }
-
-    private func handleFetchNextPageActionResult(result: Result<PaginatedResponse<EpisodeSummary>, Error>) {
-        guard let result = result.unwrap() else {
-            error = result.failure()!
-            return
-        }
-
-        guard case let .data(list) = self.listState else { return }
-
-        let seasons = episodesToSeasons(episodes: result.items)
-
-        listState = .data(
-            PaginatedResponse(items: mergeSeasons(oldSeasons: list.items, newSeasons: seasons), hasNext: result.hasNext)
-        )
     }
 }
 

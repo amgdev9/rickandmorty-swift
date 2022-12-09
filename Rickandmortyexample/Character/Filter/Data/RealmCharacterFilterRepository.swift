@@ -24,19 +24,17 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
     }
 
     func getLatestFilter() async -> CharacterFilter {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                do {
-                    let realm = try self.realmFactory.build()
+        return await realmQueue.runAsync { continuation in
+            do {
+                let realm = try self.realmFactory.build()
 
-                    let filter = realm.objects(RealmCharacterFilter.self)
-                        .sorted(by: \.createdAt, ascending: false)
-                        .first?.toDomain()
+                let filter = realm.objects(RealmCharacterFilter.self)
+                    .sorted(by: \.createdAt, ascending: false)
+                    .first?.toDomain()
 
-                    return continuation.resume(returning: filter ?? CharacterFilter())
-                } catch {
-                    return continuation.resume(returning: CharacterFilter())
-                }
+                return continuation.resume(returning: filter ?? CharacterFilter())
+            } catch {
+                return continuation.resume(returning: CharacterFilter())
             }
         }
     }
@@ -66,34 +64,32 @@ class RealmCharacterFilterRepository: CharacterFilterRepository {
     }
 
     func addFilter(filter: CharacterFilter) async {
-        return await withCheckedContinuation { continuation in
-            realmQueue.async {
-                defer {
-                    continuation.resume(returning: ())
-                }
-
-                do {
-                    let realm = try self.realmFactory.build()
-                    let realmFilter = RealmCharacterFilter(filter: filter)
-
-                    try realm.write {
-                        let filters = realm.objects(RealmCharacterFilter.self)
-
-                        let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
-                        if let existingFilter = existingFilter {
-                            existingFilter.createdAt = realmFilter.createdAt
-                            return
-                        }
-
-                        if filters.count >= self.maxFilters {
-                            let oldestFilter = filters.sorted(by: \.createdAt, ascending: true).first
-                            oldestFilter?.delete(realm: realm)
-                        }
-
-                        realm.add(realmFilter)
-                    }
-                } catch { }
+        return await realmQueue.runAsync { continuation in
+            defer {
+                continuation.resume(returning: ())
             }
+
+            do {
+                let realm = try self.realmFactory.build()
+                let realmFilter = RealmCharacterFilter(filter: filter)
+
+                try realm.write {
+                    let filters = realm.objects(RealmCharacterFilter.self)
+
+                    let existingFilter = filters.where { $0.primaryId == realmFilter.primaryId }.first
+                    if let existingFilter = existingFilter {
+                        existingFilter.createdAt = realmFilter.createdAt
+                        return
+                    }
+
+                    if filters.count >= self.maxFilters {
+                        let oldestFilter = filters.sorted(by: \.createdAt, ascending: true).first
+                        oldestFilter?.delete(realm: realm)
+                    }
+
+                    realm.add(realmFilter)
+                }
+            } catch { }
         }
     }
 }
