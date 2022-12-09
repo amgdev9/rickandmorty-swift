@@ -1,6 +1,8 @@
 # Rick and Morty Example App (iOS)
 This project is a showcase on how to create a mobile application for the iOS platform using software engineering architectural principles and a reactive data flow to make our app scalable, maintainable, easy to test and resilient over time.
 
+![Demo](https://user-images.githubusercontent.com/37532652/206701682-91a7fa9b-b738-410a-9aae-bfd2e6d13560.mp4)
+
 ## Libraries and frameworks
 - User Interface: [SwiftUI](https://developer.apple.com/xcode/swiftui/)
 - Database: [Realm](https://www.mongodb.com/docs/realm/sdk/swift/)
