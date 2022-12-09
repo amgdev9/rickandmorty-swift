@@ -15,3 +15,7 @@ This project is a showcase on how to create a mobile application for the iOS pla
 
 ## Utility libraries
 - [AlertToast](https://github.com/elai950/AlertToast)
+
+## Architecture overview
+
+![Feature layers](https://user-images.githubusercontent.com/37532652/206707995-808663f3-e6e9-45d5-bc02-4f15db4066cc.svg)
