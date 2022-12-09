@@ -26,17 +26,30 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
             })
             .disposed(by: disposeBag)
 
-        let fetchHandler = ListPaginator.IntentHandler(
-            onReceive: handleFetchAction,
-            onResult: handleFetchActionResult
+        let fetchHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, filter in
+                guard let filter = filter else { return }
+                self?.handleFetchAction(observer: observer, filter: filter)
+            },
+            onResult: { [weak self] result in
+                self?.handleFetchActionResult(result: result)
+            }
         )
-        let refetchHandler = ListPaginator.IntentHandler(
-            onReceive: handleRefetchAction,
-            onResult: handleRefetchActionResult
+        let refetchHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, _ in
+                self?.handleRefetchAction(observer: observer)
+            },
+            onResult: { [weak self] result in
+                self?.handleRefetchActionResult(result: result)
+            }
         )
-        let fetchNextPageHandler = ListPaginator.IntentHandler(
-            onReceive: handleFetchNextPageAction,
-            onResult: handleFetchNextPageActionResult
+        let fetchNextPageHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, _ in
+                self?.handleFetchNextPageAction(observer: observer)
+            },
+            onResult: { [weak self] result in
+                self?.handleFetchNextPageActionResult(result: result)
+            }
         )
         listPaginator = ListPaginator(
             fetchHandler: fetchHandler, refetchHandler: refetchHandler,
@@ -53,9 +66,7 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         await listPaginator?.fetchNextPageIntent()
     }
 
-    private func handleFetchAction(observer: AnyObserver<Paginator.IntentResult>, filter: EpisodeFilter?) {
-        guard let filter = filter else { return }
-
+    private func handleFetchAction(observer: AnyObserver<Paginator.IntentResult>, filter: EpisodeFilter) {
         self.filter = filter
 
         Task {
@@ -87,7 +98,7 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
     }
 
-    private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>, _: EpisodeFilter?) {
+    private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>) {
         Task {
             let result = await self.episodesRepository.refetch(filter: self.filter)
             observer.onNext(.refetch(result))
@@ -109,7 +120,7 @@ class ShowEpisodesViewModelImpl: ShowEpisodesViewModel {
         listState = .data(PaginatedResponse(items: seasons, hasNext: result.hasNext))
     }
 
-    private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>, _: EpisodeFilter?) {
+    private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>) {
         Task {
             guard case let .data(list) = self.listState else { return }
             let listSize = list.items.map { $0.episodes.count }.reduce(0, +)

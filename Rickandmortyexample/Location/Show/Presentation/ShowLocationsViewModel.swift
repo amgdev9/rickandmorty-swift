@@ -26,17 +26,30 @@ class ShowLocationsViewModelImpl: ShowLocationsViewModel {
             })
             .disposed(by: disposeBag)
 
-        let fetchHandler = ListPaginator.IntentHandler(
-            onReceive: handleFetchAction,
-            onResult: handleFetchActionResult
+        let fetchHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, filter in
+                guard let filter = filter else { return }
+                self?.handleFetchAction(observer: observer, filter: filter)
+            },
+            onResult: { [weak self] result in
+                self?.handleFetchActionResult(result: result)
+            }
         )
-        let refetchHandler = ListPaginator.IntentHandler(
-            onReceive: handleRefetchAction,
-            onResult: handleRefetchActionResult
+        let refetchHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, _ in
+                self?.handleRefetchAction(observer: observer)
+            },
+            onResult: { [weak self] result in
+                self?.handleRefetchActionResult(result: result)
+            }
         )
-        let fetchNextPageHandler = ListPaginator.IntentHandler(
-            onReceive: handleFetchNextPageAction,
-            onResult: handleFetchNextPageActionResult
+        let fetchNextPageHandler = Paginator.IntentHandler(
+            onReceive: { [weak self] observer, _ in
+                self?.handleFetchNextPageAction(observer: observer)
+            },
+            onResult: { [weak self] result in
+                self?.handleFetchNextPageActionResult(result: result)
+            }
         )
         listPaginator = ListPaginator(
             fetchHandler: fetchHandler, refetchHandler: refetchHandler,
@@ -53,8 +66,7 @@ class ShowLocationsViewModelImpl: ShowLocationsViewModel {
         await listPaginator?.fetchNextPageIntent()
     }
 
-    private func handleFetchAction(observer: AnyObserver<Paginator.IntentResult>, filter: LocationFilter?) {
-        guard let filter = filter else { return }
+    private func handleFetchAction(observer: AnyObserver<Paginator.IntentResult>, filter: LocationFilter) {
         self.filter = filter
 
         Task {
@@ -72,7 +84,7 @@ class ShowLocationsViewModelImpl: ShowLocationsViewModel {
         listState = .data(result)
     }
 
-    private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>, _: LocationFilter?) {
+    private func handleRefetchAction(observer: AnyObserver<Paginator.IntentResult>) {
         Task {
             let result = await self.locationsRepository.refetch(filter: self.filter)
             observer.onNext(.refetch(result))
@@ -92,7 +104,7 @@ class ShowLocationsViewModelImpl: ShowLocationsViewModel {
         listState = .data(result)
     }
 
-    private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>, _: LocationFilter?) {
+    private func handleFetchNextPageAction(observer: AnyObserver<Paginator.IntentResult>) {
         Task {
             guard case let .data(list) = self.listState else { return }
             let result = await self.locationsRepository.fetchNextPage(
