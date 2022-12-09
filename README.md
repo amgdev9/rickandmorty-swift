@@ -18,4 +18,5 @@ This project is a showcase on how to create a mobile application for the iOS pla
 
 ## Architecture overview
 
-![Feature layers](https://user-images.githubusercontent.com/37532652/206707995-808663f3-e6e9-45d5-bc02-4f15db4066cc.svg)
+![Feature layers](https://user-images.githubusercontent.com/37532652/206708159-9e31b195-d4df-4adf-9331-d82db20e4275.svg)
+![Feature organization](https://user-images.githubusercontent.com/37532652/206708745-7582f166-3934-41df-a590-abc698227fe8.svg)
